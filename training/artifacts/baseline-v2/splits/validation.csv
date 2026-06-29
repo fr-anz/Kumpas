@@ -1,0 +1,17 @@
+video_path,label,class_index,group_id,source_split
+clips/clips/15/12.MOV,YES,0,12,train
+clips/clips/15/14.MOV,YES,0,14,train
+clips/clips/14/12.MOV,NO,1,12,test
+clips/clips/14/14.MOV,NO,1,14,test
+clips/clips/14/20.MOV,NO,1,20,train
+clips/clips/66/12.MOV,DEAF,2,12,test
+clips/clips/66/14.MOV,DEAF,2,14,train
+clips/clips/66/20.MOV,DEAF,2,20,train
+clips/clips/7/12.MOV,THANK YOU,3,12,train
+clips/clips/7/14.MOV,THANK YOU,3,14,train
+clips/clips/18/12.MOV,SLOW,4,12,train
+clips/clips/18/14.MOV,SLOW,4,14,train
+clips/clips/18/20.MOV,SLOW,4,20,train
+clips/clips/11/12.MOV,DON’T UNDERSTAND,5,12,train
+clips/clips/11/14.MOV,DON’T UNDERSTAND,5,14,train
+clips/clips/11/20.MOV,DON’T UNDERSTAND,5,20,train

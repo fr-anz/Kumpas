@@ -1,0 +1,65 @@
+{
+  "provisional": true,
+  "group_assumption": "The video filename stem is treated as a signer/session proxy.",
+  "group_overlap": false,
+  "groups": {
+    "train": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "11",
+      "13",
+      "17",
+      "18",
+      "19"
+    ],
+    "validation": [
+      "12",
+      "14",
+      "20"
+    ],
+    "test": [
+      "10",
+      "15",
+      "16"
+    ]
+  },
+  "rows": {
+    "train": 90,
+    "validation": 16,
+    "test": 18
+  },
+  "class_counts": {
+    "train": {
+      "YES": 15,
+      "NO": 15,
+      "DEAF": 15,
+      "THANK YOU": 15,
+      "SLOW": 15,
+      "DON’T UNDERSTAND": 15
+    },
+    "validation": {
+      "YES": 2,
+      "NO": 3,
+      "DEAF": 3,
+      "THANK YOU": 2,
+      "SLOW": 3,
+      "DON’T UNDERSTAND": 3
+    },
+    "test": {
+      "YES": 3,
+      "NO": 3,
+      "DEAF": 3,
+      "THANK YOU": 3,
+      "SLOW": 3,
+      "DON’T UNDERSTAND": 3
+    }
+  }
+}

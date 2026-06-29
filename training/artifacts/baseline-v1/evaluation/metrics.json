@@ -1,0 +1,65 @@
+{
+  "provisional": true,
+  "warning": "Filename stems are unverified signer/session proxies and NO_SIGN is absent.",
+  "blocking_reasons": [
+    "Signer/session grouping has not been verified from authoritative metadata.",
+    "NO_SIGN training and test data are absent."
+  ],
+  "sample_count": 18,
+  "accuracy": 1.0,
+  "macro_f1": 1.0,
+  "minimum_class_recall": 1.0,
+  "metric_gate": true,
+  "integration_ready": false,
+  "classification_report": {
+    "YES": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 3.0
+    },
+    "NO": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 3.0
+    },
+    "DEAF": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 3.0
+    },
+    "THANK YOU": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 3.0
+    },
+    "SLOW": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 3.0
+    },
+    "DON’T UNDERSTAND": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 3.0
+    },
+    "accuracy": 1.0,
+    "macro avg": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 18.0
+    },
+    "weighted avg": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 18.0
+    }
+  }
+}

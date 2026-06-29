@@ -1,0 +1,46 @@
+{
+  "config_hash": "5750684cf6a8c296daa1f5fa38089154a6d84727a1667168b00b485949f06039",
+  "provisional": true,
+  "feature_layout": {
+    "shape": [
+      40,
+      128
+    ],
+    "left_landmarks": [
+      0,
+      62
+    ],
+    "right_landmarks": [
+      63,
+      125
+    ],
+    "left_present": 126,
+    "right_present": 127,
+    "coordinates": "MediaPipe normalized image x/y/z without additional scaling",
+    "extraction_running_mode": "IMAGE for independently sampled frames",
+    "temporal_crop": {
+      "start_ratio": 0.15,
+      "end_ratio": 0.85
+    }
+  },
+  "splits": {
+    "train": {
+      "samples": 90,
+      "output": "D:/Personal Projects/Kumpas/training/cache/baseline-v1/train.npz",
+      "diagnostics": "D:/Personal Projects/Kumpas/training/cache/baseline-v1/train_diagnostics.csv",
+      "mean_any_hand_coverage": 0.479444443848398
+    },
+    "validation": {
+      "samples": 16,
+      "output": "D:/Personal Projects/Kumpas/training/cache/baseline-v1/validation.npz",
+      "diagnostics": "D:/Personal Projects/Kumpas/training/cache/baseline-v1/validation_diagnostics.csv",
+      "mean_any_hand_coverage": 0.4656250011175871
+    },
+    "test": {
+      "samples": 18,
+      "output": "D:/Personal Projects/Kumpas/training/cache/baseline-v1/test.npz",
+      "diagnostics": "D:/Personal Projects/Kumpas/training/cache/baseline-v1/test_diagnostics.csv",
+      "mean_any_hand_coverage": 0.47638888822661507
+    }
+  }
+}
