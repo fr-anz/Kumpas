@@ -1,0 +1,15 @@
+.python312/
+.venv/
+python-*.exe
+__pycache__/
+*.py[cod]
+
+# Raw and generated training data
+archive/
+clips/
+data/no_sign/
+cache/
+artifacts/
+
+# Downloaded third-party model asset
+models/*.task
