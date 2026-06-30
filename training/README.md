@@ -111,10 +111,10 @@ To start a new model version, update all three version fields in `config.json`:
 
 ```json
 {
-  "version": "baseline-v3",
+  "version": "baseline-v4",
   "paths": {
-    "cache_dir": "cache/baseline-v3",
-    "artifact_dir": "artifacts/baseline-v3"
+    "cache_dir": "cache/baseline-v4",
+    "artifact_dir": "artifacts/baseline-v4"
   }
 }
 ```
@@ -125,8 +125,8 @@ DVC remote and commit only the small version metadata:
 ```powershell
 python -m dvc push
 git add dvc.yaml dvc.lock training/config.json
-git commit -m "train baseline-v3"
-git tag model-baseline-v3
+git commit -m "train baseline-v4"
+git tag model-baseline-v4
 git push --follow-tags
 ```
 

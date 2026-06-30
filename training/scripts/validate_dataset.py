@@ -124,7 +124,7 @@ def main() -> int:
         "provisional": True,
         "warnings": [
             "Signer identity is undocumented; filename stems are only a group proxy.",
-            "The six-label baseline has no NO_SIGN class and is not suitable for continuous camera inference.",
+            "The selected labels have no NO_SIGN class and are not suitable for continuous camera inference.",
         ],
         "errors": errors,
         "dataset": {
