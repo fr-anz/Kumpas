@@ -170,6 +170,11 @@ Create a reproducible Python training pipeline for a small Filipino Sign Languag
     - Maintain a rolling 40-frame buffer and avoid speaking predictions immediately.
     - Require the same high-confidence label across several consecutive inference windows before displaying or speaking it.
     - Map `DEAF` to the communication phrase `I am Deaf.` while keeping model labels and app phrases as separate metadata.
+    - Map `SLOW` to the communication phrase `Please slow down.`
+    - Map `DON'T UNDERSTAND` to the communication phrase `I don't understand.`
+    - Map `YES` to the communication phrase `Yes.`
+    - Map `NO` to the communication phrase `No.`
+    - Map `THANK YOU` to the communication phrase `Thank you.`
     - Treat missing MVP concepts as unsupported rather than mapping unrelated signs to `HELP`, `HOSPITAL`, or `PAIN`.
 
 11. Plan later dataset expansion.

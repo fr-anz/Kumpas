@@ -8,5 +8,7 @@ __pycache__/
 /clips
 /archive
 /models
-/cache
-/artifacts
+/cache/*
+!/cache/*.dvc
+/artifacts/*
+!/artifacts/*.dvc

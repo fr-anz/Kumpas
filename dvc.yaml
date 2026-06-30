@@ -1,0 +1,92 @@
+vars:
+  - training/config.json
+
+stages:
+  validate_dataset:
+    cmd: '".\training\.venv\Scripts\python.exe" training\scripts\validate_dataset.py'
+    deps:
+      - training/scripts/validate_dataset.py
+      - training/labels.csv
+      - training/train.csv
+      - training/test.csv
+      - training/clips
+    params:
+      - training/config.json:
+          - labels
+          - paths.labels_csv
+          - paths.train_csv
+          - paths.test_csv
+          - paths.video_base
+    outs:
+      - training/${paths.artifact_dir}/dataset_report.json
+
+  build_splits:
+    cmd: '".\training\.venv\Scripts\python.exe" training\scripts\build_splits.py'
+    deps:
+      - training/scripts/build_splits.py
+      - training/${paths.artifact_dir}/dataset_report.json
+      - training/train.csv
+      - training/test.csv
+    params:
+      - training/config.json:
+          - labels
+          - paths.train_csv
+          - paths.test_csv
+          - paths.video_base
+          - random_seed
+          - split_ratios
+    outs:
+      - training/${paths.artifact_dir}/splits
+      - training/${paths.artifact_dir}/split_report.json
+
+  extract_landmarks:
+    cmd: '".\training\.venv\Scripts\python.exe" training\scripts\extract_landmarks.py'
+    deps:
+      - training/scripts/extract_landmarks.py
+      - training/${paths.artifact_dir}/splits
+      - training/clips
+      - training/models/hand_landmarker.task
+    params:
+      - training/config.json:
+          - feature_count
+          - hand_landmarker
+          - labels
+          - paths.hand_landmarker_model
+          - sequence_length
+          - temporal_crop
+          - version
+    outs:
+      - training/${paths.cache_dir}
+
+  train_model:
+    cmd: '".\training\.venv\Scripts\python.exe" training\scripts\train_model.py'
+    deps:
+      - training/scripts/train_model.py
+      - training/${paths.cache_dir}/train.npz
+      - training/${paths.cache_dir}/validation.npz
+    params:
+      - training/config.json:
+          - feature_count
+          - labels
+          - random_seed
+          - sequence_length
+          - training
+          - version
+    outs:
+      - training/${paths.artifact_dir}/model
+
+  evaluate_model:
+    cmd: '".\training\.venv\Scripts\python.exe" training\scripts\evaluate_model.py'
+    deps:
+      - training/scripts/evaluate_model.py
+      - training/${paths.cache_dir}/test.npz
+      - training/${paths.artifact_dir}/model/best.keras
+    params:
+      - training/config.json:
+          - labels
+    metrics:
+      - training/${paths.artifact_dir}/evaluation/metrics.json:
+          cache: true
+    outs:
+      - training/${paths.artifact_dir}/evaluation/confusion_matrix.png
+      - training/${paths.artifact_dir}/evaluation/predictions.npz

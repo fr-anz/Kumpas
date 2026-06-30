@@ -1,0 +1,86 @@
+(node:25488) ExperimentalWarning: CommonJS module C:\Users\cjds0\AppData\Roaming\npm\node_modules\npm\node_modules\debug\src\node.js is loading ES Module C:\Users\cjds0\AppData\Roaming\npm\node_modules\npm\node_modules\supports-color\index.js using require().
+Support for loading ES Module in require() is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+   ▲ Next.js 15.5.19
+
+   Creating an optimized production build ...
+ ✓ (pwa) Compiling for server...
+ ✓ (pwa) Compiling for server...
+ ✓ (pwa) Compiling for client (static)...
+ ○ (pwa) Service worker: D:\cjds0\1 CODES\Kumpas\Kumpas\public\sw.js
+ ○ (pwa)   URL: /sw.js
+ ○ (pwa)   Scope: /
+ ✓ Compiled successfully in 29.4s
+   Linting and checking validity of types ...
+
+Failed to compile.
+
+./app/camera/page.tsx
+26:3  Error: Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+D:\cjds0\1 CODES\Kumpas\Kumpas\app\camera\page.tsx:26:3
+  24 |   // Keep the active language available to the interval callback.
+  25 |   const languageRef = useRef(language);
+> 26 |   languageRef.current = language;
+     |   ^^^^^^^^^^^^^^^^^^^ Cannot update ref during render
+  27 |
+  28 |   const [active, setActive] = useState(false);
+  29 |   const [error, setError] = useState<string | null>(null);  react-hooks/refs
+
+./app/emergency/page.tsx
+29:5  Warning: Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+D:\cjds0\1 CODES\Kumpas\Kumpas\app\emergency\page.tsx:29:5
+  27 |   useEffect(() => {
+  28 |     const saved = loadProfile();
+> 29 |     setProfile(saved);
+     |     ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  30 |     setDraft(saved ?? EMPTY_PROFILE);
+  31 |     setEditing(!saved);
+  32 |     setLoaded(true);  react-hooks/set-state-in-effect
+
+./components/SpeakButton.tsx
+26:5  Warning: Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+D:\cjds0\1 CODES\Kumpas\Kumpas\components\SpeakButton.tsx:26:5
+  24 |
+  25 |   useEffect(() => {
+> 26 |     setSupported(isSpeechSupported());
+     |     ^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  27 |     return () => stopSpeaking();
+  28 |   }, []);
+  29 |  react-hooks/set-state-in-effect
+
+./components/ThemeProvider.tsx
+39:5  Warning: Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+D:\cjds0\1 CODES\Kumpas\Kumpas\components\ThemeProvider.tsx:39:5
+  37 |   useEffect(() => {
+  38 |     const saved = loadTheme();
+> 39 |     setThemeState(saved);
+     |     ^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  40 |     applyTheme(saved);
+  41 |   }, []);
+  42 |  react-hooks/set-state-in-effect
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
