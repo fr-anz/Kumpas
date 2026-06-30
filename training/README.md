@@ -91,17 +91,47 @@ git commit -m "update training data pointers"
   [git filter-repo](https://github.com/newren/git-filter-repo) to shrink the
   remote.
 
-## Pipeline
+## Versioned pipeline
 
-Run commands from this `training` directory:
+The repository-level `dvc.yaml` versions the complete training DAG. It invokes
+the Python interpreter in `training/.venv` for ML stages. Run DVC from the
+repository root using the Python installation where DVC is installed:
 
 ```powershell
-.\.venv\Scripts\python.exe scripts\validate_dataset.py
-.\.venv\Scripts\python.exe scripts\build_splits.py
-.\.venv\Scripts\python.exe scripts\extract_landmarks.py
-.\.venv\Scripts\python.exe scripts\train_model.py
-.\.venv\Scripts\python.exe scripts\evaluate_model.py
+python -m dvc repro
+python -m dvc metrics show
 ```
+
+DVC skips unchanged stages. A change to the clips, metadata, scripts, selected
+labels, or training parameters reruns that stage and its downstream stages.
+The resulting `dvc.lock` records the exact inputs, parameters, metrics, and
+output hashes for the run.
+
+To start a new model version, update all three version fields in `config.json`:
+
+```json
+{
+  "version": "baseline-v3",
+  "paths": {
+    "cache_dir": "cache/baseline-v3",
+    "artifact_dir": "artifacts/baseline-v3"
+  }
+}
+```
+
+After a successful run, store the generated cache and model artifacts in the
+DVC remote and commit only the small version metadata:
+
+```powershell
+python -m dvc push
+git add dvc.yaml dvc.lock training/config.json
+git commit -m "train baseline-v3"
+git tag model-baseline-v3
+git push --follow-tags
+```
+
+Use a unique version name for every retained experiment. Do not reuse an old
+version path with different labels or parameters.
 
 Generated landmark arrays are written to `cache/baseline-v2/`. Models,
 reports, metrics, and plots are written to `artifacts/baseline-v2/`.

@@ -1,0 +1,214 @@
+schema: '2.0'
+stages:
+  validate_dataset:
+    cmd: '".\training\.venv\Scripts\python.exe" training\scripts\validate_dataset.py'
+    deps:
+    - path: training/clips
+      hash: md5
+      md5: 89c3098e79194534a05df9ec12a723b8.dir
+      size: 390121532
+      nfiles: 2130
+    - path: training/labels.csv
+      hash: md5
+      md5: d5fa61a7ce3d369b9e2467945a68c9e8
+      size: 2022
+    - path: training/scripts/validate_dataset.py
+      hash: md5
+      md5: e82c8fec7145ee69245863dfdca5406a
+      size: 5533
+    - path: training/test.csv
+      hash: md5
+      md5: 7268285eb314cce19ccac02bb977228d
+      size: 14755
+    - path: training/train.csv
+      hash: md5
+      md5: f618218a35bc5dc7e8d99b36392f5f18
+      size: 58851
+    params:
+      training/config.json:
+        labels:
+        - YES
+        - NO
+        - DEAF
+        - THANK YOU
+        - SLOW
+        - DON’T UNDERSTAND
+        paths.labels_csv: labels.csv
+        paths.test_csv: test.csv
+        paths.train_csv: train.csv
+        paths.video_base: clips
+    outs:
+    - path: training/artifacts/baseline-v2/dataset_report.json
+      hash: md5
+      md5: 4afa7f2adc5aee750fd7365779c95cbd
+      size: 1603
+  build_splits:
+    cmd: '".\training\.venv\Scripts\python.exe" training\scripts\build_splits.py'
+    deps:
+    - path: training/artifacts/baseline-v2/dataset_report.json
+      hash: md5
+      md5: 4afa7f2adc5aee750fd7365779c95cbd
+      size: 1603
+    - path: training/scripts/build_splits.py
+      hash: md5
+      md5: e543448f640528a6014cb2e50d297373
+      size: 4549
+    - path: training/test.csv
+      hash: md5
+      md5: 7268285eb314cce19ccac02bb977228d
+      size: 14755
+    - path: training/train.csv
+      hash: md5
+      md5: f618218a35bc5dc7e8d99b36392f5f18
+      size: 58851
+    params:
+      training/config.json:
+        labels:
+        - YES
+        - NO
+        - DEAF
+        - THANK YOU
+        - SLOW
+        - DON’T UNDERSTAND
+        paths.test_csv: test.csv
+        paths.train_csv: train.csv
+        paths.video_base: clips
+        random_seed: 42
+        split_ratios:
+          train: 0.7
+          validation: 0.15
+          test: 0.15
+    outs:
+    - path: training/artifacts/baseline-v2/split_report.json
+      hash: md5
+      md5: 4d9d515b2567c1eb574da0cf7ef7f4c2
+      size: 1051
+    - path: training/artifacts/baseline-v2/splits
+      hash: md5
+      md5: 3288c2db2aea00fcaa22b73bac69bb71.dir
+      size: 5160
+      nfiles: 3
+  extract_landmarks:
+    cmd: '".\training\.venv\Scripts\python.exe" training\scripts\extract_landmarks.py'
+    deps:
+    - path: training/artifacts/baseline-v2/splits
+      hash: md5
+      md5: 3288c2db2aea00fcaa22b73bac69bb71.dir
+      size: 5160
+      nfiles: 3
+    - path: training/clips
+      hash: md5
+      md5: 89c3098e79194534a05df9ec12a723b8.dir
+      size: 390121532
+      nfiles: 2130
+    - path: training/models/hand_landmarker.task
+      hash: md5
+      md5: 15318430ea3851670fe9914116a9cfad
+      size: 7819105
+    - path: training/scripts/extract_landmarks.py
+      hash: md5
+      md5: 296d8dcdde6d713f5cbd010e7ec50a30
+      size: 8950
+    params:
+      training/config.json:
+        feature_count: 128
+        hand_landmarker:
+          num_hands: 2
+          min_hand_detection_confidence: 0.4
+          min_hand_presence_confidence: 0.4
+          min_tracking_confidence: 0.4
+        labels:
+        - YES
+        - NO
+        - DEAF
+        - THANK YOU
+        - SLOW
+        - DON’T UNDERSTAND
+        paths.hand_landmarker_model: models/hand_landmarker.task
+        sequence_length: 40
+        temporal_crop:
+          start_ratio: 0.15
+          end_ratio: 0.85
+        version: baseline-v2
+    outs:
+    - path: training/cache/baseline-v2
+      hash: md5
+      md5: 895df7cab38a283a282ab91f45e6e85e.dir
+      size: 691943
+      nfiles: 7
+  train_model:
+    cmd: '".\training\.venv\Scripts\python.exe" training\scripts\train_model.py'
+    deps:
+    - path: training/cache/baseline-v2/train.npz
+      hash: md5
+      md5: 95e41e00b8a2b9e24e6901d79eee6443
+      size: 486581
+    - path: training/cache/baseline-v2/validation.npz
+      hash: md5
+      md5: 693a692d86d8bb3ed2feee7a4fae461e
+      size: 85164
+    - path: training/scripts/train_model.py
+      hash: md5
+      md5: c9c8dad3ebe6189fc0414ad6b90d7eaa
+      size: 4272
+    params:
+      training/config.json:
+        feature_count: 128
+        labels:
+        - YES
+        - NO
+        - DEAF
+        - THANK YOU
+        - SLOW
+        - DON’T UNDERSTAND
+        random_seed: 42
+        sequence_length: 40
+        training:
+          epochs: 100
+          batch_size: 16
+          learning_rate: 0.001
+          early_stopping_patience: 15
+        version: baseline-v2
+    outs:
+    - path: training/artifacts/baseline-v2/model
+      hash: md5
+      md5: 936a650ef888795f881d71df9337e561.dir
+      size: 1731478
+      nfiles: 5
+  evaluate_model:
+    cmd: '".\training\.venv\Scripts\python.exe" training\scripts\evaluate_model.py'
+    deps:
+    - path: training/artifacts/baseline-v2/model/best.keras
+      hash: md5
+      md5: 7fb3ebf9f10b146a940d693f6859f4f1
+      size: 859880
+    - path: training/cache/baseline-v2/test.npz
+      hash: md5
+      md5: 262453334b5e5e5fe40cbbe8c1a81211
+      size: 104632
+    - path: training/scripts/evaluate_model.py
+      hash: md5
+      md5: b8360b30135fea69f0fb303fa23170fe
+      size: 3635
+    params:
+      training/config.json:
+        labels:
+        - YES
+        - NO
+        - DEAF
+        - THANK YOU
+        - SLOW
+        - DON’T UNDERSTAND
+    outs:
+    - path: training/artifacts/baseline-v2/evaluation/confusion_matrix.png
+      hash: md5
+      md5: dbd58361203ae39f3fdb4e8c59ccde79
+      size: 63376
+    - path: training/artifacts/baseline-v2/evaluation/metrics.json
+      hash: md5
+      md5: 15bf81b5fc579901bd37bfb695b3d2e7
+      size: 1450
+    - path: training/artifacts/baseline-v2/evaluation/predictions.npz
+      hash: md5
+      md5: f50b4ba38e3abbd28c1fbc584534cfb0
+      size: 1071
