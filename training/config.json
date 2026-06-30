@@ -19,7 +19,13 @@
     "DON\u2019T UNDERSTAND",
     "MARRIAGE LICENSE",
     "LAND DEED",
-    "DRIVERS LICENSE"
+    "DRIVERS LICENSE",
+    "BARANGAY CLEARANCE",
+    "CERTIFICATE OF INDIGENCY",
+    "CERTIFICATE OF RESIDENCY",
+    "CEDULA",
+    "BLOTTER REPORT",
+    "AYUDA"
   ],
   "sequence_length": 40,
   "feature_count": 128,

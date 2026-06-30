@@ -1,5 +1,5 @@
 {
-  "config_hash": "17aab0c309c839ca633919bec41e77ed1c6cad70629c57aedf99cdf899f12dd8",
+  "config_hash": "956356bb687e5ee75f13d8a5a0d41a7fbfb8826655210dfea98dd2f8b3fa73bd",
   "provisional": true,
   "feature_layout": {
     "shape": [
@@ -26,22 +26,22 @@
   },
   "splits": {
     "train": {
-      "samples": 132,
+      "samples": 216,
       "output": "C:/Users/Justin A Jose/COLLEGE/2ND YEAR/2nd sem/Kumpas/training/cache/baseline-v2/train.npz",
       "diagnostics": "C:/Users/Justin A Jose/COLLEGE/2ND YEAR/2nd sem/Kumpas/training/cache/baseline-v2/train_diagnostics.csv",
-      "mean_any_hand_coverage": 0.5920454518813075
+      "mean_any_hand_coverage": 0.6523148136006461
     },
     "validation": {
-      "samples": 25,
+      "samples": 43,
       "output": "C:/Users/Justin A Jose/COLLEGE/2ND YEAR/2nd sem/Kumpas/training/cache/baseline-v2/validation.npz",
       "diagnostics": "C:/Users/Justin A Jose/COLLEGE/2ND YEAR/2nd sem/Kumpas/training/cache/baseline-v2/validation_diagnostics.csv",
-      "mean_any_hand_coverage": 0.6039999997615815
+      "mean_any_hand_coverage": 0.6697674449100051
     },
     "test": {
-      "samples": 27,
+      "samples": 45,
       "output": "C:/Users/Justin A Jose/COLLEGE/2ND YEAR/2nd sem/Kumpas/training/cache/baseline-v2/test.npz",
       "diagnostics": "C:/Users/Justin A Jose/COLLEGE/2ND YEAR/2nd sem/Kumpas/training/cache/baseline-v2/test_diagnostics.csv",
-      "mean_any_hand_coverage": 0.5898148108411718
+      "mean_any_hand_coverage": 0.6466666645473904
     }
   }
 }

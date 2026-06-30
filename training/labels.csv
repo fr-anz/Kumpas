@@ -107,3 +107,9 @@ id,label,category
 marriage_license,MARRIAGE LICENSE,DOCUMENT
 land_deed,LAND DEED,DOCUMENT
 drivers_license,DRIVERS LICENSE,DOCUMENT
+barangay_clearance,BARANGAY CLEARANCE,DOCUMENT
+certificate_of_indigency,CERTIFICATE OF INDIGENCY,DOCUMENT
+certificate_of_residency,CERTIFICATE OF RESIDENCY,DOCUMENT
+cedula,CEDULA,DOCUMENT
+blotter_report,BLOTTER REPORT,DOCUMENT
+ayuda,AYUDA,DOCUMENT
