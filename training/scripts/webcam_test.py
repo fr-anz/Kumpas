@@ -29,9 +29,12 @@ def load_config() -> dict:
 def open_camera(index: int) -> cv2.VideoCapture:
     capture = cv2.VideoCapture(index, cv2.CAP_DSHOW)
     if capture.isOpened():
+        capture.set(cv2.CAP_PROP_BUFFERSIZE, 1)
         return capture
     capture.release()
-    return cv2.VideoCapture(index)
+    capture = cv2.VideoCapture(index)
+    capture.set(cv2.CAP_PROP_BUFFERSIZE, 1)
+    return capture
 
 
 def prepare_frame(frame: np.ndarray, width: int, height: int) -> np.ndarray:
@@ -190,6 +193,7 @@ def main() -> int:
     if args.self_test:
         return run_self_test(config, model)
 
+    # Open camera AFTER model load to avoid DirectShow timeout on Windows.
     capture = open_camera(args.camera)
     if not capture.isOpened():
         print(f"Could not open camera index {args.camera}.")
@@ -197,6 +201,12 @@ def main() -> int:
         return 1
     capture.set(cv2.CAP_PROP_FRAME_WIDTH, webcam["width"])
     capture.set(cv2.CAP_PROP_FRAME_HEIGHT, webcam["height"])
+
+    # Warm-up: discard frames until the camera auto-exposes and stabilizes.
+    warmup_deadline = time.perf_counter() + 2.0
+    while time.perf_counter() < warmup_deadline:
+        capture.read()
+        time.sleep(0.03)
 
     if args.probe:
         ok = False

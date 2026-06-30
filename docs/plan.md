@@ -204,6 +204,10 @@ Mock labels:
 - HOSPITAL → I need to go to the hospital.
 - I_AM_DEAF → I am Deaf.
 - PAIN → I am in pain.
+- DEAF → I am Deaf.
+- SLOW → Please slow down.
+- DON'T UNDERSTAND → I don't understand.
+- THANK YOU → Thank you.
 
 The camera module should be structured so the mock predictor can later be replaced with MediaPipe Web + TensorFlow.js.
 
