@@ -20,6 +20,77 @@ Use Python 3.12. The checked-in dependency versions are recorded in
 The official MediaPipe Hand Landmarker model is expected at
 `models/hand_landmarker.task`.
 
+## Dataset storage (DVC + Google Drive)
+
+The raw training data is too large for Git (~520 MB). Git only tracks small
+`.dvc` pointer files; the actual data lives in Google Drive via
+[DVC](https://dvc.org/).
+
+| Path | Contents | Size |
+|------|----------|------|
+| `clips/` | 2,130 phrase `.MOV` videos | ~372 MB |
+| `archive/` | 11,700 alphabet images (future use) | ~134 MB |
+| `models/` | MediaPipe `hand_landmarker.task` | ~8 MB |
+
+Generated outputs (`cache/`, `artifacts/`) stay local and are not in DVC.
+
+### One-time setup
+
+Install DVC and rclone (rclone is optional but useful for manual Drive browsing):
+
+```powershell
+python -m pip install "dvc[gdrive]"
+winget install Rclone.Rclone
+```
+
+Create a folder in Google Drive, e.g. `Kumpas/dvc`, and copy its folder ID from
+the browser URL (`https://drive.google.com/drive/folders/<FOLDER_ID>`). Point
+the remote at it (replace the placeholder):
+
+```powershell
+cd ..   # repo root
+python -m dvc remote modify gdrive url "gdrive://<FOLDER_ID>/kumpas-dvc"
+```
+
+On first push, DVC opens a browser for Google OAuth. Each teammate authorizes
+once; credentials are cached locally.
+
+For heavy use or if Google blocks the default DVC app, create your own
+[Google Cloud OAuth client](https://dvc.org/doc/user-guide/data-management/remote-storage/google-drive#using-a-custom-google-cloud-project-recommended)
+and store secrets in `.dvc/config.local` (already git-ignored):
+
+```powershell
+python -m dvc remote modify --local gdrive gdrive_client_id "<your-client-id>"
+python -m dvc remote modify --local gdrive gdrive_client_secret "<your-secret>"
+```
+
+### Daily workflow
+
+Clone the repo, then pull data from Drive:
+
+```powershell
+cd "C:\path\to\Kumpas"
+python -m dvc pull
+```
+
+After adding or changing tracked data:
+
+```powershell
+python -m dvc add training/clips    # only if clips changed
+python -m dvc push
+git add training/*.dvc training/.gitignore
+git commit -m "update training data pointers"
+```
+
+### Notes
+
+- If `dvc pull` fails with a malware/spam warning, `gdrive_acknowledge_abuse`
+  is already enabled in `.dvc/config`.
+- Old copies of the dataset may still exist in Git history from before this
+  migration. If the repo was already pushed, consider cleaning history with
+  [git filter-repo](https://github.com/newren/git-filter-repo) to shrink the
+  remote.
+
 ## Pipeline
 
 Run commands from this `training` directory:

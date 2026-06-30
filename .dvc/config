@@ -1,0 +1,5 @@
+[core]
+    remote = gdrive
+['remote "gdrive"']
+    url = gdrive://148exqGUNwqBK7W_y_Bu_LZ1asNbBnHU4
+    gdrive_acknowledge_abuse = true
