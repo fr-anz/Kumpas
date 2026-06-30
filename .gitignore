@@ -18,3 +18,7 @@ dist/
 Thumbs.db
 .vscode/*
 !.vscode/extensions.json
+
+# DVC local cache (data lives in Google Drive remote)
+.dvc/cache
+.dvc/tmp

@@ -5,5 +5,8 @@ __pycache__/
 *.py[cod]
 
 # Raw and generated training data
-
-# Downloaded third-party model asset
+/clips
+/archive
+/models
+/cache
+/artifacts
