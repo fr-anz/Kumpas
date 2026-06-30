@@ -16,7 +16,8 @@
     "DEAF",
     "THANK YOU",
     "SLOW",
-    "DON’T UNDERSTAND"
+    "DON’T UNDERSTAND",
+    "MARRIAGE CERTIFICATE"
   ],
   "sequence_length": 40,
   "feature_count": 128,

@@ -1,5 +1,5 @@
 {
-  "config_hash": "ca8172948bbdddfacb0a99690fe1f5be4d03baf7c0c820bd08c123c3ea08347d",
+  "config_hash": "32f3d08663f45260d8dcb36272a63328252291aff548f8a3f49d2453e157298e",
   "provisional": true,
   "feature_layout": {
     "shape": [
@@ -26,22 +26,22 @@
   },
   "splits": {
     "train": {
-      "samples": 90,
-      "output": "D:/Personal Projects/Kumpas/training/cache/baseline-v2/train.npz",
-      "diagnostics": "D:/Personal Projects/Kumpas/training/cache/baseline-v2/train_diagnostics.csv",
-      "mean_any_hand_coverage": 0.479444443848398
+      "samples": 104,
+      "output": "C:/Users/Justin A Jose/COLLEGE/2ND YEAR/2nd sem/Kumpas/training/cache/baseline-v2/train.npz",
+      "diagnostics": "C:/Users/Justin A Jose/COLLEGE/2ND YEAR/2nd sem/Kumpas/training/cache/baseline-v2/train_diagnostics.csv",
+      "mean_any_hand_coverage": 0.5201923053425092
     },
     "validation": {
-      "samples": 16,
-      "output": "D:/Personal Projects/Kumpas/training/cache/baseline-v2/validation.npz",
-      "diagnostics": "D:/Personal Projects/Kumpas/training/cache/baseline-v2/validation_diagnostics.csv",
-      "mean_any_hand_coverage": 0.4656250011175871
+      "samples": 19,
+      "output": "C:/Users/Justin A Jose/COLLEGE/2ND YEAR/2nd sem/Kumpas/training/cache/baseline-v2/validation.npz",
+      "diagnostics": "C:/Users/Justin A Jose/COLLEGE/2ND YEAR/2nd sem/Kumpas/training/cache/baseline-v2/validation_diagnostics.csv",
+      "mean_any_hand_coverage": 0.5157894727430845
     },
     "test": {
-      "samples": 18,
-      "output": "D:/Personal Projects/Kumpas/training/cache/baseline-v2/test.npz",
-      "diagnostics": "D:/Personal Projects/Kumpas/training/cache/baseline-v2/test_diagnostics.csv",
-      "mean_any_hand_coverage": 0.47638888822661507
+      "samples": 21,
+      "output": "C:/Users/Justin A Jose/COLLEGE/2ND YEAR/2nd sem/Kumpas/training/cache/baseline-v2/test.npz",
+      "diagnostics": "C:/Users/Justin A Jose/COLLEGE/2ND YEAR/2nd sem/Kumpas/training/cache/baseline-v2/test_diagnostics.csv",
+      "mean_any_hand_coverage": 0.5202380929674421
     }
   }
 }
