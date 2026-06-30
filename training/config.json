@@ -16,8 +16,10 @@
     "DEAF",
     "THANK YOU",
     "SLOW",
-    "DON’T UNDERSTAND",
-    "MARRIAGE LICENSE"
+    "DON\u2019T UNDERSTAND",
+    "MARRIAGE LICENSE",
+    "LAND DEED",
+    "DRIVERS LICENSE"
   ],
   "sequence_length": 40,
   "feature_count": 128,

@@ -9,6 +9,7 @@ def main():
     parser = argparse.ArgumentParser(description="Add a new action to the pipeline")
     parser.add_argument("folder_name", help="Name of the folder in clips/clips/ (e.g. marriage_license)")
     parser.add_argument("--category", default="UNCATEGORIZED", help="Category for labels.csv")
+    parser.add_argument("--skip-training", action="store_true", help="Skip the ML training pipeline")
     args = parser.parse_args()
 
     root_dir = Path(__file__).resolve().parents[1]
@@ -79,9 +80,14 @@ def main():
         print("No new changes to commit. Everything is up to date!")
         # We can still run the pipeline if the user wants, but maybe we skip or just run.
 
+    if args.skip_training:
+        print("\nSkipping ML training pipeline as requested.")
+        print("You can manually run it later or run add_action.py for another word without the flag.")
+        sys.exit(0)
+
     # 4. Run pipeline
     print("\n--- Running Pipeline ---")
-    scripts = ["extract_landmarks.py", "build_splits.py", "train_model.py"]
+    scripts = ["build_splits.py", "extract_landmarks.py", "train_model.py"]
     for script in scripts:
         script_path = root_dir / "scripts" / script
         print(f"\n=> Running {script} ...")
