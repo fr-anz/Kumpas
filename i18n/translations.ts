@@ -38,6 +38,31 @@ const en: Dict = {
   // Header
   "header.settings": "Settings",
 
+  // Onboarding
+  "onb.welcomeTitle": "Welcome to Kumpas",
+  "onb.welcomeMessage":
+    "An offline FSL communication assistant for public service and emergencies. Grounded in RA 11106.",
+  "onb.badge": "Assists communication • Works 100% Offline",
+  "onb.getStarted": "Get Started",
+  "onb.prefsTitle": "Choose your preferences",
+  "onb.language": "Language",
+  "onb.textSize": "Text size",
+  "onb.sizeNormal": "Normal",
+  "onb.sizeLarge": "Large",
+  "onb.sizeXlarge": "Extra Large",
+  "onb.sizePreview": "Sample text",
+  "onb.next": "Next",
+  "onb.back": "Back",
+  "onb.profileTitle": "Emergency ID",
+  "onb.profileContext":
+    "If you are Deaf, having your ID ready helps first responders immediately.",
+  "onb.name": "Name",
+  "onb.contactNumber": "Emergency contact number",
+  "onb.setupLater": "Set up later in Emergency tab",
+  "onb.finish": "Finish & Start Communicating",
+  "onb.step": "Step",
+  "onb.of": "of",
+
   // Home
   "home.eyebrow": "Offline-first FSL communicator",
   "home.title": "Essential communication, within reach.",
@@ -134,7 +159,10 @@ const en: Dict = {
   "settings.clearData": "Clear local data",
   "settings.dataCleared": "Local data cleared.",
   "settings.confirmClear":
-    "Clear all local data? This removes your emergency profile and settings on this device.",
+    "Clear all local data? This removes your emergency profile and settings, and returns to the setup screen.",
+  "settings.restartSetup": "Restart setup",
+  "settings.confirmRestart":
+    "Restart setup? This clears your data and takes you back to the welcome screens.",
   "settings.tagline": "Kumpas — offline-first FSL communicator",
   "settings.version": "Version",
 
@@ -172,6 +200,31 @@ const fil: Dict = {
 
   // Header
   "header.settings": "Mga Setting",
+
+  // Onboarding
+  "onb.welcomeTitle": "Maligayang pagdating sa Kumpas",
+  "onb.welcomeMessage":
+    "Isang offline na FSL communication assistant para sa serbisyo publiko at emerhensiya. Batay sa RA 11106.",
+  "onb.badge": "Tumutulong sa komunikasyon • Gumagana 100% Offline",
+  "onb.getStarted": "Magsimula",
+  "onb.prefsTitle": "Piliin ang wika at sukat ng teksto",
+  "onb.language": "Wika",
+  "onb.textSize": "Sukat ng teksto",
+  "onb.sizeNormal": "Normal",
+  "onb.sizeLarge": "Malaki",
+  "onb.sizeXlarge": "Napakalaki",
+  "onb.sizePreview": "Halimbawang teksto",
+  "onb.next": "Kasunod",
+  "onb.back": "Bumalik",
+  "onb.profileTitle": "Emergency ID",
+  "onb.profileContext":
+    "Kung ikaw ay Bingi, ang pagkakaroon ng handa mong ID ay agad na nakakatulong sa mga first responder.",
+  "onb.name": "Pangalan",
+  "onb.contactNumber": "Numero ng tatawagan sa emerhensiya",
+  "onb.setupLater": "I-set up mamaya sa Emergency tab",
+  "onb.finish": "Simulan na",
+  "onb.step": "Hakbang",
+  "onb.of": "ng",
 
   // Home
   "home.eyebrow": "Offline-first na FSL communicator",
@@ -269,7 +322,10 @@ const fil: Dict = {
   "settings.clearData": "Burahin ang lokal na datos",
   "settings.dataCleared": "Nabura ang lokal na datos.",
   "settings.confirmClear":
-    "Burahin ang lahat ng lokal na datos? Aalisin nito ang iyong emergency profile at mga setting sa device na ito.",
+    "Burahin ang lahat ng lokal na datos? Aalisin nito ang iyong emergency profile at mga setting, at babalik sa setup screen.",
+  "settings.restartSetup": "I-restart ang setup",
+  "settings.confirmRestart":
+    "I-restart ang setup? Buburahin nito ang iyong datos at babalik ka sa welcome screens.",
   "settings.tagline": "Kumpas — offline-first na FSL communicator",
   "settings.version": "Bersyon",
 

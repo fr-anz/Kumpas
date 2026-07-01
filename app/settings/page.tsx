@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, RotateCcw } from "lucide-react";
 import { useTheme } from "@/components/ThemeProvider";
+import { useFontSize } from "@/components/FontSizeProvider";
 import { useLanguage } from "@/i18n/LanguageProvider";
-import { clearAllData } from "@/services/storageService";
+import { resetAndOnboard } from "@/services/storageService";
 import { isSpeechSupported, speak } from "@/services/speechService";
 import type { ThemePreference } from "@/services/storageService";
 import type { Language } from "@/i18n/translations";
@@ -13,15 +13,20 @@ import type { Language } from "@/i18n/translations";
 const APP_VERSION = "0.1.0 (demo)";
 
 export default function SettingsPage() {
-  const { theme, setTheme, fontSize, setFontSize } = useTheme();
+  const { theme, setTheme } = useTheme();
+  const { fontSize, setFontSize } = useFontSize();
   const { language, setLanguage, t, speechLocale } = useLanguage();
-  const [cleared, setCleared] = useState(false);
 
   const handleClear = () => {
     if (window.confirm(t("settings.confirmClear"))) {
-      clearAllData();
-      setCleared(true);
-      window.setTimeout(() => setCleared(false), 2500);
+      // Clears all data and returns to the onboarding flow.
+      resetAndOnboard();
+    }
+  };
+
+  const handleRestartSetup = () => {
+    if (window.confirm(t("settings.confirmRestart"))) {
+      resetAndOnboard();
     }
   };
 
@@ -91,8 +96,8 @@ export default function SettingsPage() {
 
       {/* Accessibility Font Size Selector */}
       <section className="flex flex-col gap-3">
-        <h2 className="text-xl font-extrabold">Text Size</h2>
-        <div className="flex flex-wrap gap-2" role="group" aria-label="Text Size">
+        <h2 className="text-xl font-extrabold">{t("onb.textSize")}</h2>
+        <div className="flex flex-wrap gap-2" role="group" aria-label={t("onb.textSize")}>
           {(["normal", "large", "xlarge"] as const).map((option) => (
             <button
               key={option}
@@ -106,10 +111,10 @@ export default function SettingsPage() {
               }`}
             >
               {option === "normal"
-                ? "Normal"
+                ? t("onb.sizeNormal")
                 : option === "large"
-                  ? "Large"
-                  : "Extra Large"}
+                  ? t("onb.sizeLarge")
+                  : t("onb.sizeXlarge")}
             </button>
           ))}
         </div>
@@ -152,16 +157,19 @@ export default function SettingsPage() {
         <h2 className="text-xl font-extrabold">{t("settings.data")}</h2>
         <button
           type="button"
+          onClick={handleRestartSetup}
+          className="flex min-h-12 items-center justify-center gap-2 rounded-button border-2 border-bee-black bg-surface px-6 text-lg font-bold transition-colors hover:bg-surface-alt"
+        >
+          <RotateCcw aria-hidden="true" className="h-5 w-5" />
+          {t("settings.restartSetup")}
+        </button>
+        <button
+          type="button"
           onClick={handleClear}
           className="flex min-h-12 items-center justify-center rounded-button border-2 border-danger bg-surface px-6 text-lg font-bold text-danger transition-colors hover:bg-danger/10"
         >
           {t("settings.clearData")}
         </button>
-        {cleared && (
-          <p role="status" className="font-semibold text-success">
-            {t("settings.dataCleared")}
-          </p>
-        )}
       </section>
 
       <section className="flex flex-col gap-1 border-t border-border pt-4 text-sm text-text-muted">
