@@ -16,7 +16,7 @@ type CameraPreviewProps = {
 export const CameraPreview = forwardRef<HTMLVideoElement, CameraPreviewProps>(
   function CameraPreview({ active, error, overlayRef, badge }, ref) {
     return (
-      <div className="relative aspect-[3/4] w-full overflow-hidden rounded-card border border-border bg-bee-ink shadow-[var(--shadow)]">
+      <div className="relative mx-auto aspect-[4/3] w-full max-w-[max(12rem,min(100%,calc(133.333dvh-30.667rem)))] overflow-hidden rounded-card border border-border bg-bee-ink shadow-[var(--shadow)]">
         {/* Mirrored selfie view. */}
         <video
           ref={ref}
