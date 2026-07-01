@@ -1,11 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowLeft, ArrowRight, ShieldCheck, WifiOff } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageProvider";
 import { useFontSize } from "@/components/FontSizeProvider";
 import { BeeLogo } from "@/components/BeeLogo";
 import { loadProfile, saveProfile } from "@/services/storageService";
+import {
+  validatePhilippineMobile,
+  formatPhilippineMobile,
+} from "@/utils/phone";
 import type { Language } from "@/i18n/translations";
 import type { FontSizePreference } from "@/services/storageService";
 
@@ -35,10 +39,13 @@ export function Onboarding({ onDone }: { onDone: () => void }) {
 
   const finish = (withProfile: boolean) => {
     if (withProfile && (name.trim() || contact.trim())) {
+      // Store the normalized E.164 number when valid, else the raw entry.
+      const check = validatePhilippineMobile(contact.trim());
+      const number = check.valid ? check.normalized : contact.trim();
       saveProfile({
         name: name.trim(),
         emergencyContactName: existing?.emergencyContactName ?? "",
-        emergencyContactNumber: contact.trim(),
+        emergencyContactNumber: number,
         medicalNote: existing?.medicalNote ?? "",
         addressNote: existing?.addressNote ?? "",
       });
@@ -120,23 +127,12 @@ function PrimaryButton({
 function Welcome({ t, onNext }: { t: T; onNext: () => void }) {
   return (
     <section className="flex flex-1 flex-col">
-      <div className="flex flex-1 flex-col justify-center gap-6">
-        <div className="mx-auto flex h-28 w-28 items-center justify-center">
-          <BeeLogo className="h-28 w-28 drop-shadow-md" />
-        </div>
-        <h1 className="text-center text-4xl font-black leading-tight tracking-tight">
+      {/* Logo + welcome title, vertically and horizontally centered. */}
+      <div className="flex flex-1 flex-col items-center justify-center gap-6">
+        <BeeLogo className="h-36 w-36 drop-shadow-md sm:h-44 sm:w-44" />
+        <h1 className="text-center text-4xl font-black leading-tight tracking-tight sm:text-5xl">
           {t("onb.welcomeTitle")}
         </h1>
-        <p className="text-center text-lg leading-relaxed text-text-muted">
-          {t("onb.welcomeMessage")}
-        </p>
-        <div className="flex flex-col items-center gap-2 rounded-card border border-border bg-surface p-4">
-          <div className="flex items-center gap-2 font-bold">
-            <ShieldCheck aria-hidden="true" className="h-5 w-5 text-success" />
-            <WifiOff aria-hidden="true" className="h-5 w-5 text-bee-amber" />
-          </div>
-          <p className="text-center text-sm font-bold">{t("onb.badge")}</p>
-        </div>
       </div>
       <div className="mt-8">
         <PrimaryButton onClick={onNext}>
@@ -266,6 +262,13 @@ function ProfileStep({
   onBack: () => void;
   onFinish: (withProfile: boolean) => void;
 }) {
+  const trimmed = contact.trim();
+  const check = trimmed ? validatePhilippineMobile(trimmed) : null;
+  const showError = trimmed.length > 0 && check !== null && !check.valid;
+  const showValid = check !== null && check.valid;
+  // Block finishing only when a number was entered but is invalid.
+  const canFinish = !trimmed || (check?.valid ?? false);
+
   return (
     <section className="flex flex-1 flex-col gap-6">
       <BackHeader t={t} onBack={onBack} title={t("onb.profileTitle")} />
@@ -278,7 +281,7 @@ function ProfileStep({
         className="flex flex-col gap-4"
         onSubmit={(e) => {
           e.preventDefault();
-          onFinish(true);
+          if (canFinish) onFinish(true);
         }}
       >
         <label className="flex flex-col gap-1.5">
@@ -295,15 +298,42 @@ function ProfileStep({
           <span className="font-bold">{t("onb.contactNumber")}</span>
           <input
             type="tel"
+            inputMode="tel"
             value={contact}
             onChange={(e) => setContact(e.target.value)}
             autoComplete="tel"
-            className="min-h-12 rounded-button border border-border bg-surface px-4 text-lg shadow-[var(--shadow)]"
+            aria-invalid={showError}
+            aria-describedby="contact-feedback"
+            className={`min-h-12 rounded-button border bg-surface px-4 text-lg shadow-[var(--shadow)] ${
+              showError
+                ? "border-danger"
+                : showValid
+                  ? "border-success"
+                  : "border-border"
+            }`}
           />
+          <span id="contact-feedback" className="min-h-5 text-sm font-semibold">
+            {showValid && check ? (
+              <span className="flex items-center gap-1.5 text-success">
+                <Check aria-hidden="true" className="h-4 w-4" />
+                {t("onb.contactValid")} · {formatPhilippineMobile(check.normalized)}
+              </span>
+            ) : showError ? (
+              <span className="text-danger">{t("onb.contactInvalid")}</span>
+            ) : (
+              <span className="text-text-muted">{t("onb.contactHint")}</span>
+            )}
+          </span>
         </label>
 
         <div className="mt-2 flex flex-col gap-3">
-          <PrimaryButton type="submit">{t("onb.finish")}</PrimaryButton>
+          <button
+            type="submit"
+            disabled={!canFinish}
+            className="flex min-h-14 w-full items-center justify-center gap-2 rounded-button bg-bee-yellow px-6 text-lg font-black text-bee-black transition-colors hover:bg-bee-yellow-bright active:bg-bee-amber disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {t("onb.finish")}
+          </button>
           <button
             type="button"
             onClick={() => onFinish(false)}

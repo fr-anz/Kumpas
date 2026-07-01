@@ -29,7 +29,8 @@ export function CommunicationCard({ phrase }: { phrase: Phrase }) {
     pushRecent(phrase.id);
   }, [phrase.id]);
 
-  // Detect Web Share API support on the client (avoids SSR mismatch).
+  // Detect Web Share API support on the client (avoids SSR mismatch and the
+  // "always defined" type error from reading navigator.share in render).
   useEffect(() => {
     setCanShare(typeof navigator !== "undefined" && "share" in navigator);
   }, []);
