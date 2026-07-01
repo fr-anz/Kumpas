@@ -5,6 +5,7 @@ __pycache__/
 *.py[cod]
 
 # Raw and generated training data
+/clips
 /archive
 /models
 /cache/*
