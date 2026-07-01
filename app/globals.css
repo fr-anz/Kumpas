@@ -155,3 +155,36 @@ select {
   );
   background-size: 28px 28px;
 }
+
+/* Page enter animation — subtle slide-up + fade. */
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-enter {
+  animation: page-enter 200ms ease-out both;
+}
+
+/* Hide scrollbar track but keep scroll functionality. */
+.no-scrollbar {
+  scrollbar-width: none; /* Firefox */
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+}
+
+/* Font size accessibility classes */
+html[data-font-size="large"] {
+  font-size: 1.15rem;
+}
+html[data-font-size="xlarge"] {
+  font-size: 1.3rem;
+}
+

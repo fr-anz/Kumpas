@@ -1,16 +1,30 @@
 "use client";
 
 import Link from "next/link";
-import { Siren, MessageSquare, Camera } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Siren, MessageSquare, Camera, Clock } from "lucide-react";
 import { categories } from "@/data/categories";
 import { CategoryCard } from "@/components/CategoryCard";
 import { useLanguage } from "@/i18n/LanguageProvider";
+import { loadRecents } from "@/utils/recentPhrases";
+import { getPhraseById } from "@/data/phrases";
+import type { Phrase } from "@/types/phrase";
 
-/** Home: emergency action, category grid, and quick links to the other modes. */
+/** Home: emergency action, recent phrases, category grid, quick links. */
 export default function HomePage() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const [recents, setRecents] = useState<Phrase[]>([]);
+
+  useEffect(() => {
+    const ids = loadRecents();
+    const resolved = ids
+      .map((id) => getPhraseById(id))
+      .filter((p): p is Phrase => !!p);
+    setRecents(resolved);
+  }, []);
+
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-8 page-enter">
       <section aria-labelledby="home-title">
         <p className="mb-2 text-sm font-bold uppercase tracking-[0.16em] text-text-muted">
           {t("home.eyebrow")}
@@ -23,7 +37,7 @@ export default function HomePage() {
         </h1>
       </section>
 
-      {/* Large primary emergency action. */}
+      {/* Large primary emergency action */}
       <Link
         href="/emergency"
         className="flex min-h-20 w-full items-center justify-center gap-3 rounded-card bg-danger px-6 text-center text-2xl font-black text-white shadow-[var(--shadow)] transition-colors hover:brightness-110"
@@ -32,6 +46,31 @@ export default function HomePage() {
         {t("home.emergency")}
       </Link>
 
+      {/* Recents row — only shown after the user has visited phrases */}
+      {recents.length > 0 && (
+        <section aria-labelledby="recents-title">
+          <h2
+            id="recents-title"
+            className="mb-3 flex items-center gap-2 text-sm font-bold uppercase tracking-[0.12em] text-text-muted"
+          >
+            <Clock aria-hidden="true" className="h-4 w-4" />
+            Recently used
+          </h2>
+          <div className="flex flex-wrap gap-2">
+            {recents.map((phrase) => (
+              <Link
+                key={phrase.id}
+                href={`/communication/${phrase.id}`}
+                className="flex items-center gap-2 rounded-pill border border-border bg-surface px-4 py-2 text-sm font-bold shadow-[var(--shadow)] transition-colors hover:bg-surface-alt hover:-translate-y-0.5 active:translate-y-0"
+              >
+                {language === "fil" ? phrase.titleFil : phrase.title}
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Phrase categories */}
       <section aria-labelledby="cat-title">
         <h2 id="cat-title" className="mb-3 text-xl font-extrabold">
           {t("home.phraseCategories")}
@@ -43,6 +82,7 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* More tools */}
       <section aria-labelledby="modes-title">
         <h2 id="modes-title" className="mb-3 text-xl font-extrabold">
           {t("home.moreTools")}

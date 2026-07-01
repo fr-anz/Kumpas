@@ -44,7 +44,7 @@ export default function EmergencyPage() {
   }
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 page-enter">
       <h1 className="text-3xl font-black tracking-tight">
         {t("emergency.title")}
       </h1>
@@ -62,6 +62,55 @@ export default function EmergencyPage() {
       {profile && !editing ? (
         <>
           <EmergencyProfileCard profile={profile} />
+
+          {/* Share emergency card */}
+          <button
+            type="button"
+            onClick={async () => {
+              const shareText = [
+                "I AM DEAF / BINGI AKO",
+                profile.name ? `Name: ${profile.name}` : "",
+                profile.emergencyContactName || profile.emergencyContactNumber
+                  ? `Contact: ${profile.emergencyContactName} ${profile.emergencyContactNumber}`.trim()
+                  : "",
+                profile.medicalNote ? `Medical: ${profile.medicalNote}` : "",
+                profile.addressNote ? `Address: ${profile.addressNote}` : "",
+              ]
+                .filter(Boolean)
+                .join("\n");
+
+              if (navigator.share) {
+                try {
+                  await navigator.share({ text: shareText });
+                } catch {
+                  // cancelled — ignore
+                }
+              } else {
+                await navigator.clipboard?.writeText(shareText).catch(() => {});
+              }
+            }}
+            className="flex min-h-12 items-center justify-center gap-2 rounded-button border-2 border-bee-black bg-surface px-6 text-base font-bold transition-colors hover:bg-surface-alt"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-5 w-5"
+              aria-hidden="true"
+            >
+              <circle cx="18" cy="5" r="3" />
+              <circle cx="6" cy="12" r="3" />
+              <circle cx="18" cy="19" r="3" />
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+            </svg>
+            Share emergency card
+          </button>
+
           <button
             type="button"
             onClick={() => {
@@ -129,6 +178,7 @@ export default function EmergencyPage() {
       )}
     </div>
   );
+
 }
 
 function Field({

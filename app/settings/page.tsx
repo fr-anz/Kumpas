@@ -13,7 +13,7 @@ import type { Language } from "@/i18n/translations";
 const APP_VERSION = "0.1.0 (demo)";
 
 export default function SettingsPage() {
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, fontSize, setFontSize } = useTheme();
   const { language, setLanguage, t, speechLocale } = useLanguage();
   const [cleared, setCleared] = useState(false);
 
@@ -37,7 +37,7 @@ export default function SettingsPage() {
   ];
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-8 page-enter">
       <h1 className="text-3xl font-black tracking-tight">
         {t("settings.title")}
       </h1>
@@ -88,6 +88,33 @@ export default function SettingsPage() {
           ))}
         </div>
       </section>
+
+      {/* Accessibility Font Size Selector */}
+      <section className="flex flex-col gap-3">
+        <h2 className="text-xl font-extrabold">Text Size</h2>
+        <div className="flex flex-wrap gap-2" role="group" aria-label="Text Size">
+          {(["normal", "large", "xlarge"] as const).map((option) => (
+            <button
+              key={option}
+              type="button"
+              onClick={() => setFontSize(option)}
+              aria-pressed={fontSize === option}
+              className={`min-h-12 rounded-pill px-5 text-base font-bold transition-colors ${
+                fontSize === option
+                  ? "bg-bee-yellow text-bee-black"
+                  : "border border-border bg-surface text-text hover:bg-surface-alt"
+              }`}
+            >
+              {option === "normal"
+                ? "Normal"
+                : option === "large"
+                  ? "Large"
+                  : "Extra Large"}
+            </button>
+          ))}
+        </div>
+      </section>
+
 
       <section className="flex flex-col gap-3">
         <h2 className="text-xl font-extrabold">
