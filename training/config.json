@@ -24,6 +24,8 @@
     "CEDULA",
     "BLOTTER REPORT",
     "AYUDA",
+    "DRIVERS LICENSE",
+    "LAND DEED",
     "NO_SIGN"
   ],
   "sequence_length": 40,

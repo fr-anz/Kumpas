@@ -191,9 +191,9 @@ const fil: Dict = {
   // Navigation
   "nav.home": "Home",
   "nav.library": "Aklatan",
-  "nav.emergency": "Emerhensiya",
-  "nav.hearing": "Nakakarinig",
-  "nav.camera": "Kamera",
+  "nav.emergency": "Help",
+  "nav.hearing": "Pang-nakaririnig",
+  "nav.camera": "Kumpas Mode",
 
   // Status
   "status.online": "Online",
@@ -235,11 +235,11 @@ const fil: Dict = {
   // Home
   "home.eyebrow": "Offline-first na FSL communicator",
   "home.title": "Mahalagang komunikasyon, abot-kamay.",
-  "home.emergency": "Emerhensiya",
+  "home.emergency": "Help",
   "home.phraseCategories": "Mga kategorya ng parirala",
   "home.moreTools": "Iba pang kagamitan",
-  "home.hearingMode": "Mode para sa nakakarinig",
-  "home.cameraDemo": "Demo ng pagkilala sa kamera",
+  "home.hearingMode": "Pang-nakaririnig",
+  "home.cameraDemo": "Kumpas Mode",
 
   // Library
   "library.title": "Aklatan ng parirala",
@@ -254,7 +254,7 @@ const fil: Dict = {
   "comm.fslPlaceholder": "Malapit nang dumating ang FSL visual",
 
   // Hearing mode
-  "hearing.title": "Mode para sa nakakarinig",
+  "hearing.title": "Pang-nakaririnig",
   "hearing.subtitle":
     "Mag-type ng mensahe para sa Bingi. Pasisimplehin ito sa mas malinaw na teksto.",
   "hearing.yourMessage": "Iyong mensahe",
@@ -267,7 +267,7 @@ const fil: Dict = {
   "hearing.suggested": "Mga iminumungkahing parirala",
 
   // Emergency
-  "emergency.title": "Emerhensiya",
+  "emergency.title": "Help",
   "emergency.message":
     "Bingi ako. Kailangan ko ng tulong. Pakitawagan ang aking emergency contact.",
   "emergency.speakMessage": "Sabihin ang mensahe ng emerhensiya",
@@ -285,7 +285,7 @@ const fil: Dict = {
   "emergency.saveProfile": "I-save ang profile",
 
   // Camera
-  "camera.title": "Pagkilala ng Sign Language",
+  "camera.title": "Kumpas Mode",
   "camera.prototypeNote": "Prototype lang — hindi real-time na pagsasalin.",
   "camera.start": "Simulan ang kamera",
   "camera.stop": "Itigil ang kamera",
