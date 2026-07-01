@@ -161,10 +161,15 @@ The app should show:
 
 - Original message
 - Simplified message
+- Optional prerecorded FSL video for a verified matching phrase
 - Speak simplified message button
 - Suggested matching phrase cards if possible
 
 For now, implement a local rule-based simplifier. Do not require Gemini.
+
+The simplified message must remain visible as the reliable fallback. Do not generate signs word-by-word or claim that arbitrary typed messages are translated into FSL. FSL has its own grammar and is not a word-for-word representation of Filipino or English.
+
+Only show an FSL video when the typed message or simplified output matches a phrase with a reviewed, verified FSL clip. If no verified clip is available, show the simplified text without an FSL video. Store MVP clips locally so they remain available offline.
 
 Example:
 
@@ -297,6 +302,7 @@ src/
     speechService.ts
     storageService.ts
     simplifierService.ts
+    fslVisualService.ts
     firebaseService.ts
     geminiService.ts
 
@@ -330,6 +336,7 @@ type Phrase = {
   text: string;
   simplifiedText?: string;
   fslVisualUrl?: string;
+  fslVisualVerified?: boolean;
   offlineAvailable: boolean;
   priority?: "normal" | "urgent";
 };
@@ -441,6 +448,8 @@ Show:
 - Simplify button
 - Original message
 - Simplified message
+- Verified FSL video when a matching offline phrase clip is available
+- Clear text-only fallback when no verified FSL clip is available
 - Speak button
 - Suggested phrase cards
 
@@ -574,13 +583,18 @@ Acceptance criteria:
 1. Create simplifier service.
 2. Build text input screen.
 3. Show simplified output.
-4. Add speak button.
-5. Add placeholder Gemini service.
+4. Match the output to reviewed phrases with verified local FSL clips.
+5. Show a verified FSL clip when available while retaining simplified text.
+6. Add speak button.
+7. Add placeholder Gemini service.
 
 Acceptance criteria:
 
 - User can type a message.
 - App displays a simplified version.
+- App shows a prerecorded FSL video only when a verified matching clip exists.
+- App keeps the simplified message visible whether or not an FSL clip exists.
+- The UI does not claim to translate arbitrary messages into FSL.
 - App can speak the simplified version.
 
 ---
@@ -631,7 +645,7 @@ The demo should show:
 3. App displays large text: “I am Deaf. I need help.”
 4. App speaks the phrase aloud.
 5. User opens Hearing Person Mode.
-6. A staff message is simplified into clearer text.
+6. A staff message is simplified into clearer text and, when available, a verified matching FSL clip is shown.
 7. User opens Camera Demo.
 8. Mock sign recognition shows “HELP” with confidence.
 9. App converts “HELP” into “I need help.” and speaks it.
