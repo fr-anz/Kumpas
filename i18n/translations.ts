@@ -119,7 +119,7 @@ const en: Dict = {
   "emergency.saveProfile": "Save profile",
 
   // Camera
-  "camera.title": "Camera recognition demo",
+  "camera.title": "Sign Language Recognition",
   "camera.prototypeNote": "Prototype only — not real-time translation.",
   "camera.start": "Start camera",
   "camera.stop": "Stop camera",
@@ -285,7 +285,7 @@ const fil: Dict = {
   "emergency.saveProfile": "I-save ang profile",
 
   // Camera
-  "camera.title": "Demo ng pagkilala sa kamera",
+  "camera.title": "Pagkilala ng Sign Language",
   "camera.prototypeNote": "Prototype lang — hindi real-time na pagsasalin.",
   "camera.start": "Simulan ang kamera",
   "camera.stop": "Itigil ang kamera",
