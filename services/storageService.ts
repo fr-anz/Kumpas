@@ -9,6 +9,7 @@ const PROFILE_KEY = "kumpas.profile";
 const THEME_KEY = "kumpas.theme";
 const LANG_KEY = "kumpas.lang";
 const FONT_SIZE_KEY = "kumpas.fontSize";
+const ONBOARDED_KEY = "kumpas.onboarded";
 
 export type ThemePreference = "light" | "dark" | "system";
 export type LanguagePreference = "en" | "fil";
@@ -48,6 +49,7 @@ export function clearAllData(): void {
     window.localStorage.removeItem(THEME_KEY);
     window.localStorage.removeItem(LANG_KEY);
     window.localStorage.removeItem(FONT_SIZE_KEY);
+    window.localStorage.removeItem(ONBOARDED_KEY);
   } catch {
     // ignore
   }
@@ -116,6 +118,35 @@ export function saveFontSize(size: FontSizePreference): void {
     window.localStorage.setItem(FONT_SIZE_KEY, size);
   } catch {
     // ignore
+  }
+}
+
+export function loadOnboarded(): boolean {
+  if (!hasStorage()) return false;
+  try {
+    return window.localStorage.getItem(ONBOARDED_KEY) === "true";
+  } catch {
+    return false;
+  }
+}
+
+export function saveOnboarded(done: boolean): void {
+  if (!hasStorage()) return;
+  try {
+    window.localStorage.setItem(ONBOARDED_KEY, done ? "true" : "false");
+  } catch {
+    // ignore
+  }
+}
+
+/**
+ * Clear all data AND signal the app to return to onboarding. Dispatches a
+ * window event that AppGate listens for so no full reload is required.
+ */
+export function resetAndOnboard(): void {
+  clearAllData();
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new Event("kumpas:reset-onboarding"));
   }
 }
 

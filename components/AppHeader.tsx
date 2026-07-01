@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Settings } from "lucide-react";
 import { StatusBadge } from "./StatusBadge";
+import { BeeLogo } from "./BeeLogo";
 import { useLanguage } from "@/i18n/LanguageProvider";
 
 /** Black header bar with the yellow Kumpas wordmark, per the bee theme. */
@@ -15,7 +16,7 @@ export function AppHeader() {
           href="/"
           className="flex items-center gap-2 text-xl font-black tracking-[-0.04em] text-bee-yellow"
         >
-          <BeeLogo />
+          <BeeLogo className="h-7 w-7" />
           Kumpas
         </Link>
         <div className="flex items-center gap-2">
@@ -30,26 +31,5 @@ export function AppHeader() {
         </div>
       </div>
     </header>
-  );
-}
-
-/** Simple hexagon "bee" mark built from an inline SVG (no emoji). */
-function BeeLogo() {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      className="h-6 w-6"
-      fill="currentColor"
-    >
-      <path d="M12 2 21 7v10l-9 5-9-5V7l9-5Z" opacity="0.25" />
-      <path
-        d="M12 2 21 7v10l-9 5-9-5V7l9-5Z"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinejoin="round"
-      />
-    </svg>
   );
 }

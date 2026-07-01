@@ -1,7 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { FontSizeProvider } from "@/components/FontSizeProvider";
 import { LanguageProvider } from "@/i18n/LanguageProvider";
+import { AppGate } from "@/components/AppGate";
 import { AppHeader } from "@/components/AppHeader";
 import { BottomNav } from "@/components/BottomNav";
 import { OfflineIndicator } from "@/components/OfflineIndicator";
@@ -34,25 +36,29 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body>
         <ThemeProvider>
-          <LanguageProvider>
-            <div className="mx-auto flex min-h-dvh max-w-3xl flex-col">
-              <AppHeader />
-              <OfflineIndicator />
-              <a
-                href="#main-content"
-                className="sr-only rounded-md bg-bee-yellow px-4 py-3 font-bold text-bee-black focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50"
-              >
-                Skip to content
-              </a>
-              <main
-                id="main-content"
-                className="flex-1 px-5 pb-28 pt-7 sm:px-8"
-              >
-                {children}
-              </main>
-              <BottomNav />
-            </div>
-          </LanguageProvider>
+          <FontSizeProvider>
+            <LanguageProvider>
+              <AppGate>
+                <div className="mx-auto flex min-h-dvh max-w-3xl flex-col">
+                  <AppHeader />
+                  <OfflineIndicator />
+                  <a
+                    href="#main-content"
+                    className="sr-only rounded-md bg-bee-yellow px-4 py-3 font-bold text-bee-black focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50"
+                  >
+                    Skip to content
+                  </a>
+                  <main
+                    id="main-content"
+                    className="flex-1 px-5 pb-28 pt-7 sm:px-8"
+                  >
+                    {children}
+                  </main>
+                  <BottomNav />
+                </div>
+              </AppGate>
+            </LanguageProvider>
+          </FontSizeProvider>
         </ThemeProvider>
       </body>
     </html>

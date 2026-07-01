@@ -39,7 +39,15 @@ export default function CameraPage() {
     setActive(false);
   };
 
-  useEffect(() => stopCamera, []); // cleanup on unmount
+  // Stop the camera stream on unmount. Self-contained so it doesn't depend on
+  // the re-created stopCamera closure; `stop` from the hook is stable.
+  useEffect(() => {
+    return () => {
+      stop();
+      streamRef.current?.getTracks().forEach((track) => track.stop());
+      streamRef.current = null;
+    };
+  }, [stop]);
 
   const startCamera = async () => {
     setCameraError(null);
