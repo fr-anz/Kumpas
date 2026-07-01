@@ -42,3 +42,30 @@ export function formatPhilippineMobile(normalized: string): string {
   if (!m) return normalized;
   return `+63 ${m[1]} ${m[2]} ${m[3]}`;
 }
+
+/**
+ * Reduce any stored/raw value to the 10-digit national number (without the
+ * +63 country code or a leading 0). Returns up to 10 digits.
+ */
+export function toNationalDigits(raw: string): string {
+  let digits = raw.replace(/\D/g, "");
+  if (digits.startsWith("63")) digits = digits.slice(2);
+  else if (digits.startsWith("0")) digits = digits.slice(1);
+  return digits.slice(0, 10);
+}
+
+/** Whether a 10-digit national number is a valid PH mobile (starts with 9). */
+export function isValidNationalNumber(digits: string): boolean {
+  return /^9\d{9}$/.test(digits);
+}
+
+/**
+ * Display formatting for the national number field. Spacing (3-3-4) is only
+ * applied once all 10 digits are present; otherwise the raw digits are shown.
+ */
+export function formatNationalInput(digits: string): string {
+  if (digits.length === 10) {
+    return `${digits.slice(0, 3)} ${digits.slice(3, 6)} ${digits.slice(6)}`;
+  }
+  return digits;
+}
