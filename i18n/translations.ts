@@ -58,7 +58,7 @@ const en: Dict = {
     "If you are Deaf, having your ID ready helps first responders immediately.",
   "onb.name": "Name",
   "onb.contactNumber": "Emergency contact number",
-  "onb.contactHint": "Philippine mobile number, e.g. 0917 123 4567",
+  "onb.contactHint": "Enter your 10-digit mobile number (9XX XXX XXXX).",
   "onb.contactValid": "Valid number",
   "onb.contactInvalid": "Enter a valid Philippine mobile number.",
   "onb.setupLater": "Set up later in Emergency tab",
@@ -119,7 +119,7 @@ const en: Dict = {
   "emergency.saveProfile": "Save profile",
 
   // Camera
-  "camera.title": "Camera recognition demo",
+  "camera.title": "Sign Language Recognition",
   "camera.prototypeNote": "Prototype only — not real-time translation.",
   "camera.start": "Start camera",
   "camera.stop": "Stop camera",
@@ -224,7 +224,7 @@ const fil: Dict = {
     "Kung ikaw ay Bingi, ang pagkakaroon ng handa mong ID ay agad na nakakatulong sa mga first responder.",
   "onb.name": "Pangalan",
   "onb.contactNumber": "Numero ng tatawagan sa emerhensiya",
-  "onb.contactHint": "Numero ng mobile sa Pilipinas, hal. 0917 123 4567",
+  "onb.contactHint": "Ilagay ang iyong 10-digit na numero (9XX XXX XXXX).",
   "onb.contactValid": "Wastong numero",
   "onb.contactInvalid": "Maglagay ng wastong numero ng mobile sa Pilipinas.",
   "onb.setupLater": "I-set up mamaya sa Emergency tab",
@@ -285,7 +285,7 @@ const fil: Dict = {
   "emergency.saveProfile": "I-save ang profile",
 
   // Camera
-  "camera.title": "Demo ng pagkilala sa kamera",
+  "camera.title": "Pagkilala ng Sign Language",
   "camera.prototypeNote": "Prototype lang — hindi real-time na pagsasalin.",
   "camera.start": "Simulan ang kamera",
   "camera.stop": "Itigil ang kamera",

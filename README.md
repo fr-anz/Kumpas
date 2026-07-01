@@ -43,7 +43,6 @@ no internet required for essential communication.
 | **Gemini API** | Powers online message simplification in Hearing Person Mode — converts complex staff language into plain, accessible text. Falls back to the offline rule-based simplifier when unavailable. |
 | **TensorFlow.js** | Runs the custom-trained FSL Conv1D classifier directly in the browser — no server required, works offline after the model is cached |
 | **MediaPipe Tasks Vision (Web)** | Real-time hand landmark extraction from the device camera, feeding the TFjs model with normalized 128-D feature vectors |
-| **Firebase** | Planned optional sync of emergency profiles across devices (stub present, offline-first by design) |
 
 ---
 
