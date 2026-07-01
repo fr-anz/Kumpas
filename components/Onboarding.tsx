@@ -122,7 +122,10 @@ function Welcome({ t, onNext }: { t: T; onNext: () => void }) {
     <section className="flex flex-1 flex-col">
       <div className="flex flex-1 flex-col justify-center gap-6">
         <div className="mx-auto flex h-28 w-28 items-center justify-center">
-          <BeeLogo className="h-28 w-28 drop-shadow-md" />
+          <BeeLogo
+            src="/kumpas_onboarding.svg"
+            className="h-28 w-28 drop-shadow-md"
+          />
         </div>
         <h1 className="text-center text-4xl font-black leading-tight tracking-tight">
           {t("onb.welcomeTitle")}
