@@ -22,11 +22,18 @@ export function CommunicationCard({ phrase }: { phrase: Phrase }) {
   const { language, t } = useLanguage();
   const [copied, setCopied] = useState(false);
   const [starred, setStarred] = useState(() => isFavourite(phrase.id));
+  const [canShare, setCanShare] = useState(false);
 
   // Register this phrase as recently viewed.
   useEffect(() => {
     pushRecent(phrase.id);
   }, [phrase.id]);
+
+  // Detect Web Share API support on the client (avoids SSR mismatch and the
+  // "always defined" type error from reading navigator.share in render).
+  useEffect(() => {
+    setCanShare(typeof navigator !== "undefined" && "share" in navigator);
+  }, []);
 
   // The "active" language text is what SpeakButton speaks.
   const activeText = language === "fil" ? phrase.textFil : phrase.text;
@@ -44,7 +51,7 @@ export function CommunicationCard({ phrase }: { phrase: Phrase }) {
 
   const handleShare = async () => {
     const shareText = `${phrase.text}\n${phrase.textFil}`;
-    if (navigator.share) {
+    if (typeof navigator !== "undefined" && "share" in navigator) {
       try {
         await navigator.share({ text: shareText });
       } catch {
@@ -126,12 +133,12 @@ export function CommunicationCard({ phrase }: { phrase: Phrase }) {
         >
           {copied ? (
             <Check aria-hidden="true" className="h-5 w-5" />
-          ) : navigator.share ? (
+          ) : canShare ? (
             <Share2 aria-hidden="true" className="h-5 w-5" />
           ) : (
             <Copy aria-hidden="true" className="h-5 w-5" />
           )}
-          {copied ? t("common.copied") : navigator.share ? "Share" : t("common.copy")}
+          {copied ? t("common.copied") : canShare ? "Share" : t("common.copy")}
         </button>
       </div>
     </section>
