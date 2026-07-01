@@ -41,7 +41,10 @@ export function stopElevenLabs(): void {
  * play (no key, offline, API error) so the caller can fall back to the
  * browser's built-in speech.
  */
-export async function speakWithElevenLabs(text: string): Promise<boolean> {
+export async function speakWithElevenLabs(
+  text: string,
+  onEnded?: () => void,
+): Promise<boolean> {
   const trimmed = text.trim();
   if (!isElevenLabsConfigured() || !trimmed) return false;
   if (typeof window === "undefined") return false;
@@ -83,9 +86,15 @@ export async function speakWithElevenLabs(text: string): Promise<boolean> {
 
     const audio = new Audio(url);
     currentAudio = audio;
+    if (onEnded) {
+      audio.addEventListener("ended", onEnded, { once: true });
+      audio.addEventListener("error", onEnded, { once: true });
+    }
     await audio.play();
     return true;
   } catch {
+    if (onEnded) onEnded();
     return false;
   }
 }
+

@@ -184,7 +184,82 @@ export const phrases: Phrase[] = [
     textFil: "Hindi ko maintindihan.",
     offlineAvailable: true,
   },
+  {
+    id: "please-slow-down",
+    category: "basic",
+    title: "Please slow down",
+    text: "Please slow down.",
+    titleFil: "Pakibagalan",
+    textFil: "Pakibagalan ang pagsasalita.",
+    offlineAvailable: true,
+  },
+
+  // Barangay civic documents (matching trained FSL signs)
+  {
+    id: "need-barangay-clearance",
+    category: "barangay",
+    title: "I need a barangay clearance",
+    text: "I need a barangay clearance.",
+    titleFil: "Kailangan ko ng barangay clearance",
+    textFil: "Kailangan ko ng barangay clearance.",
+    offlineAvailable: true,
+  },
+  {
+    id: "need-cedula",
+    category: "barangay",
+    title: "I need a cedula",
+    text: "I need a cedula (community tax certificate).",
+    titleFil: "Kailangan ko ng cedula",
+    textFil: "Kailangan ko ng cedula.",
+    offlineAvailable: true,
+  },
+  {
+    id: "need-certificate-indigency",
+    category: "barangay",
+    title: "I need a certificate of indigency",
+    text: "I need a certificate of indigency.",
+    titleFil: "Kailangan ko ng certificate of indigency",
+    textFil: "Kailangan ko ng certificate of indigency.",
+    offlineAvailable: true,
+  },
+  {
+    id: "need-certificate-residency",
+    category: "barangay",
+    title: "I need a certificate of residency",
+    text: "I need a certificate of residency.",
+    titleFil: "Kailangan ko ng certificate of residency",
+    textFil: "Kailangan ko ng certificate of residency.",
+    offlineAvailable: true,
+  },
+  {
+    id: "file-blotter-report",
+    category: "barangay",
+    title: "I need to file a blotter report",
+    text: "I need to file a blotter report.",
+    titleFil: "Gusto kong mag-file ng blotter report",
+    textFil: "Gusto kong mag-file ng blotter report.",
+    offlineAvailable: true,
+  },
+  {
+    id: "need-marriage-license",
+    category: "barangay",
+    title: "I need a marriage license",
+    text: "I need a marriage license.",
+    titleFil: "Kailangan ko ng marriage license",
+    textFil: "Kailangan ko ng marriage license.",
+    offlineAvailable: true,
+  },
+  {
+    id: "asking-for-ayuda",
+    category: "barangay",
+    title: "I am asking for assistance",
+    text: "I am asking for assistance (ayuda).",
+    titleFil: "Humihingi ako ng ayuda",
+    textFil: "Humihingi ako ng ayuda.",
+    offlineAvailable: true,
+  },
 ];
+
 
 export function getPhraseById(id: string): Phrase | undefined {
   return phrases.find((phrase) => phrase.id === id);

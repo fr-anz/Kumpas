@@ -25,7 +25,11 @@ const items: Array<{
   { labelKey: "nav.camera", href: "/camera", icon: Camera },
 ];
 
-/** Thumb-reachable persistent navigation. Active item uses the yellow fill. */
+/**
+ * Thumb-reachable persistent navigation.
+ * Active item: yellow fill. Emergency: always danger-red text + pulsing dot
+ * badge when inactive, so it is findable instantly in a crisis.
+ */
 export function BottomNav() {
   const pathname = usePathname();
   const { t } = useLanguage();
@@ -42,20 +46,32 @@ export function BottomNav() {
               ? pathname === "/"
               : pathname.startsWith(item.href);
           const Icon = item.icon;
+
           return (
-            <li key={item.href}>
+            <li key={item.href} className="relative">
+              {/* Pulsing dot on Emergency when NOT active — always findable */}
+              {item.emphasized && !isActive && (
+                <span
+                  aria-hidden="true"
+                  className="absolute right-2 top-1 h-2.5 w-2.5 animate-pulse rounded-full bg-danger"
+                />
+              )}
+
               <Link
                 href={item.href}
                 aria-current={isActive ? "page" : undefined}
-                className={`flex min-h-12 flex-col items-center justify-center gap-0.5 rounded-button px-1 py-1 text-center text-[0.7rem] font-bold transition-colors ${
+                className={`flex min-h-14 flex-col items-center justify-center gap-0.5 rounded-button px-1 py-1 text-center text-[0.7rem] font-bold transition-colors ${
                   isActive
                     ? "bg-bee-yellow text-bee-black"
                     : item.emphasized
-                      ? "text-bee-yellow hover:bg-white/10"
+                      ? "text-danger hover:bg-white/10"
                       : "text-white/70 hover:bg-white/10"
                 }`}
               >
-                <Icon aria-hidden="true" className="h-5 w-5" />
+                <Icon
+                  aria-hidden="true"
+                  className={item.emphasized && !isActive ? "h-6 w-6" : "h-5 w-5"}
+                />
                 {t(item.labelKey)}
               </Link>
             </li>

@@ -2,20 +2,24 @@
 
 import { useEffect, useState } from "react";
 import { Volume2, Square } from "lucide-react";
-import { isSpeechSupported, speak, stopSpeaking } from "@/services/speechService";
+import {
+  isSpeechSupported,
+  speak,
+  stopSpeaking,
+} from "@/services/speechService";
 import { useLanguage } from "@/i18n/LanguageProvider";
 
 type SpeakButtonProps = {
   text: string;
-  /** Optional custom label key/text; defaults to the localized "Speak". */
   label?: string;
   className?: string;
 };
 
 /**
- * Primary speak control. Speaks in the active language's locale, announces
- * start/stop for screen readers, and degrades gracefully when SpeechSynthesis
- * is unavailable.
+ * Primary speak control.
+ *
+ * Uses the SpeechSynthesis `onend` / `onerror` events to track speaking state
+ * accurately (instead of a guessed setTimeout). Haptic feedback on tap.
  */
 export function SpeakButton({ text, label, className = "" }: SpeakButtonProps) {
   const { t, speechLocale } = useLanguage();
@@ -36,23 +40,24 @@ export function SpeakButton({ text, label, className = "" }: SpeakButtonProps) {
   }
 
   const handleClick = () => {
+    navigator.vibrate?.([50]);
+
     if (speaking) {
       stopSpeaking();
       setSpeaking(false);
       return;
     }
-    void speak(text, speechLocale);
+
     setSpeaking(true);
-    // SpeechSynthesis has no reliable end event across browsers, so we reset
-    // the visual state shortly after, based on a rough estimate.
-    const estimatedMs = Math.max(1500, text.length * 70);
-    window.setTimeout(() => setSpeaking(false), estimatedMs);
+    void speak(text, speechLocale, () => setSpeaking(false));
   };
 
   return (
     <button
       type="button"
       onClick={handleClick}
+      aria-live="polite"
+      aria-label={speaking ? t("common.stop") : (label ?? t("common.speak"))}
       className={`flex min-h-12 items-center justify-center gap-2 rounded-button bg-bee-yellow px-6 text-lg font-black text-bee-black transition-colors hover:bg-bee-yellow-bright active:bg-bee-amber ${className}`}
     >
       {speaking ? (
@@ -64,3 +69,4 @@ export function SpeakButton({ text, label, className = "" }: SpeakButtonProps) {
     </button>
   );
 }
+

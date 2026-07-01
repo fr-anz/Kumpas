@@ -102,8 +102,15 @@ export async function hasFilipinoVoice(): Promise<boolean> {
   });
 }
 
-export async function speak(text: string, locale = "en-US"): Promise<void> {
-  if (!text.trim()) return;
+export async function speak(
+  text: string,
+  locale = "en-US",
+  onEnded?: () => void,
+): Promise<void> {
+  if (!text.trim()) {
+    if (onEnded) onEnded();
+    return;
+  }
 
   const langPrefix = locale.toLowerCase().split("-")[0];
   const isFilipino = langPrefix === "fil" || langPrefix === "tl";
@@ -113,12 +120,15 @@ export async function speak(text: string, locale = "en-US"): Promise<void> {
   if (isFilipino && isElevenLabsConfigured()) {
     // Stop any browser speech first so they don't overlap.
     if (isSpeechSupported()) window.speechSynthesis.cancel();
-    const ok = await speakWithElevenLabs(text);
+    const ok = await speakWithElevenLabs(text, onEnded);
     if (ok) return;
     // Otherwise fall through to the browser synthesis path below.
   }
 
-  if (!isSpeechSupported()) return;
+  if (!isSpeechSupported()) {
+    if (onEnded) onEnded();
+    return;
+  }
 
   const voices = await loadVoices();
 
@@ -128,6 +138,11 @@ export async function speak(text: string, locale = "en-US"): Promise<void> {
   const utterance = new SpeechSynthesisUtterance(text);
   utterance.pitch = 1;
   utterance.volume = 1;
+
+  if (onEnded) {
+    utterance.onend = () => onEnded();
+    utterance.onerror = () => onEnded();
+  }
 
   const voice = pickVoice(voices, locale);
   if (voice) {
@@ -150,6 +165,7 @@ export async function speak(text: string, locale = "en-US"): Promise<void> {
 
   window.speechSynthesis.speak(utterance);
 }
+
 
 export function stopSpeaking(): void {
   // Stop both engines so nothing keeps playing.

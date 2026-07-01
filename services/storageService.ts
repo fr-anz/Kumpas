@@ -8,9 +8,11 @@ import type { UserProfile } from "@/types/userProfile";
 const PROFILE_KEY = "kumpas.profile";
 const THEME_KEY = "kumpas.theme";
 const LANG_KEY = "kumpas.lang";
+const FONT_SIZE_KEY = "kumpas.fontSize";
 
 export type ThemePreference = "light" | "dark" | "system";
 export type LanguagePreference = "en" | "fil";
+export type FontSizePreference = "normal" | "large" | "xlarge";
 
 function hasStorage(): boolean {
   try {
@@ -45,6 +47,7 @@ export function clearAllData(): void {
     window.localStorage.removeItem(PROFILE_KEY);
     window.localStorage.removeItem(THEME_KEY);
     window.localStorage.removeItem(LANG_KEY);
+    window.localStorage.removeItem(FONT_SIZE_KEY);
   } catch {
     // ignore
   }
@@ -93,3 +96,26 @@ export function saveLanguage(language: LanguagePreference): void {
     // ignore
   }
 }
+
+export function loadFontSize(): FontSizePreference {
+  if (!hasStorage()) return "normal";
+  try {
+    const value = window.localStorage.getItem(FONT_SIZE_KEY);
+    if (value === "normal" || value === "large" || value === "xlarge") {
+      return value;
+    }
+    return "normal";
+  } catch {
+    return "normal";
+  }
+}
+
+export function saveFontSize(size: FontSizePreference): void {
+  if (!hasStorage()) return;
+  try {
+    window.localStorage.setItem(FONT_SIZE_KEY, size);
+  } catch {
+    // ignore
+  }
+}
+

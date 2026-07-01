@@ -189,6 +189,8 @@ export function useSignRecognition({ language, onResult }: Options) {
         committedLabelRef.current = pred.label;
         const phrase = phraseForLabel(pred.label, languageRef.current);
         const enriched: Prediction = { ...pred, phrase };
+        // Haptic: double-pulse indicates a sign has been recognized.
+        navigator.vibrate?.([100, 50, 100]);
         setPrediction(enriched);
         onResultRef.current?.(enriched);
       } else if (coverage < model.minHandCoverage) {
