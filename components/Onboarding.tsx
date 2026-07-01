@@ -5,10 +5,12 @@ import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageProvider";
 import { useFontSize } from "@/components/FontSizeProvider";
 import { BeeLogo } from "@/components/BeeLogo";
+import { PhFlag } from "@/components/PhFlag";
 import { loadProfile, saveProfile } from "@/services/storageService";
 import {
-  validatePhilippineMobile,
-  formatPhilippineMobile,
+  toNationalDigits,
+  isValidNationalNumber,
+  formatNationalInput,
 } from "@/utils/phone";
 import type { Language } from "@/i18n/translations";
 import type { FontSizePreference } from "@/services/storageService";
@@ -33,15 +35,19 @@ export function Onboarding({ onDone }: { onDone: () => void }) {
 
   const existing = loadProfile();
   const [name, setName] = useState(existing?.name ?? "");
-  const [contact, setContact] = useState(
-    existing?.emergencyContactNumber ?? "",
+  // `contact` holds the 10-digit national number (no +63, no leading 0).
+  const [contact, setContact] = useState(() =>
+    toNationalDigits(existing?.emergencyContactNumber ?? ""),
   );
 
   const finish = (withProfile: boolean) => {
-    if (withProfile && (name.trim() || contact.trim())) {
-      // Store the normalized E.164 number when valid, else the raw entry.
-      const check = validatePhilippineMobile(contact.trim());
-      const number = check.valid ? check.normalized : contact.trim();
+    if (withProfile && (name.trim() || contact)) {
+      // Store E.164 when the national number is valid, else store what we have.
+      const number = isValidNationalNumber(contact)
+        ? `+63${contact}`
+        : contact
+          ? `+63${contact}`
+          : "";
       saveProfile({
         name: name.trim(),
         emergencyContactName: existing?.emergencyContactName ?? "",
@@ -262,12 +268,17 @@ function ProfileStep({
   onBack: () => void;
   onFinish: (withProfile: boolean) => void;
 }) {
-  const trimmed = contact.trim();
-  const check = trimmed ? validatePhilippineMobile(trimmed) : null;
-  const showError = trimmed.length > 0 && check !== null && !check.valid;
-  const showValid = check !== null && check.valid;
-  // Block finishing only when a number was entered but is invalid.
-  const canFinish = !trimmed || (check?.valid ?? false);
+  // `contact` is the raw national number (digits only, max 10).
+  const complete = contact.length === 10;
+  const validNumber = isValidNationalNumber(contact);
+  const showError = complete && !validNumber;
+  const canFinish = !contact || validNumber;
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Strip non-digits and cap at 10; anything beyond is silently ignored.
+    const digits = e.target.value.replace(/\D/g, "").slice(0, 10);
+    setContact(digits);
+  };
 
   return (
     <section className="flex flex-1 flex-col gap-6">
@@ -294,29 +305,41 @@ function ProfileStep({
             className="min-h-12 rounded-button border border-border bg-surface px-4 text-lg shadow-[var(--shadow)]"
           />
         </label>
+
         <label className="flex flex-col gap-1.5">
           <span className="font-bold">{t("onb.contactNumber")}</span>
-          <input
-            type="tel"
-            inputMode="tel"
-            value={contact}
-            onChange={(e) => setContact(e.target.value)}
-            autoComplete="tel"
-            aria-invalid={showError}
-            aria-describedby="contact-feedback"
-            className={`min-h-12 rounded-button border bg-surface px-4 text-lg shadow-[var(--shadow)] ${
+          <div
+            className={`flex min-h-12 items-center gap-2 rounded-button border bg-surface pl-3 pr-4 shadow-[var(--shadow)] focus-within:outline focus-within:outline-[3px] focus-within:outline-offset-2 focus-within:outline-bee-yellow-bright ${
               showError
                 ? "border-danger"
-                : showValid
+                : validNumber
                   ? "border-success"
                   : "border-border"
             }`}
-          />
+          >
+            {/* +63 prefix with flag */}
+            <span className="flex shrink-0 items-center gap-1.5 border-r border-border pr-2 font-bold">
+              <PhFlag className="h-4 w-6 rounded-[2px]" />
+              +63
+            </span>
+            <input
+              type="tel"
+              inputMode="numeric"
+              value={formatNationalInput(contact)}
+              onChange={handleChange}
+              autoComplete="tel-national"
+              placeholder="9XX XXX XXXX"
+              aria-invalid={showError}
+              aria-describedby="contact-feedback"
+              style={{ outline: "none", boxShadow: "none" }}
+              className="min-w-0 flex-1 border-0 bg-transparent px-5 py-2 text-lg tracking-wide"
+            />
+          </div>
           <span id="contact-feedback" className="min-h-5 text-sm font-semibold">
-            {showValid && check ? (
+            {validNumber ? (
               <span className="flex items-center gap-1.5 text-success">
                 <Check aria-hidden="true" className="h-4 w-4" />
-                {t("onb.contactValid")} · {formatPhilippineMobile(check.normalized)}
+                {t("onb.contactValid")}
               </span>
             ) : showError ? (
               <span className="text-danger">{t("onb.contactInvalid")}</span>
