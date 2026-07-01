@@ -81,7 +81,26 @@ no internet required for essential communication.
 
 ## Running Locally
 
-```bash
 npm install
 npm run dev      # → http://localhost:3000
 npm run build    # static export → out/
+
+The ML training pipeline lives in training/. Python 3.12, TensorFlow 2.21, MediaPipe 0.10.35, DVC.
+
+bash
+
+# First time setup
+- python -m venv training/.venv
+- .\training\.venv\Scripts\python.exe -m pip install -r training/requirements.txt
+- python -m dvc repro
+
+
+## Stack
+- Next.js 15 — App Router, static export PWA
+- TypeScript + Tailwind CSS v4
+- TensorFlow.js + MediaPipe Tasks Vision Web
+- Gemini API — online text simplification
+- ElevenLabs — natural Filipino text-to-speech
+- @ducanh2912/next-pwa — Workbox service worker, offline caching
+- Python training pipeline — TF/Keras, MediaPipe, DVC, scikit-learn
+
