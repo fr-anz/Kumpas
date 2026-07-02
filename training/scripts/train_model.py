@@ -82,6 +82,7 @@ class BalancedAugmentSequence(keras.utils.Sequence):
         X: np.ndarray,
         y: np.ndarray,
         *,
+        num_classes: int,
         batch_size: int,
         seed: int,
         augmentation: dict,
@@ -90,6 +91,7 @@ class BalancedAugmentSequence(keras.utils.Sequence):
         super().__init__()
         self.X = X
         self.y = y
+        self.num_classes = num_classes
         self.batch_size = batch_size
         self.seed = seed
         self.augmentation = augmentation
@@ -105,14 +107,28 @@ class BalancedAugmentSequence(keras.utils.Sequence):
         start = batch_index * self.batch_size
         indices = self.indices[start : start + self.batch_size]
         batch = self.X[indices].copy()
+        labels = keras.utils.to_categorical(
+            self.y[indices], num_classes=self.num_classes
+        ).astype(np.float32)
+        rng = np.random.default_rng(
+            self.seed + (self.epoch * 1_000_003) + batch_index
+        )
         if self.augmentation.get("enabled", False):
-            rng = np.random.default_rng(
-                self.seed + (self.epoch * 1_000_003) + batch_index
-            )
             batch = np.stack(
                 [augment_sequence(sequence, self.augmentation, rng) for sequence in batch]
             )
-        return batch, self.y[indices]
+            mixup_alpha = float(self.augmentation.get("mixup_alpha", 0.0))
+            mixup_probability = float(self.augmentation.get("mixup_probability", 0.0))
+            if (
+                mixup_alpha > 0.0
+                and len(batch) > 1
+                and rng.random() < mixup_probability
+            ):
+                lam = np.float32(rng.beta(mixup_alpha, mixup_alpha))
+                permutation = rng.permutation(len(batch))
+                batch = (lam * batch) + ((1.0 - lam) * batch[permutation])
+                labels = (lam * labels) + ((1.0 - lam) * labels[permutation])
+        return batch, labels
 
     def on_epoch_end(self) -> None:
         self.epoch += 1
@@ -129,11 +145,31 @@ class BalancedAugmentSequence(keras.utils.Sequence):
 
 
 def build_model(config: dict) -> keras.Model:
+    feature_count = config["feature_count"]
     inputs = keras.Input(
-        shape=(config["sequence_length"], config["feature_count"]),
+        shape=(config["sequence_length"], feature_count),
         name="landmark_sequence",
     )
-    x = keras.layers.Conv1D(64, 5, padding="same", name="temporal_conv_1")(inputs)
+    # Fixed-weight conv emits [next frame, frame-to-frame delta] over 39
+    # frame pairs. Computed inside the model with TFJS-supported layers so
+    # the 128-feature input contract and the webcam/browser pipelines stay
+    # unchanged. "valid" padding: tfjs has not implemented causal conv1d.
+    delta_layer = keras.layers.Conv1D(
+        feature_count * 2,
+        2,
+        padding="valid",
+        use_bias=False,
+        trainable=False,
+        name="delta_expansion",
+    )
+    x = delta_layer(inputs)
+    kernel = np.zeros((2, feature_count, feature_count * 2), dtype=np.float32)
+    for index in range(feature_count):
+        kernel[1, index, index] = 1.0
+        kernel[0, index, feature_count + index] = -1.0
+        kernel[1, index, feature_count + index] = 1.0
+    delta_layer.set_weights([kernel])
+    x = keras.layers.Conv1D(64, 5, padding="same", name="temporal_conv_1")(x)
     x = keras.layers.BatchNormalization(name="batch_norm_1")(x)
     x = keras.layers.Activation("relu", name="relu_1")(x)
     x = keras.layers.MaxPooling1D(2, name="temporal_pool")(x)
@@ -179,7 +215,7 @@ def main() -> int:
     training = config["training"]
     model.compile(
         optimizer=keras.optimizers.Adam(learning_rate=training["learning_rate"]),
-        loss="sparse_categorical_crossentropy",
+        loss="categorical_crossentropy",
         metrics=["accuracy"],
     )
     model.summary()
@@ -187,6 +223,7 @@ def main() -> int:
     train_data = BalancedAugmentSequence(
         X_train,
         y_train,
+        num_classes=len(config["labels"]),
         batch_size=training["batch_size"],
         seed=seed,
         augmentation=training["augmentation"],
@@ -211,7 +248,10 @@ def main() -> int:
     ]
     history = model.fit(
         train_data,
-        validation_data=(X_validation, y_validation),
+        validation_data=(
+            X_validation,
+            keras.utils.to_categorical(y_validation, num_classes=len(config["labels"])),
+        ),
         epochs=training["epochs"],
         callbacks=callbacks,
         verbose=2,
