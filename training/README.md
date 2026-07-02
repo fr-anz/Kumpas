@@ -5,7 +5,7 @@ training pipeline for the first Kumpas recognition baseline.
 
 The staged accuracy and latency roadmap is in `IMPROVEMENT_PLAN.md`.
 
-The current baseline-v12 controlled-demo model contains eleven isolated sign
+The current baseline-v13 controlled-demo model contains eleven isolated sign
 classes plus `NO_SIGN`. It supports repeated isolated-sign webcam testing, but
 it is not yet a continuous sentence translator.
 
@@ -24,7 +24,7 @@ The official MediaPipe Hand Landmarker model is expected at
 
 ## Dataset storage (DVC + Google Drive)
 
-The raw training data is too large for Git (~520 MB). Git only tracks small
+The raw training data is too large for Git (~3.25 GB). Git only tracks small
 `.dvc` pointer files; the actual data lives in Google Drive via
 [DVC](https://dvc.org/).
 
@@ -114,22 +114,24 @@ To start a new model version, update all three version fields in `config.json`:
 
 ```json
 {
-  "version": "baseline-v13",
+  "version": "baseline-v14",
   "paths": {
-    "cache_dir": "cache/baseline-v13",
-    "artifact_dir": "artifacts/baseline-v13"
+    "cache_dir": "cache/baseline-v14",
+    "artifact_dir": "artifacts/baseline-v14"
   }
 }
 ```
 
 After a successful run, store the generated cache and model artifacts in the
-DVC remote and commit only the small version metadata:
+DVC remote, export the browser model, and commit the reproducibility metadata
+and browser assets:
 
 ```powershell
 python -m dvc push
-git add dvc.yaml dvc.lock training/config.json
-git commit -m "train baseline-v13"
-git tag model-baseline-v13
+.\training\.venv\Scripts\python.exe training\scripts\convert_to_tfjs.py --version baseline-v14
+git add dvc.yaml dvc.lock training/config.json training/scripts public/models/sign-model
+git commit -m "train baseline-v14"
+git tag model-baseline-v14
 git push --follow-tags
 ```
 
@@ -158,7 +160,7 @@ until that assumption is verified from authoritative dataset metadata.
 ## Webcam test
 
 The webcam tester supports manual fixed-window capture and experimental
-motion-based automatic capture. Baseline-v12 includes a trained `NO_SIGN` class,
+motion-based automatic capture. Baseline-v13 includes a trained `NO_SIGN` class,
 so repeated isolated-phrase recognition can suppress some background motion.
 It is not yet a continuous sentence translator.
 
@@ -192,7 +194,7 @@ The live motion score and start threshold are displayed in the window. Tune
 the values under `auto_capture` in `config.json` if capture starts too easily
 or fails to start. Press `R` to reset the detector.
 
-Automatic segmentation reduces the fixed-window timing mismatch. Baseline-v12
+Automatic segmentation reduces the fixed-window timing mismatch. Baseline-v13
 includes initial `NO_SIGN` data, but live false-activation testing is still
 required before relying on it.
 
@@ -204,7 +206,7 @@ duration, acceptance status, and end-to-result latency:
 
 ```powershell
 .\.venv\Scripts\python.exe scripts\webcam_test.py --auto --expected CEDULA
-.\.venv\Scripts\python.exe scripts\webcam_test.py --auto --expected AYUDA
+.\.venv\Scripts\python.exe scripts\webcam_test.py --auto --expected LAND DEED
 ```
 
 Collect at least 20 trials per phrase and repeat with multiple signers. Generate
@@ -214,8 +216,9 @@ the live metrics and confusion matrix with:
 .\.venv\Scripts\python.exe scripts\summarize_webcam_trials.py
 ```
 
-Do not use the order-sensitive model change as the next experiment until this
-benchmark identifies the actual live confusion and latency bottlenecks.
+Baseline-v13 already includes fixed frame-to-frame motion deltas. Use this
+benchmark to identify the actual live confusion and latency bottlenecks before
+making another architecture change.
 
 ## Collecting more webcam data
 

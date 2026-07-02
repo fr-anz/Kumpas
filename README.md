@@ -32,7 +32,7 @@ no internet required for essential communication.
 - A Jose, Justin Gabriel
 - Baes, Franz Emmanuel
 - Delos Santos, Christian Joseph
-- Javier, Salvador Vincent 
+- Javier, Salvador Vincent
 
 ---
 
@@ -48,7 +48,7 @@ no internet required for essential communication.
 
 ## Features
 
-- **Phrase library** — 35+ bilingual phrases (EN / Filipino) across Emergency,
+- **Phrase library** — 26 bilingual phrases (EN / Filipino) across Emergency,
   Health, Barangay, Transport, School, and Basic categories
 - **Communication card** — full-screen large text + text-to-speech (ElevenLabs
   for natural Filipino; browser speech fallback when offline)
@@ -68,30 +68,33 @@ no internet required for essential communication.
 
 | Detail | Value |
 |---|---|
-| Architecture | Conv1D temporal classifier (2× Conv1D + BN + MaxPool + GAP + Dense) |
+| Architecture | Fixed frame-delta expansion + temporal classifier (2× Conv1D + BN + MaxPool + GAP + Dense) |
 | Input shape | `[1, 40, 128]` — 40 frames × 128 landmark features |
-| Parameters | ~66,790 |
+| Parameters | 173,676 total (107,820 trainable) |
 | Feature extraction | MediaPipe Hand Landmarker, wrist-relative + palm-scaled normalization |
 | Training pipeline | DVC-versioned: validate → split → extract → train → evaluate |
-| Current classes | YES, NO, DEAF, THANK YOU, SLOW, DON'T UNDERSTAND + civic signs |
-| Baseline accuracy | 1.0 (macro F1) on held-out set — provisional, small dataset |
+| Current classes | YES, NO, DEAF, THANK YOU, SLOW, DON'T UNDERSTAND, BARANGAY CLEARANCE, BLOTTER REPORT, CEDULA, DRIVERS LICENSE, LAND DEED, NO_SIGN |
+| Baseline-v13 result | 91.7% held-out accuracy, 91.4% macro F1 (36 clips); grouped 5-fold accuracy 95.6% ± 3.0% — provisional |
 
 ---
 
 ## Running Locally
 
+```powershell
 npm install
 npm run dev      # → http://localhost:3000
 npm run build    # static export → out/
+```
 
-The ML training pipeline lives in training/. Python 3.12, TensorFlow 2.21, MediaPipe 0.10.35, DVC.
+The ML training pipeline lives in `training/`. It uses Python 3.12,
+TensorFlow 2.21, MediaPipe 0.10.35, and DVC.
 
-bash
-
-# First time setup
-- python -m venv training/.venv
-- .\training\.venv\Scripts\python.exe -m pip install -r training/requirements.txt
-- python -m dvc repro
+```powershell
+# First-time setup
+python -m venv training/.venv
+.\training\.venv\Scripts\python.exe -m pip install -r training/requirements.txt
+python -m dvc repro
+```
 
 
 ## Stack
@@ -102,4 +105,3 @@ bash
 - ElevenLabs — natural Filipino text-to-speech
 - @ducanh2912/next-pwa — Workbox service worker, offline caching
 - Python training pipeline — TF/Keras, MediaPipe, DVC, scikit-learn
-
