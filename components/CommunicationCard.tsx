@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft, Copy, Check, Share2, Star } from "lucide-react";
 import type { Phrase } from "@/types/phrase";
 import { SpeakButton } from "./SpeakButton";
+import { SignVisual } from "./SignVisual";
 import { copyToClipboard } from "@/utils/text";
 import { useLanguage } from "@/i18n/LanguageProvider";
 import { isFavourite, toggleFavourite } from "@/utils/favourites";
@@ -114,12 +115,20 @@ export function CommunicationCard({ phrase }: { phrase: Phrase }) {
         </p>
       </div>
 
-      {/* FSL visual placeholder */}
-      {!phrase.fslVisualUrl && (
-        <div className="hex-pattern flex h-20 items-center justify-center rounded-card border border-dashed border-border text-sm font-semibold text-text-muted">
-          {t("comm.fslPlaceholder")}
-        </div>
-      )}
+      {/* Sign-language visual: FSL preferred, ASL fallback, then placeholder. */}
+      <SignVisual
+        phraseId={phrase.id}
+        alt={`${t("comm.signAlt")}${phrase.text}`}
+        fslUrl={phrase.fslVisualUrl}
+        aslUrl={phrase.aslVisualUrl}
+        fslLabel={t("comm.fslBadge")}
+        aslLabel={t("comm.aslBadge")}
+        fallback={
+          <div className="hex-pattern flex h-20 items-center justify-center rounded-card border border-dashed border-border text-sm font-semibold text-text-muted">
+            {t("comm.fslPlaceholder")}
+          </div>
+        }
+      />
 
       {/* Actions */}
       <div className="flex flex-col gap-3 sm:flex-row">

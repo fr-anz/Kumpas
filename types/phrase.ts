@@ -16,7 +16,10 @@ export type Phrase = {
   titleFil: string;
   textFil: string;
   simplifiedText?: string;
+  /** Explicit FSL image URL (optional). Overrides convention-based lookup. */
   fslVisualUrl?: string;
+  /** Explicit ASL fallback image URL (optional). */
+  aslVisualUrl?: string;
   offlineAvailable: boolean;
   priority?: "normal" | "urgent";
 };
