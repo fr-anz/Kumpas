@@ -38,6 +38,21 @@ const en: Dict = {
   // Header
   "header.settings": "Settings",
 
+  // Install (PWA)
+  "install.section": "Install app",
+  "install.description":
+    "Install Kumpas on your device for faster access and full offline use.",
+  "install.button": "Install Kumpas",
+  "install.installed": "Kumpas is installed on this device.",
+  "install.iosHint":
+    "To install: tap the Share button, then choose \"Add to Home Screen\".",
+  "install.unavailable":
+    "Install isn't available right now. Your browser may not support it, or the app may already be installed.",
+  "install.bannerTitle": "Install Kumpas",
+  "install.bannerBody": "Add it to your device for offline access.",
+  "install.bannerAction": "Install",
+  "install.bannerDismiss": "Dismiss",
+
   // Onboarding
   "onb.welcomeTitle": "Welcome to Kumpas",
   "onb.welcomeMessage":
@@ -207,6 +222,21 @@ const fil: Dict = {
 
   // Header
   "header.settings": "Mga Setting",
+
+  // Install (PWA)
+  "install.section": "I-install ang app",
+  "install.description":
+    "I-install ang Kumpas sa iyong device para sa mas mabilis na access at ganap na paggamit offline.",
+  "install.button": "I-install ang Kumpas",
+  "install.installed": "Naka-install na ang Kumpas sa device na ito.",
+  "install.iosHint":
+    "Para i-install: pindutin ang Share button, pagkatapos piliin ang \"Add to Home Screen\".",
+  "install.unavailable":
+    "Hindi available ang pag-install ngayon. Maaaring hindi ito suportado ng iyong browser, o naka-install na ang app.",
+  "install.bannerTitle": "I-install ang Kumpas",
+  "install.bannerBody": "Idagdag ito sa iyong device para sa paggamit offline.",
+  "install.bannerAction": "I-install",
+  "install.bannerDismiss": "Isara",
 
   // Onboarding
   "onb.welcomeTitle": "Maligayang pagdating sa Kumpas",
