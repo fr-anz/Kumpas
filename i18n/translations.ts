@@ -86,6 +86,9 @@ const en: Dict = {
 
   // Communication card
   "comm.fslPlaceholder": "FSL visual coming soon",
+  "comm.fslBadge": "FSL",
+  "comm.aslBadge": "ASL",
+  "comm.signAlt": "Sign language demonstration for: ",
 
   // Hearing mode
   "hearing.title": "Hearing person mode",
@@ -252,6 +255,9 @@ const fil: Dict = {
 
   // Communication card
   "comm.fslPlaceholder": "Malapit nang dumating ang FSL visual",
+  "comm.fslBadge": "FSL",
+  "comm.aslBadge": "ASL",
+  "comm.signAlt": "Pagpapakita ng sign language para sa: ",
 
   // Hearing mode
   "hearing.title": "Pang-nakaririnig",
