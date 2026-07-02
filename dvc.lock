@@ -5,25 +5,25 @@ stages:
     deps:
     - path: training/clips
       hash: md5
-      md5: 039958b0abbb79cd726153afa0ca11a9.dir
-      size: 2347235642
-      nfiles: 2531
+      md5: faf3bc903b7d5dddbb3edd744c8b5f06.dir
+      size: 3113001682
+      nfiles: 2671
     - path: training/labels.csv
       hash: md5
       md5: 3c56ff30924e59bd41335a3a85ce0c30
       size: 2309
     - path: training/scripts/validate_dataset.py
       hash: md5
-      md5: 4ce3696c33d84f887e0b10563546e6cd
-      size: 5532
+      md5: 286049c172d43bdea74b9c7e380894d1
+      size: 5791
     - path: training/test.csv
       hash: md5
       md5: 7268285eb314cce19ccac02bb977228d
       size: 14755
     - path: training/train.csv
       hash: md5
-      md5: a6db7cdef3d28d30aacbc0bf1e1f949d
-      size: 80540
+      md5: 49ff0a2ae93c89f078526e843ad28781
+      size: 81666
     params:
       training/config.json:
         labels:
@@ -33,13 +33,9 @@ stages:
         - THANK YOU
         - SLOW
         - DON’T UNDERSTAND
-        - MARRIAGE LICENSE
         - BARANGAY CLEARANCE
-        - CERTIFICATE OF INDIGENCY
-        - CERTIFICATE OF RESIDENCY
-        - CEDULA
         - BLOTTER REPORT
-        - AYUDA
+        - CEDULA
         - DRIVERS LICENSE
         - LAND DEED
         - NO_SIGN
@@ -48,29 +44,29 @@ stages:
         paths.train_csv: train.csv
         paths.video_base: clips
     outs:
-    - path: training/artifacts/baseline-v6/dataset_report.json
+    - path: training/artifacts/baseline-v12/dataset_report.json
       hash: md5
-      md5: 51d24d593e5a1a32be8f4e6f7948c229
-      size: 2156
+      md5: 40be9b2023267ac40a937dce076d9f4b
+      size: 1786
   build_splits:
     cmd: '".\training\.venv\Scripts\python.exe" training\scripts\build_splits.py'
     deps:
-    - path: training/artifacts/baseline-v6/dataset_report.json
+    - path: training/artifacts/baseline-v12/dataset_report.json
       hash: md5
-      md5: 51d24d593e5a1a32be8f4e6f7948c229
-      size: 2156
+      md5: 40be9b2023267ac40a937dce076d9f4b
+      size: 1786
     - path: training/scripts/build_splits.py
       hash: md5
-      md5: e45ccc0d98d313ba7da82feca00c3767
-      size: 5353
+      md5: f903cd5b07520e85922bd9bf119027f8
+      size: 6230
     - path: training/test.csv
       hash: md5
       md5: 7268285eb314cce19ccac02bb977228d
       size: 14755
     - path: training/train.csv
       hash: md5
-      md5: a6db7cdef3d28d30aacbc0bf1e1f949d
-      size: 80540
+      md5: 49ff0a2ae93c89f078526e843ad28781
+      size: 81666
     params:
       training/config.json:
         labels:
@@ -80,13 +76,9 @@ stages:
         - THANK YOU
         - SLOW
         - DON’T UNDERSTAND
-        - MARRIAGE LICENSE
         - BARANGAY CLEARANCE
-        - CERTIFICATE OF INDIGENCY
-        - CERTIFICATE OF RESIDENCY
-        - CEDULA
         - BLOTTER REPORT
-        - AYUDA
+        - CEDULA
         - DRIVERS LICENSE
         - LAND DEED
         - NO_SIGN
@@ -99,28 +91,28 @@ stages:
           validation: 0.15
           test: 0.15
     outs:
-    - path: training/artifacts/baseline-v6/split_report.json
+    - path: training/artifacts/baseline-v12/split_report.json
       hash: md5
-      md5: 08145c171265d5e2c52096bfbf49fb37
-      size: 16799
-    - path: training/artifacts/baseline-v6/splits
+      md5: bf9a8c40d0b88b9c5cf8d377cf4c7182
+      size: 19964
+    - path: training/artifacts/baseline-v12/splits
       hash: md5
-      md5: 00a4b37c75d0cfbea668db9d6f5d21a2.dir
-      size: 21833
+      md5: 3f174637c8ecace905f27dab146a64db.dir
+      size: 27560
       nfiles: 3
   extract_landmarks:
     cmd: '".\training\.venv\Scripts\python.exe" training\scripts\extract_landmarks.py'
     deps:
-    - path: training/artifacts/baseline-v6/splits
+    - path: training/artifacts/baseline-v12/splits
       hash: md5
-      md5: 00a4b37c75d0cfbea668db9d6f5d21a2.dir
-      size: 21833
+      md5: 3f174637c8ecace905f27dab146a64db.dir
+      size: 27560
       nfiles: 3
     - path: training/clips
       hash: md5
-      md5: 039958b0abbb79cd726153afa0ca11a9.dir
-      size: 2347235642
-      nfiles: 2531
+      md5: faf3bc903b7d5dddbb3edd744c8b5f06.dir
+      size: 3113001682
+      nfiles: 2671
     - path: training/models/hand_landmarker.task
       hash: md5
       md5: 15318430ea3851670fe9914116a9cfad
@@ -144,13 +136,9 @@ stages:
         - THANK YOU
         - SLOW
         - DON’T UNDERSTAND
-        - MARRIAGE LICENSE
         - BARANGAY CLEARANCE
-        - CERTIFICATE OF INDIGENCY
-        - CERTIFICATE OF RESIDENCY
-        - CEDULA
         - BLOTTER REPORT
-        - AYUDA
+        - CEDULA
         - DRIVERS LICENSE
         - LAND DEED
         - NO_SIGN
@@ -159,28 +147,28 @@ stages:
         temporal_crop:
           start_ratio: 0.15
           end_ratio: 0.85
-        version: baseline-v6
+        version: baseline-v12
     outs:
-    - path: training/cache/baseline-v6
+    - path: training/cache/baseline-v12
       hash: md5
-      md5: 1d337d382f59105fc65429f9449a21b9.dir
-      size: 1252704
+      md5: a7422f1bfa0ae409105f6599a7ce9d9e.dir
+      size: 1684668
       nfiles: 7
   train_model:
     cmd: '".\training\.venv\Scripts\python.exe" training\scripts\train_model.py'
     deps:
-    - path: training/cache/baseline-v6/train.npz
+    - path: training/cache/baseline-v12/train.npz
       hash: md5
-      md5: df32b96fa6470e5658b9ebcd6a0a83a3
-      size: 830684
-    - path: training/cache/baseline-v6/validation.npz
+      md5: 619f9069c46fe8f64d0f83fbb9fd7649
+      size: 1184647
+    - path: training/cache/baseline-v12/validation.npz
       hash: md5
-      md5: ba6bb92932249dd2a2345f484beeac6b
-      size: 200267
+      md5: d03277ec4f25b1089d12498a00571b23
+      size: 237215
     - path: training/scripts/train_model.py
       hash: md5
-      md5: c9c8dad3ebe6189fc0414ad6b90d7eaa
-      size: 4272
+      md5: c4cadf15c2583220e9528905809339cb
+      size: 8614
     params:
       training/config.json:
         feature_count: 128
@@ -191,13 +179,9 @@ stages:
         - THANK YOU
         - SLOW
         - DON’T UNDERSTAND
-        - MARRIAGE LICENSE
         - BARANGAY CLEARANCE
-        - CERTIFICATE OF INDIGENCY
-        - CERTIFICATE OF RESIDENCY
-        - CEDULA
         - BLOTTER REPORT
-        - AYUDA
+        - CEDULA
         - DRIVERS LICENSE
         - LAND DEED
         - NO_SIGN
@@ -208,24 +192,35 @@ stages:
           batch_size: 16
           learning_rate: 0.001
           early_stopping_patience: 15
-        version: baseline-v6
+          balanced_sampling: true
+          augmentation:
+            enabled: true
+            temporal_jitter_frames: 4
+            temporal_scale_range:
+            - 0.85
+            - 1.15
+            max_rotation_degrees: 8.0
+            coordinate_noise_stddev: 0.01
+            frame_drop_probability: 0.08
+            landmark_mask_probability: 0.02
+        version: baseline-v12
     outs:
-    - path: training/artifacts/baseline-v6/model
+    - path: training/artifacts/baseline-v12/model
       hash: md5
-      md5: 16fc90fd546ff00202ba7f855ffc79ae.dir
-      size: 1746638
+      md5: ff05946dd33e40ec76f0a5dd41c14850.dir
+      size: 1739391
       nfiles: 5
   evaluate_model:
     cmd: '".\training\.venv\Scripts\python.exe" training\scripts\evaluate_model.py'
     deps:
-    - path: training/artifacts/baseline-v6/model/best.keras
+    - path: training/artifacts/baseline-v12/model/best.keras
       hash: md5
-      md5: e8a8544ffdc72695d4df3b11560056cd
-      size: 867681
-    - path: training/cache/baseline-v6/test.npz
+      md5: 8a36bb6bdc01555481cb1bfc9a2cadf8
+      size: 864562
+    - path: training/cache/baseline-v12/test.npz
       hash: md5
-      md5: 94e0d5acce37f9f2a6206c56423053be
-      size: 196878
+      md5: 66af6148848515c69d39262ee321c372
+      size: 231163
     - path: training/scripts/evaluate_model.py
       hash: md5
       md5: c4cb175aa46641ffadce139544daddae
@@ -239,26 +234,22 @@ stages:
         - THANK YOU
         - SLOW
         - DON’T UNDERSTAND
-        - MARRIAGE LICENSE
         - BARANGAY CLEARANCE
-        - CERTIFICATE OF INDIGENCY
-        - CERTIFICATE OF RESIDENCY
-        - CEDULA
         - BLOTTER REPORT
-        - AYUDA
+        - CEDULA
         - DRIVERS LICENSE
         - LAND DEED
         - NO_SIGN
     outs:
-    - path: training/artifacts/baseline-v6/evaluation/confusion_matrix.png
+    - path: training/artifacts/baseline-v12/evaluation/confusion_matrix.png
       hash: md5
-      md5: 183e4d02f1456e4a7986a99b0c9b0e4c
-      size: 204618
-    - path: training/artifacts/baseline-v6/evaluation/metrics.json
+      md5: 8d03c21c45b95e81fd17421e70b5a263
+      size: 137596
+    - path: training/artifacts/baseline-v12/evaluation/metrics.json
       hash: md5
-      md5: b5dd43bd3b40e46b5fcd4bb89378c715
-      size: 2853
-    - path: training/artifacts/baseline-v6/evaluation/predictions.npz
+      md5: 6cae3feb4b8146cfe24dfc68e588bc06
+      size: 2349
+    - path: training/artifacts/baseline-v12/evaluation/predictions.npz
       hash: md5
-      md5: 5617ab9216be3bb0a2ddfed64d23bc52
-      size: 2496
+      md5: f6c27d64fa87af5a55e8e6c7f613c2dd
+      size: 2327

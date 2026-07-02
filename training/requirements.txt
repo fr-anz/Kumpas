@@ -1,4 +1,6 @@
 tensorflow==2.21.0
+tensorflowjs==4.22.0
+tf-keras==2.21.0
 mediapipe==0.10.35
 opencv-python-headless==4.13.0.92
 numpy==2.5.0

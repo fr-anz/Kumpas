@@ -119,13 +119,18 @@ def main() -> int:
 
     artifact_dir = ROOT / paths["artifact_dir"]
     artifact_dir.mkdir(parents=True, exist_ok=True)
+    warnings = [
+        "Signer identity is undocumented; filename stems are only a group proxy."
+    ]
+    if "NO_SIGN" not in selected_labels:
+        warnings.append(
+            "The selected labels have no NO_SIGN class and are not suitable for continuous camera inference."
+        )
+
     report = {
         "status": "failed" if errors else "passed",
         "provisional": True,
-        "warnings": [
-            "Signer identity is undocumented; filename stems are only a group proxy.",
-            "The selected labels have no NO_SIGN class and are not suitable for continuous camera inference.",
-        ],
+        "warnings": warnings,
         "errors": errors,
         "dataset": {
             "label_count": int(len(labels_df)),

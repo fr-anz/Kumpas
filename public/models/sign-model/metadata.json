@@ -1,5 +1,5 @@
 {
-  "version": "baseline-v6",
+  "version": "baseline-v12",
   "sequence_length": 40,
   "feature_count": 128,
   "temporal_crop": {
@@ -17,25 +17,7 @@
     "width": 640,
     "height": 360,
     "confidence_threshold": 0.8,
-    "minimum_hand_coverage": 0.25
-  },
-  "labels": [
-    "YES",
-    "NO",
-    "DEAF",
-    "THANK YOU",
-    "SLOW",
-    "DON’T UNDERSTAND",
-    "MARRIAGE LICENSE",
-    "BARANGAY CLEARANCE",
-    "CERTIFICATE OF INDIGENCY",
-    "CERTIFICATE OF RESIDENCY",
-    "CEDULA",
-    "BLOTTER REPORT",
-    "AYUDA",
-    "DRIVERS LICENSE",
-    "LAND DEED",
-    "NO_SIGN"
-  ],
-  "artifact_dir": "training/artifacts/baseline-v6"
+    "minimum_hand_coverage": 0.25,
+    "minimum_top_two_margin": 0.15
+  }
 }

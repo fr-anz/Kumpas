@@ -49,10 +49,27 @@ def main() -> int:
     label_to_index = {label: index for index, label in enumerate(labels)}
     selected["class_index"] = selected["label"].map(label_to_index)
     source_row_count = len(selected)
-    selected = selected.drop_duplicates(["label", "content_hash"]).copy()
-    selected["group_id"] = selected.apply(
-        lambda row: f"{row['class_index']}:{row['content_hash']}", axis=1
-    )
+    conflicting_hashes = selected.groupby("content_hash")["label"].nunique()
+    conflicting_hashes = conflicting_hashes[conflicting_hashes > 1].index
+    if len(conflicting_hashes):
+        conflicts = (
+            selected[selected["content_hash"].isin(conflicting_hashes)]
+            .groupby("content_hash")
+            .apply(
+                lambda rows: {
+                    "labels": sorted(rows["label"].unique().tolist()),
+                    "video_paths": sorted(rows["video_path"].unique().tolist()),
+                },
+                include_groups=False,
+            )
+            .to_dict()
+        )
+        print("Exact video content is assigned to multiple selected labels:")
+        print(json.dumps(conflicts, indent=2, ensure_ascii=False))
+        return 1
+
+    selected = selected.drop_duplicates(["content_hash"]).copy()
+    selected["group_id"] = selected["content_hash"]
 
     ratios = config["split_ratios"]
     rng = np.random.default_rng(config["random_seed"])
