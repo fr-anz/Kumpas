@@ -37,6 +37,8 @@ const PRE_ROLL_MS = 150;
 const POST_ROLL_MS = 150;
 const BUFFER_MS = MAXIMUM_SIGN_MS + PRE_ROLL_MS + POST_ROLL_MS + 1000;
 const STABILITY_COUNT = 3; // identical top labels needed to commit
+const STOP_MOTION_THRESHOLD = 0.012;
+const IDLE_REARM_MS = 1000;
 
 type FrameSample = {
   features: Float32Array;
@@ -67,11 +69,13 @@ export function useSignRecognition({ language, onResult }: Options) {
   const runningRef = useRef<boolean>(false);
   const processingRef = useRef<boolean>(false);
   const armedRef = useRef<boolean>(true);
+  const idleSinceRef = useRef<number | null>(null);
+  const clearOnNextSignRef = useRef<boolean>(false);
   const previousActivityRef = useRef<Float32Array | null>(null);
   const segmenterRef = useRef(
     new MotionSegmenter({
       startThreshold: 0.035,
-      stopThreshold: 0.012,
+      stopThreshold: STOP_MOTION_THRESHOLD,
       startFrames: 3,
       endHoldMs: 700,
       minimumSignMs: 800,
@@ -127,8 +131,11 @@ export function useSignRecognition({ language, onResult }: Options) {
     segmenterRef.current.reset();
     processingRef.current = false;
     armedRef.current = true;
+    idleSinceRef.current = null;
+    clearOnNextSignRef.current = false;
     setHandDetected(false);
     setLive(null);
+    setPrediction(null);
     if (modelRef.current) setStatus("ready");
   }, []);
 
@@ -210,11 +217,15 @@ export function useSignRecognition({ language, onResult }: Options) {
         if (!stable || !confident) return;
         if (isNoSign(first.label)) {
           armedRef.current = true;
+          idleSinceRef.current = null;
+          clearOnNextSignRef.current = true;
           return;
         }
         if (!armedRef.current) return;
 
         armedRef.current = false;
+        idleSinceRef.current = null;
+        clearOnNextSignRef.current = false;
         const phrase = phraseForLabel(first.label, languageRef.current);
         const enriched: Prediction = { ...first, phrase };
         navigator.vibrate?.([100, 50, 100]);
@@ -244,6 +255,9 @@ export function useSignRecognition({ language, onResult }: Options) {
       segmenterRef.current.reset();
       processingRef.current = false;
       armedRef.current = true;
+      idleSinceRef.current = null;
+      clearOnNextSignRef.current = false;
+      setPrediction(null);
 
       const loop = () => {
         if (!runningRef.current) return;
@@ -272,6 +286,27 @@ export function useSignRecognition({ language, onResult }: Options) {
           const motion = activityMotion(previousActivityRef.current, activity);
           previousActivityRef.current = activity;
           const event = segmenterRef.current.update(motion, handPresent, ts);
+          if (event.started && clearOnNextSignRef.current) {
+            clearOnNextSignRef.current = false;
+            setPrediction(null);
+          }
+          if (!armedRef.current) {
+            const idle =
+              !handPresent || event.motion <= STOP_MOTION_THRESHOLD;
+            if (idle) {
+              idleSinceRef.current ??= ts;
+              if (ts - idleSinceRef.current >= IDLE_REARM_MS) {
+                armedRef.current = true;
+                idleSinceRef.current = null;
+                clearOnNextSignRef.current = true;
+                setLive(null);
+              }
+            } else {
+              idleSinceRef.current = null;
+            }
+          } else {
+            idleSinceRef.current = null;
+          }
           if (
             event.completed &&
             event.startTime !== undefined &&
