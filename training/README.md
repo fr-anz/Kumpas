@@ -5,9 +5,9 @@ training pipeline for the first Kumpas recognition baseline.
 
 The staged accuracy and latency roadmap is in `IMPROVEMENT_PLAN.md`.
 
-The current baseline-v5 model contains 13 isolated phrase classes plus
-`NO_SIGN`. It supports repeated isolated-phrase webcam testing, but it is not
-yet a continuous sentence translator.
+The current baseline-v12 controlled-demo model contains eleven isolated sign
+classes plus `NO_SIGN`. It supports repeated isolated-sign webcam testing, but
+it is not yet a continuous sentence translator.
 
 ## Environment
 
@@ -30,7 +30,7 @@ The raw training data is too large for Git (~520 MB). Git only tracks small
 
 | Path | Contents | Size |
 |------|----------|------|
-| `clips/` | 2,310 phrase videos | ~1.03 GB |
+| `clips/` | 2,671 phrase videos | ~3.11 GB |
 | `archive/` | 11,700 alphabet images (future use) | ~134 MB |
 | `models/` | MediaPipe `hand_landmarker.task` | ~8 MB |
 
@@ -114,10 +114,10 @@ To start a new model version, update all three version fields in `config.json`:
 
 ```json
 {
-  "version": "baseline-v5",
+  "version": "baseline-v13",
   "paths": {
-    "cache_dir": "cache/baseline-v5",
-    "artifact_dir": "artifacts/baseline-v5"
+    "cache_dir": "cache/baseline-v13",
+    "artifact_dir": "artifacts/baseline-v13"
   }
 }
 ```
@@ -128,8 +128,8 @@ DVC remote and commit only the small version metadata:
 ```powershell
 python -m dvc push
 git add dvc.yaml dvc.lock training/config.json
-git commit -m "train baseline-v5"
-git tag model-baseline-v5
+git commit -m "train baseline-v13"
+git tag model-baseline-v13
 git push --follow-tags
 ```
 
@@ -158,7 +158,7 @@ until that assumption is verified from authoritative dataset metadata.
 ## Webcam test
 
 The webcam tester supports manual fixed-window capture and experimental
-motion-based automatic capture. Baseline-v5 includes a trained `NO_SIGN` class,
+motion-based automatic capture. Baseline-v12 includes a trained `NO_SIGN` class,
 so repeated isolated-phrase recognition can suppress some background motion.
 It is not yet a continuous sentence translator.
 
@@ -192,7 +192,7 @@ The live motion score and start threshold are displayed in the window. Tune
 the values under `auto_capture` in `config.json` if capture starts too easily
 or fails to start. Press `R` to reset the detector.
 
-Automatic segmentation reduces the fixed-window timing mismatch. Baseline-v5
+Automatic segmentation reduces the fixed-window timing mismatch. Baseline-v12
 includes initial `NO_SIGN` data, but live false-activation testing is still
 required before relying on it.
 

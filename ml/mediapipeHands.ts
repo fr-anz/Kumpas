@@ -72,14 +72,18 @@ type Vec3 = { x: number; y: number; z: number };
  */
 export function resultToFeatures(result: HandLandmarkerResult | null): {
   features: Float32Array;
+  activity: Float32Array;
   handPresent: boolean;
 } {
   const features = new Float32Array(FEATURE_COUNT);
+  const activity = new Float32Array(130);
+  activity.fill(Number.NaN);
   if (!result || result.landmarks.length === 0) {
-    return { features, handPresent: false };
+    return { features, activity, handPresent: false };
   }
 
   const hands: number[][] = [];
+  const activities: number[][] = [];
   // Track original wrist x for deterministic two-hand ordering.
   const wristX: number[] = [];
 
@@ -99,9 +103,7 @@ export function resultToFeatures(result: HandLandmarkerResult | null): {
     let palmScale = Math.hypot(centered[9].x, centered[9].y);
     if (palmScale < 1e-6) {
       // Fallback: max x/y norm across all landmarks.
-      palmScale = Math.max(
-        ...centered.map((p) => Math.hypot(p.x, p.y)),
-      );
+      palmScale = Math.max(...centered.map((p) => Math.hypot(p.x, p.y)));
     }
     if (palmScale < 1e-6) continue;
 
@@ -110,18 +112,21 @@ export function resultToFeatures(result: HandLandmarkerResult | null): {
       flat.push(p.x / palmScale, p.y / palmScale, p.z / palmScale);
     }
     hands.push(flat);
+    activities.push([wrist.x, wrist.y, ...flat]);
     wristX.push(wrist.x);
   }
 
   if (hands.length === 0) {
-    return { features, handPresent: false };
+    return { features, activity, handPresent: false };
   }
 
   // Order two hands by original wrist x-position (matches training).
   let ordered = hands;
+  let orderedActivities = activities;
   if (hands.length === 2) {
-    ordered =
-      wristX[0] <= wristX[1] ? [hands[0], hands[1]] : [hands[1], hands[0]];
+    const order = wristX[0] <= wristX[1] ? [0, 1] : [1, 0];
+    ordered = order.map((index) => hands[index]);
+    orderedActivities = order.map((index) => activities[index]);
   }
 
   ordered.slice(0, 2).forEach((flat, slot) => {
@@ -130,7 +135,8 @@ export function resultToFeatures(result: HandLandmarkerResult | null): {
       features[offset + i] = flat[i];
     }
     features[126 + slot] = 1.0;
+    activity.set(orderedActivities[slot], slot * 65);
   });
 
-  return { features, handPresent: true };
+  return { features, activity, handPresent: true };
 }

@@ -25,6 +25,7 @@ export type SignModel = {
   featureCount: number;
   confidenceThreshold: number;
   minHandCoverage: number;
+  minTopTwoMargin: number;
 };
 
 let cached: SignModel | null = null;
@@ -51,6 +52,7 @@ export async function loadSignModel(): Promise<SignModel> {
       featureCount: metadata?.feature_count ?? FEATURE_COUNT,
       confidenceThreshold: metadata?.webcam_test?.confidence_threshold ?? 0.8,
       minHandCoverage: metadata?.webcam_test?.minimum_hand_coverage ?? 0.25,
+      minTopTwoMargin: metadata?.webcam_test?.minimum_top_two_margin ?? 0.15,
     };
     return cached;
   })();

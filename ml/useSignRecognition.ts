@@ -15,15 +15,12 @@ import {
 } from "./tfjsPredictor";
 import { phraseForLabel, isNoSign } from "./labels";
 import { drawLandmarks } from "./drawLandmarks";
+import { activityMotion, MotionSegmenter } from "./motionSegmenter";
 import type { Prediction } from "@/types/prediction";
 import type { Language } from "@/i18n/translations";
 
 export type RecognitionStatus =
-  | "idle"
-  | "loading"
-  | "ready"
-  | "running"
-  | "error";
+  "idle" | "loading" | "ready" | "running" | "error";
 
 /** Live, raw top prediction used for "detecting…" feedback. */
 export type LivePrediction = { label: string; confidence: number };
@@ -34,12 +31,11 @@ type Options = {
   onResult?: (prediction: Prediction) => void;
 };
 
-// Real-time tuning. The model was trained on 40 frames spanning the central
-// portion of each sign clip, so we sample our 40 frames evenly across a fixed
-// time window rather than using whatever the raw camera framerate produces.
-const WINDOW_MS = 2000; // temporal span fed to the model
-const MIN_SPAN_MS = 1100; // wait until we have at least this much history
-const INFERENCE_INTERVAL_MS = 250; // how often we run the model
+// Keep browser segmentation aligned with training/config.json auto_capture.
+const MAXIMUM_SIGN_MS = 8000;
+const PRE_ROLL_MS = 150;
+const POST_ROLL_MS = 150;
+const BUFFER_MS = MAXIMUM_SIGN_MS + PRE_ROLL_MS + POST_ROLL_MS + 1000;
 const STABILITY_COUNT = 3; // identical top labels needed to commit
 
 type FrameSample = {
@@ -53,9 +49,9 @@ type FrameSample = {
  *
  * Per video frame: MediaPipe detects landmarks → 128-D features (matching
  * training) → pushed into a timestamped ring buffer and drawn as an overlay.
- * Every ~250ms the buffer is resampled to 40 frames evenly spaced across a 2s
- * window and run through the TF.js model. Predictions are stabilized: a label
- * must repeat for several consecutive inferences before it is committed.
+ * Motion marks the sign boundaries. The completed segment is resampled with
+ * three small boundary variants, and all predictions must agree before a sign
+ * is committed.
  */
 export function useSignRecognition({ language, onResult }: Options) {
   const [status, setStatus] = useState<RecognitionStatus>("idle");
@@ -68,10 +64,21 @@ export function useSignRecognition({ language, onResult }: Options) {
   const framesRef = useRef<FrameSample[]>([]);
   const rafRef = useRef<number | null>(null);
   const lastVideoTimeRef = useRef<number>(-1);
-  const lastInferenceRef = useRef<number>(0);
   const runningRef = useRef<boolean>(false);
-  const recentLabelsRef = useRef<string[]>([]);
-  const committedLabelRef = useRef<string | null>(null);
+  const processingRef = useRef<boolean>(false);
+  const armedRef = useRef<boolean>(true);
+  const previousActivityRef = useRef<Float32Array | null>(null);
+  const segmenterRef = useRef(
+    new MotionSegmenter({
+      startThreshold: 0.035,
+      stopThreshold: 0.012,
+      startFrames: 3,
+      endHoldMs: 700,
+      minimumSignMs: 800,
+      maximumSignMs: MAXIMUM_SIGN_MS,
+      smoothing: 0.4,
+    }),
+  );
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const languageRef = useRef<Language>(language);
   const onResultRef = useRef(onResult);
@@ -116,21 +123,27 @@ export function useSignRecognition({ language, onResult }: Options) {
       rafRef.current = null;
     }
     framesRef.current = [];
-    recentLabelsRef.current = [];
+    previousActivityRef.current = null;
+    segmenterRef.current.reset();
+    processingRef.current = false;
+    armedRef.current = true;
     setHandDetected(false);
     setLive(null);
     if (modelRef.current) setStatus("ready");
   }, []);
 
-  /** Resample the timestamped buffer to exactly `length` evenly-spaced frames. */
+  /** Resample one detected segment to exactly `length` evenly-spaced frames. */
   const resample = useCallback(
-    (now: number, length: number): { seq: Float32Array[]; coverage: number } => {
+    (
+      start: number,
+      end: number,
+      length: number,
+    ): { seq: Float32Array[]; coverage: number } => {
       const frames = framesRef.current;
       const seq: Float32Array[] = [];
       let present = 0;
-      const start = now - WINDOW_MS;
       for (let i = 0; i < length; i++) {
-        const target = start + (WINDOW_MS * i) / (length - 1);
+        const target = start + ((end - start) * i) / (length - 1);
         // Nearest frame by timestamp.
         let best = frames[0];
         let bestDist = Infinity;
@@ -153,53 +166,68 @@ export function useSignRecognition({ language, onResult }: Options) {
     [],
   );
 
-  const runInference = useCallback(async (model: SignModel, now: number) => {
-    const { seq, coverage } = resample(now, model.sequenceLength);
-    if (coverage < model.minHandCoverage) {
-      // Hands left the frame: clear stabilization so stale labels don't commit.
-      recentLabelsRef.current = [];
-      setLive(null);
-      return;
-    }
+  const runSegmentInference = useCallback(
+    async (model: SignModel, start: number, end: number) => {
+      if (processingRef.current || end <= start) return;
+      processingRef.current = true;
+      try {
+        const duration = end - start;
+        const intervals = [
+          [start, end],
+          [start + duration * 0.04, end - duration * 0.04],
+          [start + duration * 0.08, end - duration * 0.08],
+        ];
+        const samples = intervals.map(([sampleStart, sampleEnd]) =>
+          resample(sampleStart, sampleEnd, model.sequenceLength),
+        );
+        if (samples.some(({ coverage }) => coverage < model.minHandCoverage)) {
+          setLive(null);
+          return;
+        }
 
-    try {
-      const { prediction: pred } = await predictFromSequence(model, seq);
+        const results = await Promise.all(
+          samples.map(({ seq }) => predictFromSequence(model, seq)),
+        );
+        if (!runningRef.current) return;
 
-      // Live feedback: show the raw top sign (unless it's the background class).
-      if (!isNoSign(pred.label)) {
-        setLive({ label: pred.label, confidence: pred.confidence });
-      } else {
-        setLive(null);
-      }
+        const first = results[0].prediction;
+        setLive(
+          isNoSign(first.label)
+            ? null
+            : { label: first.label, confidence: first.confidence },
+        );
+        const stable =
+          results.length === STABILITY_COUNT &&
+          results.every(({ prediction }) => prediction.label === first.label);
+        const confident = results.every(({ prediction, probabilities }) => {
+          const sorted = [...probabilities].sort((left, right) => right - left);
+          return (
+            prediction.confidence >= model.confidenceThreshold &&
+            sorted[0] - sorted[1] >= model.minTopTwoMargin
+          );
+        });
 
-      // Stabilization: require the same confident, non-background label to
-      // repeat across consecutive inferences before committing it.
-      const history = recentLabelsRef.current;
-      const confident =
-        !isNoSign(pred.label) && pred.confidence >= model.confidenceThreshold;
-      history.push(confident ? pred.label : "");
-      if (history.length > STABILITY_COUNT) history.shift();
+        if (!stable || !confident) return;
+        if (isNoSign(first.label)) {
+          armedRef.current = true;
+          return;
+        }
+        if (!armedRef.current) return;
 
-      const stable =
-        history.length === STABILITY_COUNT &&
-        history.every((l) => l === pred.label) &&
-        confident;
-
-      if (stable && committedLabelRef.current !== pred.label) {
-        committedLabelRef.current = pred.label;
-        const phrase = phraseForLabel(pred.label, languageRef.current);
-        const enriched: Prediction = { ...pred, phrase };
-        // Haptic: double-pulse indicates a sign has been recognized.
+        armedRef.current = false;
+        const phrase = phraseForLabel(first.label, languageRef.current);
+        const enriched: Prediction = { ...first, phrase };
         navigator.vibrate?.([100, 50, 100]);
         setPrediction(enriched);
         onResultRef.current?.(enriched);
-      } else if (coverage < model.minHandCoverage) {
-        committedLabelRef.current = null;
+      } catch {
+        // A later completed segment can recover from a transient inference error.
+      } finally {
+        processingRef.current = false;
       }
-    } catch {
-      // Swallow transient inference errors; the loop keeps running.
-    }
-  }, [resample]);
+    },
+    [resample],
+  );
 
   const start = useCallback(
     async (video: HTMLVideoElement, overlay?: HTMLCanvasElement | null) => {
@@ -212,8 +240,10 @@ export function useSignRecognition({ language, onResult }: Options) {
       setStatus("running");
       lastVideoTimeRef.current = -1;
       framesRef.current = [];
-      recentLabelsRef.current = [];
-      committedLabelRef.current = null;
+      previousActivityRef.current = null;
+      segmenterRef.current.reset();
+      processingRef.current = false;
+      armedRef.current = true;
 
       const loop = () => {
         if (!runningRef.current) return;
@@ -231,24 +261,27 @@ export function useSignRecognition({ language, onResult }: Options) {
             drawLandmarks(canvasRef.current, video, result);
           }
 
-          const { features, handPresent } = resultToFeatures(result);
+          const { features, activity, handPresent } = resultToFeatures(result);
           setHandDetected(handPresent);
 
-          // Append to the timestamped ring buffer; drop frames older than the
-          // window (with a small margin).
           const frames = framesRef.current;
           frames.push({ features, present: handPresent, t: ts });
-          const cutoff = ts - WINDOW_MS - 200;
+          const cutoff = ts - BUFFER_MS;
           while (frames.length > 0 && frames[0].t < cutoff) frames.shift();
 
-          // Run inference once we have enough temporal history.
-          const span = ts - frames[0].t;
+          const motion = activityMotion(previousActivityRef.current, activity);
+          previousActivityRef.current = activity;
+          const event = segmenterRef.current.update(motion, handPresent, ts);
           if (
-            span >= MIN_SPAN_MS &&
-            ts - lastInferenceRef.current > INFERENCE_INTERVAL_MS
+            event.completed &&
+            event.startTime !== undefined &&
+            event.endTime !== undefined
           ) {
-            lastInferenceRef.current = ts;
-            void runInference(model, ts);
+            void runSegmentInference(
+              model,
+              event.startTime - PRE_ROLL_MS,
+              event.endTime + POST_ROLL_MS,
+            );
           }
         }
 
@@ -257,7 +290,7 @@ export function useSignRecognition({ language, onResult }: Options) {
 
       rafRef.current = requestAnimationFrame(loop);
     },
-    [prepare, runInference],
+    [prepare, runSegmentInference],
   );
 
   useEffect(() => {

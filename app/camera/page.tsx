@@ -12,8 +12,8 @@ import { useSignRecognition } from "@/ml/useSignRecognition";
  * FSL Camera — real-time sign recognition.
  *
  * Pipeline: getUserMedia video → MediaPipe Hands (live landmark overlay) →
- * 128-D landmark features sampled across a 2s window → TF.js model
- * (converted from the Keras training pipeline) → stabilized phrase.
+ * motion-delimited 128-D landmark sequence → TF.js model (converted from the
+ * Keras training pipeline) → consensus-filtered phrase.
  */
 export default function CameraPage() {
   const { language, t } = useLanguage();

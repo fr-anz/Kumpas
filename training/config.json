@@ -1,5 +1,5 @@
 {
-  "version": "baseline-v6",
+  "version": "baseline-v12",
   "random_seed": 42,
   "paths": {
     "labels_csv": "labels.csv",
@@ -7,8 +7,8 @@
     "test_csv": "test.csv",
     "video_base": "clips",
     "hand_landmarker_model": "models/hand_landmarker.task",
-    "cache_dir": "cache/baseline-v6",
-    "artifact_dir": "artifacts/baseline-v6"
+    "cache_dir": "cache/baseline-v12",
+    "artifact_dir": "artifacts/baseline-v12"
   },
   "labels": [
     "YES",
@@ -17,13 +17,9 @@
     "THANK YOU",
     "SLOW",
     "DON\u2019T UNDERSTAND",
-    "MARRIAGE LICENSE",
     "BARANGAY CLEARANCE",
-    "CERTIFICATE OF INDIGENCY",
-    "CERTIFICATE OF RESIDENCY",
-    "CEDULA",
     "BLOTTER REPORT",
-    "AYUDA",
+    "CEDULA",
     "DRIVERS LICENSE",
     "LAND DEED",
     "NO_SIGN"
@@ -49,14 +45,25 @@
     "epochs": 100,
     "batch_size": 16,
     "learning_rate": 0.001,
-    "early_stopping_patience": 15
+    "early_stopping_patience": 15,
+    "balanced_sampling": true,
+    "augmentation": {
+      "enabled": true,
+      "temporal_jitter_frames": 4,
+      "temporal_scale_range": [0.85, 1.15],
+      "max_rotation_degrees": 8.0,
+      "coordinate_noise_stddev": 0.01,
+      "frame_drop_probability": 0.08,
+      "landmark_mask_probability": 0.02
+    }
   },
   "webcam_test": {
     "capture_seconds": 4.0,
     "width": 640,
     "height": 360,
     "confidence_threshold": 0.8,
-    "minimum_hand_coverage": 0.25
+    "minimum_hand_coverage": 0.25,
+    "minimum_top_two_margin": 0.15
   },
   "auto_capture": {
     "start_motion_threshold": 0.035,

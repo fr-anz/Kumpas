@@ -135,6 +135,7 @@ def main() -> None:
     webcam_cfg = config.get("webcam_test", eval_results.get("webcam_test", {}))
     confidence_threshold: float = webcam_cfg.get("confidence_threshold", 0.8)
     min_hand_coverage: float = webcam_cfg.get("minimum_hand_coverage", 0.25)
+    min_top_two_margin: float = webcam_cfg.get("minimum_top_two_margin", 0.15)
 
     # ---------------------------------------------------------------------------
     # Write outputs.
@@ -157,6 +158,7 @@ def main() -> None:
         "webcam_test": {
             "confidence_threshold": confidence_threshold,
             "minimum_hand_coverage": min_hand_coverage,
+            "minimum_top_two_margin": min_top_two_margin,
         },
         "labels": labels,
         "artifact_dir": str(artifact_dir.relative_to(REPO_ROOT)),

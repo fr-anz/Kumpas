@@ -64,8 +64,10 @@ Exit criteria:
 
 ## Current limitations
 
-- Baseline-v5 has an initial trained `NO_SIGN` class, but live false-activation
+- Baseline-v12 has a trained `NO_SIGN` class, but live false-activation
   performance has not been benchmarked yet.
+- Baseline-v12 supports six basic signs and five document-service signs for a
+  controlled demonstration.
 - The existing split uses filename stems as an unverified signer/session proxy.
 - The new multi-sign phrase clips have limited signer diversity.
 - Offline test support is only three clips per class and is not production
