@@ -268,3 +268,28 @@ export function getPhraseById(id: string): Phrase | undefined {
 export function getPhrasesByCategory(category: string): Phrase[] {
   return phrases.filter((phrase) => phrase.category === category);
 }
+
+/** Normalize text for exact matching: lowercase, trim, strip terminal punctuation. */
+function normalizeForMatch(text: string): string {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[.!?]+$/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/**
+ * Find a library phrase whose text or title exactly matches the input, in
+ * either language. Used by Hearing Mode to show the pre-saved FSL visual when
+ * the typed message is a known preset.
+ */
+export function findExactPhrase(input: string): Phrase | undefined {
+  const norm = normalizeForMatch(input);
+  if (!norm) return undefined;
+  return phrases.find((phrase) =>
+    [phrase.text, phrase.title, phrase.textFil, phrase.titleFil].some(
+      (field) => normalizeForMatch(field) === norm,
+    ),
+  );
+}

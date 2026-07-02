@@ -7,7 +7,9 @@ import {
   simplifyWithGemini,
   isGeminiConfigured,
 } from "@/services/geminiService";
+import { findExactPhrase } from "@/data/phrases";
 import { SpeakButton } from "@/components/SpeakButton";
+import { SignVisual } from "@/components/SignVisual";
 import { PhraseCard } from "@/components/PhraseCard";
 import type { Phrase } from "@/types/phrase";
 import { useLanguage } from "@/i18n/LanguageProvider";
@@ -23,19 +25,21 @@ type SimplifySource = "gemini" | "local" | null;
 export default function HearingPage() {
   const { language, t } = useLanguage();
   const [input, setInput] = useState("");
-  const [original, setOriginal] = useState("");
   const [simplified, setSimplified] = useState("");
   const [source, setSource] = useState<SimplifySource>(null);
   const [loading, setLoading] = useState(false);
   const [suggestions, setSuggestions] = useState<Phrase[]>([]);
+  // Set when the typed message exactly matches a library preset, so we can
+  // show that preset's pre-saved FSL visual.
+  const [matched, setMatched] = useState<Phrase | null>(null);
 
   const handleSimplify = async () => {
     const trimmed = input.trim();
     if (!trimmed) return;
 
-    setOriginal(trimmed);
     setSimplified("");
     setSource(null);
+    setMatched(findExactPhrase(trimmed) ?? null);
     setLoading(true);
 
     // Try Gemini first when online and configured.
@@ -98,13 +102,6 @@ export default function HearingPage() {
 
       {simplified && (
         <div className="flex flex-col gap-4">
-          <div className="rounded-card border border-border bg-surface-alt p-4">
-            <p className="text-xs font-bold uppercase tracking-wider text-text-muted">
-              {t("hearing.original")}
-            </p>
-            <p className="mt-1 text-lg">{original}</p>
-          </div>
-
           <div className="rounded-card border-2 border-bee-yellow bg-surface p-4 shadow-[var(--shadow)]">
             {/* Source badge */}
             <div className="mb-3 flex items-center gap-2">
@@ -127,10 +124,21 @@ export default function HearingPage() {
             <p className="text-2xl font-bold leading-snug">{simplified}</p>
           </div>
 
-          {/* FSL visual placeholder for the simplified output */}
-          <div className="hex-pattern flex h-20 items-center justify-center rounded-card border border-dashed border-border text-sm font-semibold text-text-muted">
-            {t("comm.fslPlaceholder")}
-          </div>
+          {/*
+            FSL visual: only shown when the typed message exactly matches a
+            library preset — then we use that preset's pre-saved sign image.
+          */}
+          {matched && (
+            <SignVisual
+              phraseId={matched.id}
+              alt={`${t("comm.signAlt")}${matched.text}`}
+              fslUrl={matched.fslVisualUrl}
+              aslUrl={matched.aslVisualUrl}
+              fslLabel={t("comm.fslBadge")}
+              aslLabel={t("comm.aslBadge")}
+              fallback={null}
+            />
+          )}
 
           <SpeakButton text={simplified} label={t("hearing.speakSimplified")} />
 
