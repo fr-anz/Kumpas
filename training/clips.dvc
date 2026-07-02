@@ -1,5 +1,6 @@
 outs:
-- md5: 039958b0abbb79cd726153afa0ca11a9.dir
-  nfiles: 2531
+- md5: 264f6358937a9a034c2e240abf5cc15c.dir
+  nfiles: 2470
   hash: md5
   path: clips
+  size: 1810326473
