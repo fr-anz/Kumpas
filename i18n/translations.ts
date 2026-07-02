@@ -78,9 +78,10 @@ const en: Dict = {
   // Library
   "library.title": "Phrase library",
   "library.search": "Search phrases",
-  "library.all": "All",
+  "library.all": "Show all",
   "library.noResults": "No phrases match your search.",
   "library.filterAria": "Filter by category",
+  "library.category": "Category",
   "library.loading": "Loading phrases…",
   "library.urgent": "Urgent",
 
@@ -246,9 +247,10 @@ const fil: Dict = {
   // Library
   "library.title": "Aklatan ng parirala",
   "library.search": "Maghanap ng parirala",
-  "library.all": "Lahat",
+  "library.all": "Ipakita lahat",
   "library.noResults": "Walang pariralang tumugma sa iyong paghahanap.",
   "library.filterAria": "Salain ayon sa kategorya",
+  "library.category": "Kategorya",
   "library.loading": "Naglo-load ng mga parirala…",
   "library.urgent": "Agaran",
 
