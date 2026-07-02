@@ -36,7 +36,7 @@ const MAXIMUM_SIGN_MS = 8000;
 const PRE_ROLL_MS = 150;
 const POST_ROLL_MS = 150;
 const BUFFER_MS = MAXIMUM_SIGN_MS + PRE_ROLL_MS + POST_ROLL_MS + 1000;
-const STABILITY_COUNT = 3; // identical top labels needed to commit
+const STABILITY_VOTES = 2; // matching top labels (of 3 variants) needed to commit
 const STOP_MOTION_THRESHOLD = 0.012;
 const IDLE_REARM_MS = 1000;
 
@@ -52,8 +52,8 @@ type FrameSample = {
  * Per video frame: MediaPipe detects landmarks → 128-D features (matching
  * training) → pushed into a timestamped ring buffer and drawn as an overlay.
  * Motion marks the sign boundaries. The completed segment is resampled with
- * three small boundary variants, and all predictions must agree before a sign
- * is committed.
+ * three small boundary variants; a 2-of-3 majority with sufficient mean
+ * confidence and top-two margin commits the sign.
  */
 export function useSignRecognition({ language, onResult }: Options) {
   const [status, setStatus] = useState<RecognitionStatus>("idle");
@@ -203,19 +203,35 @@ export function useSignRecognition({ language, onResult }: Options) {
             ? null
             : { label: first.label, confidence: first.confidence },
         );
-        const stable =
-          results.length === STABILITY_COUNT &&
-          results.every(({ prediction }) => prediction.label === first.label);
-        const confident = results.every(({ prediction, probabilities }) => {
-          const sorted = [...probabilities].sort((left, right) => right - left);
-          return (
-            prediction.confidence >= model.confidenceThreshold &&
-            sorted[0] - sorted[1] >= model.minTopTwoMargin
-          );
-        });
 
-        if (!stable || !confident) return;
-        if (isNoSign(first.label)) {
+        // 2-of-3 majority vote across the boundary variants.
+        const votes = new Map<string, number>();
+        for (const { prediction } of results) {
+          votes.set(prediction.label, (votes.get(prediction.label) ?? 0) + 1);
+        }
+        let majorityLabel: string | null = null;
+        for (const [label, count] of votes) {
+          if (count >= STABILITY_VOTES) majorityLabel = label;
+        }
+        if (!majorityLabel) return;
+
+        const agreeing = results.filter(
+          ({ prediction }) => prediction.label === majorityLabel,
+        );
+        const meanConfidence =
+          agreeing.reduce((sum, { prediction }) => sum + prediction.confidence, 0) /
+          agreeing.length;
+        const meanMargin =
+          agreeing.reduce((sum, { probabilities }) => {
+            const sorted = [...probabilities].sort((left, right) => right - left);
+            return sum + (sorted[0] - sorted[1]);
+          }, 0) / agreeing.length;
+        const confident =
+          meanConfidence >= model.confidenceThreshold &&
+          meanMargin >= model.minTopTwoMargin;
+
+        if (!confident) return;
+        if (isNoSign(majorityLabel)) {
           armedRef.current = true;
           idleSinceRef.current = null;
           clearOnNextSignRef.current = true;
@@ -226,8 +242,17 @@ export function useSignRecognition({ language, onResult }: Options) {
         armedRef.current = false;
         idleSinceRef.current = null;
         clearOnNextSignRef.current = false;
-        const phrase = phraseForLabel(first.label, languageRef.current);
-        const enriched: Prediction = { ...first, phrase };
+        const winner = agreeing.reduce((best, candidate) =>
+          candidate.prediction.confidence > best.prediction.confidence
+            ? candidate
+            : best,
+        ).prediction;
+        const phrase = phraseForLabel(majorityLabel, languageRef.current);
+        const enriched: Prediction = {
+          ...winner,
+          confidence: meanConfidence,
+          phrase,
+        };
         navigator.vibrate?.([100, 50, 100]);
         setPrediction(enriched);
         onResultRef.current?.(enriched);
