@@ -38,7 +38,16 @@ def build_tfkeras_model(config: dict, num_classes: int):
         shape=(config["sequence_length"], config["feature_count"]),
         name="landmark_sequence",
     )
-    x = k.layers.Conv1D(64, 5, padding="same", name="temporal_conv_1")(inputs)
+    # Fixed-weight delta expansion; weights are copied from the trained model.
+    x = k.layers.Conv1D(
+        config["feature_count"] * 2,
+        2,
+        padding="valid",
+        use_bias=False,
+        trainable=False,
+        name="delta_expansion",
+    )(inputs)
+    x = k.layers.Conv1D(64, 5, padding="same", name="temporal_conv_1")(x)
     x = k.layers.BatchNormalization(name="batch_norm_1")(x)
     x = k.layers.Activation("relu", name="relu_1")(x)
     x = k.layers.MaxPooling1D(2, name="temporal_pool")(x)
