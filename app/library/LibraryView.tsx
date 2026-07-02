@@ -68,13 +68,17 @@ export function LibraryView() {
         className="min-h-12 rounded-button border border-border bg-surface px-4 text-base shadow-[var(--shadow)]"
       />
 
-      <div className="relative">
-        <select
-          value={activeFilter}
-          onChange={(e) => setActiveFilter(e.target.value as FilterMode)}
-          aria-label={t("library.filterAria")}
-          className="min-h-12 w-full appearance-none rounded-button border border-border bg-surface px-4 pr-10 text-base font-bold shadow-[var(--shadow)] focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-bee-yellow-bright"
-        >
+      <div className="flex flex-col gap-2">
+        <span className="text-sm font-bold uppercase tracking-wider text-text-muted">
+          {t("library.category")}
+        </span>
+        <div className="relative">
+          <select
+            value={activeFilter}
+            onChange={(e) => setActiveFilter(e.target.value as FilterMode)}
+            aria-label={t("library.filterAria")}
+            className="min-h-12 w-full appearance-none rounded-button border border-border bg-surface px-4 pr-10 text-base font-bold shadow-[var(--shadow)] focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-bee-yellow-bright"
+          >
           <option value="all">{t("library.all")}</option>
           <option value="favourites">Starred</option>
           {categories.map((category) => (
@@ -88,6 +92,7 @@ export function LibraryView() {
           <svg className="h-5 w-5 text-text-muted" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
             <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" />
           </svg>
+        </div>
         </div>
       </div>
 

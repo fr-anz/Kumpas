@@ -14,6 +14,14 @@ export const metadata: Metadata = {
   description:
     "An offline-first Filipino Sign Language communication assistant for public-service and emergency situations.",
   manifest: "/manifest.webmanifest",
+  icons: {
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/icon-192x192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512x512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [{ url: "/icon-192x192.png", sizes: "192x192" }],
+  },
   appleWebApp: {
     capable: true,
     title: "Kumpas",

@@ -71,6 +71,7 @@ const en: Dict = {
   "home.title": "Essential communication, within reach.",
   "home.emergency": "Emergency",
   "home.phraseCategories": "Phrase categories",
+  "home.recentlyUsed": "Recently used",
   "home.moreTools": "More tools",
   "home.hearingMode": "Hearing person mode",
   "home.cameraDemo": "FSL Camera",
@@ -78,9 +79,10 @@ const en: Dict = {
   // Library
   "library.title": "Phrase library",
   "library.search": "Search phrases",
-  "library.all": "All",
+  "library.all": "Show all",
   "library.noResults": "No phrases match your search.",
   "library.filterAria": "Filter by category",
+  "library.category": "Category",
   "library.loading": "Loading phrases…",
   "library.urgent": "Urgent",
 
@@ -191,11 +193,11 @@ const fil: Dict = {
   "common.loading": "Naglo-load…",
 
   // Navigation
-  "nav.home": "Home",
+  "nav.home": "Umpisa",
   "nav.library": "Aklatan",
-  "nav.emergency": "Help",
-  "nav.hearing": "Pang-nakaririnig",
-  "nav.camera": "Kumpas Mode",
+  "nav.emergency": "Tulong",
+  "nav.hearing": "Pang-nakakarinig",
+  "nav.camera": "Camera",
 
   // Status
   "status.online": "Online",
@@ -237,8 +239,9 @@ const fil: Dict = {
   // Home
   "home.eyebrow": "Offline-first na FSL communicator",
   "home.title": "Mahalagang komunikasyon, abot-kamay.",
-  "home.emergency": "Help",
+  "home.emergency": "Tulong",
   "home.phraseCategories": "Mga kategorya ng parirala",
+  "home.recentlyUsed": "Kakagamit Lang",
   "home.moreTools": "Iba pang kagamitan",
   "home.hearingMode": "Pang-nakaririnig",
   "home.cameraDemo": "FSL Camera",
@@ -246,9 +249,10 @@ const fil: Dict = {
   // Library
   "library.title": "Aklatan ng parirala",
   "library.search": "Maghanap ng parirala",
-  "library.all": "Lahat",
+  "library.all": "Ipakita lahat",
   "library.noResults": "Walang pariralang tumugma sa iyong paghahanap.",
   "library.filterAria": "Salain ayon sa kategorya",
+  "library.category": "Kategorya",
   "library.loading": "Naglo-load ng mga parirala…",
   "library.urgent": "Agaran",
 
@@ -272,7 +276,7 @@ const fil: Dict = {
   "hearing.suggested": "Mga iminumungkahing parirala",
 
   // Emergency
-  "emergency.title": "Help",
+  "emergency.title": "Tulong",
   "emergency.message":
     "Bingi ako. Kailangan ko ng tulong. Pakitawagan ang aking emergency contact.",
   "emergency.speakMessage": "Sabihin ang mensahe ng emerhensiya",
