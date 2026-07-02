@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Siren, MessageSquare, Camera, Clock } from "lucide-react";
 import { categories } from "@/data/categories";
 import { CategoryCard } from "@/components/CategoryCard";
+import { InstallBanner } from "@/components/InstallBanner";
 import { useLanguage } from "@/i18n/LanguageProvider";
 import { loadRecents } from "@/utils/recentPhrases";
 import { getPhraseById } from "@/data/phrases";
@@ -33,6 +34,9 @@ export default function HomePage() {
           {t("home.title")}
         </h1>
       </section>
+
+      {/* Dismissible PWA install prompt (only when installable) */}
+      <InstallBanner />
 
       {/* Large primary emergency action */}
       <Link

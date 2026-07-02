@@ -5,6 +5,7 @@ import { AlertTriangle, RotateCcw } from "lucide-react";
 import { useTheme } from "@/components/ThemeProvider";
 import { useFontSize } from "@/components/FontSizeProvider";
 import { useLanguage } from "@/i18n/LanguageProvider";
+import { InstallButton } from "@/components/InstallButton";
 import { resetAndOnboard } from "@/services/storageService";
 import { isSpeechSupported, speak } from "@/services/speechService";
 import type { ThemePreference } from "@/services/storageService";
@@ -46,6 +47,13 @@ export default function SettingsPage() {
       <h1 className="text-3xl font-black tracking-tight">
         {t("settings.title")}
       </h1>
+
+      {/* Install app (PWA) */}
+      <section className="flex flex-col gap-3">
+        <h2 className="text-xl font-extrabold">{t("install.section")}</h2>
+        <p className="text-sm text-text-muted">{t("install.description")}</p>
+        <InstallButton />
+      </section>
 
       {/* Language toggle: EN ↔ FL */}
       <section className="flex flex-col gap-3">
