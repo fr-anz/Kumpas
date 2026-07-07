@@ -35,64 +35,61 @@ export function BottomNav() {
   const { t } = useLanguage();
 
   return (
-    <nav
-      aria-label="Primary navigation"
-      className="fixed inset-x-0 bottom-0 z-20 border-t border-border bg-bee-black"
-    >
-      <ul className="mx-auto grid max-w-3xl grid-cols-5 gap-0.5 px-1 sm:gap-1 sm:px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2">
-        {items.map((item) => {
-          const isActive =
-            item.href === "/"
-              ? pathname === "/"
-              : pathname.startsWith(item.href);
-          const Icon = item.icon;
-          const label = t(item.labelKey);
+    <div className="fixed inset-x-0 bottom-[max(1rem,env(safe-area-inset-bottom))] z-20 flex justify-center px-4 pointer-events-none">
+      <nav
+        aria-label="Primary navigation"
+        className="pointer-events-auto w-full max-w-[26rem] rounded-[2rem] border-2 border-bee-black bg-surface shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+      >
+        <ul className="grid grid-cols-5 gap-1 px-2 py-2">
+          {items.map((item) => {
+            const isActive =
+              item.href === "/"
+                ? pathname === "/"
+                : pathname.startsWith(item.href);
+            const Icon = item.icon;
+            const label = t(item.labelKey);
 
-          return (
-            <li key={item.href} className="relative">
-              {/* Pulsing dot on Emergency when NOT active — always findable */}
-              {item.emphasized && !isActive && (
-                <span
-                  aria-hidden="true"
-                  className="absolute right-2 top-1 h-2.5 w-2.5 animate-pulse rounded-full bg-danger"
-                />
-              )}
+            return (
+              <li key={item.href} className="relative">
+                {/* Pulsing dot on Emergency when NOT active — always findable */}
+                {item.emphasized && !isActive && (
+                  <span
+                    aria-hidden="true"
+                    className="absolute right-2 top-1 h-2.5 w-2.5 animate-pulse rounded-full bg-danger"
+                  />
+                )}
 
-              <Link
-                href={item.href}
-                aria-current={isActive ? "page" : undefined}
-                className={`flex w-full min-h-14 flex-col items-center justify-start gap-1 rounded-button px-0.5 pt-2 text-center font-bold leading-[1.05] transition-colors ${
-                  isActive
-                    ? "bg-bee-yellow text-bee-black"
-                    : item.emphasized
-                      ? "text-danger hover:bg-white/10"
-                      : "text-white/70 hover:bg-white/10"
-                }`}
-              >
-                <Icon
-                  aria-hidden="true"
-                  className={
-                    item.emphasized && !isActive
-                      ? "h-6 w-6 shrink-0"
-                      : "h-5 w-5 shrink-0"
-                  }
-                />
-                {/*
-                  Fixed, compact label size that does NOT scale with the
-                  global text-size setting, so all five labels stay on their
-                  own line and never collide. Uses rem-independent px + break.
-                */}
-                <span
-                  className="w-full hyphens-auto break-words text-[0.625rem]"
-                  style={{ fontSize: "clamp(9px, 2.6vw, 11px)" }}
+                <Link
+                  href={item.href}
+                  aria-current={isActive ? "page" : undefined}
+                  className={`flex w-full min-h-[3.5rem] flex-col items-center justify-center gap-1 rounded-[1.25rem] px-0.5 py-1.5 text-center font-bold leading-[1.05] transition-all border-2 border-transparent ${
+                    isActive
+                      ? "bg-bee-yellow text-bee-black border-bee-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] translate-y-[-2px]"
+                      : item.emphasized
+                        ? "text-danger hover:border-danger hover:shadow-[2px_2px_0px_0px_rgba(215,38,61,1)]"
+                        : "text-text-muted hover:text-bee-black hover:bg-bee-yellow hover:border-bee-black hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                  } active:translate-x-[1px] active:translate-y-[1px] active:shadow-none`}
                 >
-                  {label}
-                </span>
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
-    </nav>
+                  <Icon
+                    aria-hidden="true"
+                    className={
+                      item.emphasized && !isActive
+                        ? "h-6 w-6 shrink-0"
+                        : "h-5 w-5 shrink-0"
+                    }
+                  />
+                  <span
+                    className="w-full hyphens-auto break-words text-[0.625rem]"
+                    style={{ fontSize: "clamp(9px, 2.6vw, 11px)" }}
+                  >
+                    {label}
+                  </span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </nav>
+    </div>
   );
 }

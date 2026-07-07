@@ -43,7 +43,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
+      <body className="bg-bg">
+        {/* Subliminal Hexagon Background */}
+        <div className="fixed inset-0 -z-50 pointer-events-none bg-[url('/background2.jpg')] bg-cover bg-center bg-no-repeat opacity-[0.55]" />
+        
         {/* process.env.NODE_ENV === "development" ? (
           <DevServiceWorkerCleanup />
         ) : null */}

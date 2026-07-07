@@ -123,7 +123,7 @@ function PrimaryButton({
     <button
       type={type}
       onClick={onClick}
-      className="flex min-h-14 w-full items-center justify-center gap-2 rounded-button bg-bee-yellow px-6 text-lg font-black text-bee-black transition-colors hover:bg-bee-yellow-bright active:bg-bee-amber"
+      className="flex min-h-14 w-full items-center justify-center gap-2 rounded-button bg-bee-yellow px-6 text-lg font-black text-bee-black transition-all border-2 border-bee-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-bee-yellow-bright active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
     >
       {children}
     </button>
@@ -184,7 +184,7 @@ function Preferences({
       <div className="flex flex-col gap-3">
         <span className="font-bold">{t("onb.language")}</span>
         <div
-          className="grid grid-cols-2 gap-1 rounded-pill border border-border bg-surface p-1"
+          className="grid grid-cols-2 gap-1 rounded-pill border-2 border-bee-black bg-surface p-1 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
           role="group"
           aria-label={t("onb.language")}
         >
@@ -194,10 +194,10 @@ function Preferences({
               type="button"
               onClick={() => setLanguage(lng)}
               aria-pressed={language === lng}
-              className={`min-h-12 rounded-pill px-4 text-base font-bold transition-colors ${
+              className={`min-h-12 rounded-pill px-4 text-base font-bold transition-all ${
                 language === lng
-                  ? "bg-bee-yellow text-bee-black"
-                  : "text-text hover:bg-surface-alt"
+                  ? "bg-bee-yellow text-bee-black border-2 border-bee-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                  : "text-text hover:bg-surface-alt border-2 border-transparent"
               }`}
             >
               {lng === "en" ? "English" : "Filipino"}
@@ -216,10 +216,10 @@ function Preferences({
               type="button"
               onClick={() => setFontSize(s.value)}
               aria-pressed={fontSize === s.value}
-              className={`flex min-h-20 flex-col items-center justify-center gap-1 rounded-card border-2 p-2 transition-colors ${
+              className={`flex min-h-20 flex-col items-center justify-center gap-1 rounded-card border-2 p-2 transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ${
                 fontSize === s.value
-                  ? "border-bee-yellow bg-bee-yellow/10"
-                  : "border-border bg-surface hover:bg-surface-alt"
+                  ? "border-bee-black bg-bee-yellow shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                  : "border-bee-black bg-surface shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
               }`}
             >
               <span
@@ -305,19 +305,19 @@ function ProfileStep({
             value={name}
             onChange={(e) => setName(e.target.value)}
             autoComplete="name"
-            className="min-h-12 rounded-button border border-border bg-surface px-4 text-lg shadow-[var(--shadow)]"
+            className="min-h-12 rounded-button border-2 border-bee-black bg-surface px-4 text-lg shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:outline-none transition-all"
           />
         </label>
 
         <label className="flex flex-col gap-1.5">
           <span className="font-bold">{t("onb.contactNumber")}</span>
           <div
-            className={`flex min-h-12 items-center gap-2 rounded-button border bg-surface pl-3 pr-4 shadow-[var(--shadow)] focus-within:outline focus-within:outline-[3px] focus-within:outline-offset-2 focus-within:outline-bee-yellow-bright ${
+            className={`flex min-h-12 items-center gap-2 rounded-button border-2 bg-surface pl-3 pr-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus-within:outline-none transition-all ${
               showError
                 ? "border-danger"
                 : validNumber
                   ? "border-success"
-                  : "border-border"
+                  : "border-bee-black"
             }`}
           >
             {/* +63 prefix with flag */}
@@ -356,14 +356,14 @@ function ProfileStep({
           <button
             type="submit"
             disabled={!canFinish}
-            className="flex min-h-14 w-full items-center justify-center gap-2 rounded-button bg-bee-yellow px-6 text-lg font-black text-bee-black transition-colors hover:bg-bee-yellow-bright active:bg-bee-amber disabled:cursor-not-allowed disabled:opacity-50"
+            className="flex min-h-14 w-full items-center justify-center gap-2 rounded-button bg-bee-yellow px-6 text-lg font-black text-bee-black transition-all border-2 border-bee-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-bee-yellow-bright active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] disabled:cursor-not-allowed disabled:opacity-50"
           >
             {t("onb.finish")}
           </button>
           <button
             type="button"
             onClick={() => onFinish(false)}
-            className="flex min-h-12 w-full items-center justify-center rounded-button border-2 border-bee-black bg-surface px-6 text-base font-bold transition-colors hover:bg-surface-alt"
+            className="flex min-h-12 w-full items-center justify-center rounded-button border-2 border-bee-black bg-surface px-6 text-base font-bold transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-surface-alt active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
           >
             {t("onb.setupLater")}
           </button>

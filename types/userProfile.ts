@@ -5,4 +5,5 @@ export type UserProfile = {
   emergencyContactNumber: string;
   medicalNote: string;
   addressNote: string;
+  photoBase64?: string;
 };

@@ -26,16 +26,16 @@ export function StatusBadge() {
   return (
     <span
       aria-live="polite"
-      className={`inline-flex items-center gap-1.5 rounded-pill px-3 py-1 text-xs font-bold ${
+      className={`inline-flex items-center gap-1.5 rounded-pill px-3 py-1.5 text-[11px] font-black uppercase tracking-wider border-2 transition-colors ${
         online
-          ? "bg-success/15 text-success"
-          : "bg-warn/20 text-[color:var(--bee-amber)]"
+          ? "bg-white border-bee-black text-bee-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+          : "bg-danger border-bee-black text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
       }`}
     >
       <span
         aria-hidden="true"
-        className={`h-2 w-2 rounded-full ${
-          online ? "bg-success" : "bg-warn"
+        className={`h-1.5 w-1.5 rounded-full ${
+          online ? "bg-success" : "bg-white"
         }`}
       />
       {online ? t("status.online") : t("status.offlineReady")}

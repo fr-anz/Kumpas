@@ -69,10 +69,10 @@ export default function SettingsPage() {
               type="button"
               onClick={() => setLanguage(option.value)}
               aria-pressed={language === option.value}
-              className={`flex-1 min-w-0 whitespace-nowrap min-h-12 rounded-pill px-1 text-sm sm:text-base font-bold transition-colors ${
+              className={`flex-1 min-w-0 truncate min-h-12 rounded-pill px-2 text-sm sm:text-base font-bold transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ${
                 language === option.value
-                  ? "bg-bee-yellow text-bee-black"
-                  : "border border-border bg-surface text-text hover:bg-surface-alt"
+                  ? "bg-bee-yellow text-bee-black border-2 border-bee-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                  : "bg-surface text-text border-2 border-bee-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-surface-alt"
               }`}
             >
               {t(option.labelKey)}
@@ -90,10 +90,10 @@ export default function SettingsPage() {
               type="button"
               onClick={() => setTheme(option)}
               aria-pressed={theme === option}
-              className={`flex-1 min-w-0 whitespace-nowrap min-h-12 rounded-pill px-1 text-sm sm:text-base font-bold transition-colors ${
+              className={`flex-1 min-w-0 truncate min-h-12 rounded-pill px-2 text-sm sm:text-base font-bold transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ${
                 theme === option
-                  ? "bg-bee-yellow text-bee-black"
-                  : "border border-border bg-surface text-text hover:bg-surface-alt"
+                  ? "bg-bee-yellow text-bee-black border-2 border-bee-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                  : "bg-surface text-text border-2 border-bee-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-surface-alt"
               }`}
             >
               {t(`settings.${option}`)}
@@ -112,10 +112,10 @@ export default function SettingsPage() {
               type="button"
               onClick={() => setFontSize(option)}
               aria-pressed={fontSize === option}
-              className={`flex-1 min-w-0 whitespace-nowrap min-h-12 rounded-pill px-1 text-sm sm:text-base font-bold transition-colors ${
+              className={`flex-1 min-w-0 truncate min-h-12 rounded-pill px-2 text-sm sm:text-base font-bold transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ${
                 fontSize === option
-                  ? "bg-bee-yellow text-bee-black"
-                  : "border border-border bg-surface text-text hover:bg-surface-alt"
+                  ? "bg-bee-yellow text-bee-black border-2 border-bee-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                  : "bg-surface text-text border-2 border-bee-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-surface-alt"
               }`}
             >
               {option === "normal"
@@ -135,7 +135,7 @@ export default function SettingsPage() {
         </h2>
         <Link
           href="/emergency"
-          className="flex min-h-12 items-center justify-center rounded-button border-2 border-bee-black bg-surface px-6 text-lg font-bold transition-colors hover:bg-surface-alt"
+          className="flex min-h-12 items-center justify-center rounded-button border-2 border-bee-black bg-surface px-6 text-lg font-bold transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-surface-alt active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
         >
           {t("settings.editEmergencyProfile")}
         </Link>
@@ -155,7 +155,7 @@ export default function SettingsPage() {
         <button
           type="button"
           onClick={handleSpeechTest}
-          className="flex min-h-12 items-center justify-center rounded-button bg-bee-yellow px-6 text-lg font-black text-bee-black transition-colors hover:bg-bee-yellow-bright"
+          className="flex min-h-12 items-center justify-center rounded-button bg-bee-yellow px-6 text-lg font-black text-bee-black transition-all border-2 border-bee-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-bee-yellow-bright active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
         >
           {t("settings.testSpeech")}
         </button>
@@ -166,7 +166,7 @@ export default function SettingsPage() {
         <button
           type="button"
           onClick={handleRestartSetup}
-          className="flex min-h-12 items-center justify-center gap-2 rounded-button border-2 border-bee-black bg-surface px-6 text-lg font-bold transition-colors hover:bg-surface-alt"
+          className="flex min-h-12 items-center justify-center gap-2 rounded-button border-2 border-bee-black bg-surface px-6 text-lg font-bold transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-surface-alt active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
         >
           <RotateCcw aria-hidden="true" className="h-5 w-5" />
           {t("settings.restartSetup")}
@@ -174,7 +174,7 @@ export default function SettingsPage() {
         <button
           type="button"
           onClick={handleClear}
-          className="flex min-h-12 items-center justify-center rounded-button border-2 border-danger bg-surface px-6 text-lg font-bold text-danger transition-colors hover:bg-danger/10"
+          className="flex min-h-12 items-center justify-center rounded-button border-2 border-danger bg-surface px-6 text-lg font-bold text-danger transition-all shadow-[4px_4px_0px_0px_rgba(215,38,61,1)] hover:bg-danger/10 active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_rgba(215,38,61,1)]"
         >
           {t("settings.clearData")}
         </button>
