@@ -33,7 +33,7 @@
   --accent: var(--bee-yellow);
   --accent-strong: var(--bee-amber);
   --on-accent: var(--bee-black);
-  --shadow: 0 8px 24px rgba(18, 18, 18, 0.1);
+  --shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1);
 }
 
 /* Dark mode: charcoal/ink surfaces, white text, yellow accents. */
@@ -47,7 +47,7 @@
   --accent: var(--bee-yellow);
   --accent-strong: var(--bee-yellow-bright);
   --on-accent: var(--bee-black);
-  --shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  --shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1);
 }
 
 /* System preference when no explicit theme is chosen. */
@@ -60,7 +60,7 @@
     --text-muted: #b8b8b8;
     --border: rgba(249, 200, 0, 0.22);
     --accent-strong: var(--bee-yellow-bright);
-    --shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+    --shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1);
   }
 }
 
@@ -125,7 +125,14 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100dvh;
-  background: var(--bg);
+  background-color: var(--bg);
+  background-image: conic-gradient(
+    from 0deg at 50% 50%,
+    var(--bg) 0deg,
+    color-mix(in srgb, var(--bee-yellow) 12%, var(--bg)) 180deg,
+    var(--bg) 360deg
+  );
+  background-attachment: fixed;
   color: var(--text);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -142,8 +149,8 @@ select {
 
 /* Visible, high-contrast focus rings (yellow-bright). */
 :focus-visible {
-  outline: 3px solid var(--bee-yellow-bright);
-  outline-offset: 2px;
+  outline: 4px solid var(--bee-yellow-bright);
+  outline-offset: 0px;
   border-radius: 4px;
 }
 

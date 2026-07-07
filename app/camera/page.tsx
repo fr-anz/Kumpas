@@ -101,7 +101,7 @@ export default function CameraPage() {
   return (
     <div className="flex flex-col gap-6 page-enter">
       <header>
-        <h1 className="text-3xl font-black tracking-tight">
+        <h1 className="text-[1.45rem] min-[360px]:text-2xl sm:text-3xl font-black tracking-tighter whitespace-nowrap">
           {t("camera.title")}
         </h1>
       </header>
