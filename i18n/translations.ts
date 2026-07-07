@@ -83,7 +83,7 @@ const en: Dict = {
 
   // Home
   "home.eyebrow": "Offline-first FSL communicator",
-  "home.title": "Essential communication, within reach.",
+  "home.title": "\"Para sa Inklusibong Bukas.\"",
   "home.emergency": "Emergency",
   "home.phraseCategories": "Phrase categories",
   "home.recentlyUsed": "Recently used",
@@ -268,7 +268,7 @@ const fil: Dict = {
 
   // Home
   "home.eyebrow": "Offline-first na FSL communicator",
-  "home.title": "Mahalagang komunikasyon, abot-kamay.",
+  "home.title": "\"Para sa Inklusibong Bukas.\"",
   "home.emergency": "Tulong",
   "home.phraseCategories": "Mga kategorya ng parirala",
   "home.recentlyUsed": "Kakagamit Lang",

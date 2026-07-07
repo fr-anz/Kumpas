@@ -29,7 +29,7 @@ export default function HomePage() {
       <section aria-labelledby="home-title">
         <h1
           id="home-title"
-          className="max-w-2xl text-4xl font-black leading-[1.0] tracking-tight sm:text-5xl"
+          className="max-w-2xl text-[1.75rem] font-bold leading-tight sm:text-4xl [font-family:'Times_New_Roman',Times,serif] italic"
         >
           {t("home.title")}
         </h1>
@@ -38,14 +38,29 @@ export default function HomePage() {
       {/* Dismissible PWA install prompt (only when installable) */}
       <InstallBanner />
 
-      {/* Large primary emergency action */}
-      <Link
-        href="/emergency"
-        className="flex min-h-20 w-full items-center justify-center gap-2 sm:gap-3 rounded-card bg-danger px-4 sm:px-6 text-center text-xl sm:text-2xl font-black text-white shadow-[var(--shadow)] transition-colors hover:brightness-110"
-      >
-        <Siren aria-hidden="true" className="h-8 w-8" />
-        {t("home.emergency")}
-      </Link>
+      {/* Large primary emergency action (Rounded Hexagon shape) */}
+      <div className="flex w-full justify-center transition-transform hover:-translate-y-1 active:scale-[0.98]">
+        <Link
+          href="/emergency"
+          className="group relative flex h-40 w-40 flex-col items-center justify-center gap-2 text-center text-lg font-black uppercase tracking-widest text-white"
+        >
+          {/* Rounded Hexagon Background */}
+          <svg
+            className="absolute inset-0 h-40 w-40 text-danger drop-shadow-[0_12px_28px_rgba(215,38,61,0.5)] transition-colors group-hover:text-[#e62a42]"
+            viewBox="0 0 100 100"
+            fill="currentColor"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M 41 5 Q 50 0 59 5 L 88 22 Q 93.3 25 93.3 33 L 93.3 67 Q 93.3 75 88 78 L 59 95 Q 50 100 41 95 L 12 78 Q 6.7 75 6.7 67 L 6.7 33 Q 6.7 25 12 22 Z" />
+          </svg>
+
+          {/* Foreground content */}
+          <div className="relative z-10 flex flex-col items-center gap-2">
+            <Siren aria-hidden="true" className="h-10 w-10 animate-pulse" />
+            <span>{t("home.emergency")}</span>
+          </div>
+        </Link>
+      </div>
 
       {/* Recents row — only shown after the user has visited phrases */}
       {recents.length > 0 && (
