@@ -16,7 +16,7 @@ export function ShapeGridBackground() {
   return (
     <div
       aria-hidden="true"
-      className="fixed inset-0 z-0"
+      className="fixed inset-0 z-0 opacity-30"
       style={{ width: "100%", height: "100%" }}
     >
       <ShapeGrid

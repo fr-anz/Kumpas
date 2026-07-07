@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Settings } from "lucide-react";
+import { Settings, Moon, Sun } from "lucide-react";
 import { StatusBadge } from "./StatusBadge";
+import { useTheme } from "@/components/ThemeProvider";
 import { BeeLogo } from "./BeeLogo";
 import { useLanguage } from "@/i18n/LanguageProvider";
 
@@ -13,6 +14,11 @@ export function AppHeader() {
   const pathname = usePathname();
   const router = useRouter();
   const isSettings = pathname === "/settings";
+  const { theme, setTheme } = useTheme();
+
+  const toggleTheme = () => {
+    setTheme(theme === "dark" ? "light" : "dark");
+  };
 
   return (
     <header className="sticky top-0 z-20 border-b-2 border-bee-black bg-bee-yellow text-bee-black">
@@ -26,6 +32,17 @@ export function AppHeader() {
         </Link>
         <div className="flex items-center gap-2">
           <StatusBadge />
+          <button
+            onClick={toggleTheme}
+            aria-label="Toggle theme"
+            className="flex h-10 w-10 items-center justify-center rounded-pill bg-white border-2 border-bee-black text-bee-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all hover:-translate-y-0.5 active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"
+          >
+            {theme === "dark" ? (
+              <Sun aria-hidden="true" className="h-5 w-5" />
+            ) : (
+              <Moon aria-hidden="true" className="h-5 w-5" />
+            )}
+          </button>
           {isSettings ? (
             <button
               onClick={() => router.back()}
