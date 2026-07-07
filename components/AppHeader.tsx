@@ -16,13 +16,13 @@ export function AppHeader() {
 
   return (
     <header className="sticky top-0 z-20 border-b-2 border-bee-black bg-bee-yellow text-bee-black">
-      <div className="mx-auto flex max-w-3xl items-center justify-between px-5 py-4 sm:px-8">
+      <div className="mx-auto flex w-full max-w-3xl items-center justify-between px-5 py-4 sm:px-8 lg:max-w-5xl">
         <Link
           href="/"
-          className="flex items-center gap-2 text-2xl sm:text-3xl font-black tracking-[-0.04em] text-bee-black"
+          className="flex items-center gap-2 font-display text-2xl font-bold tracking-tight text-bee-black sm:text-3xl"
         >
           <BeeLogo className="h-8 w-8 sm:h-10 sm:w-10" />
-          Kumpas
+          <span>Kumpas</span>
         </Link>
         <div className="flex items-center gap-2">
           <StatusBadge />

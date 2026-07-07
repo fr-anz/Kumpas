@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import { CameraPreview } from "@/components/CameraPreview";
 import { SpeakButton } from "@/components/SpeakButton";
-import { formatConfidence, confidenceLevel } from "@/utils/confidence";
 import type { Prediction } from "@/types/prediction";
 import { useLanguage } from "@/i18n/LanguageProvider";
 import { useSignRecognition } from "@/ml/useSignRecognition";
@@ -75,11 +74,6 @@ export default function CameraPage() {
     }
   };
 
-  const confLabel = (value: number) => {
-    const level = confidenceLevel(value);
-    return t(`camera.conf${level.charAt(0).toUpperCase()}${level.slice(1)}`);
-  };
-
   const isLoadingModel = status === "loading";
   const modelFailed = status === "error";
 
@@ -91,7 +85,7 @@ export default function CameraPage() {
     if (live) {
       return (
         <LiveBadge tone="active">
-          {t("camera.detecting")} {live.label} · {formatConfidence(live.confidence)}
+          {t("camera.detecting")} {live.label}
         </LiveBadge>
       );
     }
@@ -155,10 +149,8 @@ export default function CameraPage() {
           {prediction ? (
             <PredictionView
               prediction={prediction}
-              confLabel={confLabel}
-              confidenceLabel={t("camera.confidence")}
               detectedLabel={t("camera.detectedSign")}
-              outputLabel={t("camera.outputPhrase")}
+              didYouMeanLabel={t("camera.didYouMean")}
               speakLabel={t("camera.speakOutput")}
             />
           ) : (
@@ -197,17 +189,13 @@ function LiveBadge({
 
 function PredictionView({
   prediction,
-  confLabel,
-  confidenceLabel,
   detectedLabel,
-  outputLabel,
+  didYouMeanLabel,
   speakLabel,
 }: {
   prediction: Prediction;
-  confLabel: (v: number) => string;
-  confidenceLabel: string;
   detectedLabel: string;
-  outputLabel: string;
+  didYouMeanLabel: string;
   speakLabel: string;
 }) {
   return (
@@ -219,25 +207,11 @@ function PredictionView({
         <p className="text-2xl font-black">{prediction.label}</p>
       </div>
 
-      <div>
-        <div className="mb-1 flex items-center justify-between text-sm font-bold">
-          <span>
-            {confidenceLabel} ({confLabel(prediction.confidence)})
-          </span>
-          <span>{formatConfidence(prediction.confidence)}</span>
-        </div>
-        <div className="h-3 overflow-hidden rounded-pill bg-surface-alt">
-          <div
-            className="h-full rounded-pill bg-bee-yellow transition-[width]"
-            style={{ width: formatConfidence(prediction.confidence) }}
-          />
-        </div>
-      </div>
-
+      {/* Prediction phrase checker — frames the result as a suggestion. */}
       {prediction.phrase && (
         <div className="rounded-button bg-surface-alt p-4">
-          <p className="text-xs font-bold uppercase tracking-wider text-text-muted">
-            {outputLabel}
+          <p className="text-sm font-bold text-text-muted">
+            {didYouMeanLabel}
           </p>
           <p className="mt-1 text-xl font-bold">{prediction.phrase}</p>
         </div>

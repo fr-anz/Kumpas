@@ -62,7 +62,7 @@ export function Onboarding({ onDone }: { onDone: () => void }) {
   const anim = dir === "fwd" ? "step-in-right" : "step-in-left";
 
   return (
-    <div className="mx-auto flex min-h-dvh max-w-xl flex-col px-5 py-8 sm:px-8">
+    <div className="relative z-10 mx-auto flex min-h-dvh max-w-xl flex-col px-5 py-8 sm:px-8">
       {/* Progress dots */}
       <div
         className="mb-8 flex items-center justify-center gap-2"
@@ -139,7 +139,7 @@ function Welcome({ t, onNext }: { t: T; onNext: () => void }) {
           src="/kumpas_onboarding.svg"
           className="h-36 w-36 drop-shadow-md sm:h-44 sm:w-44"
         />
-        <h1 className="text-center text-4xl font-black leading-tight tracking-tight sm:text-5xl">
+        <h1 className="text-center font-display text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
           {t("onb.welcomeTitle")}
         </h1>
       </div>

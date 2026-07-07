@@ -51,7 +51,7 @@ export default function HomePage() {
       {loaded && profile ? (
         <section 
           onClick={() => router.push('/emergency')}
-          className="w-full bg-bee-yellow border-2 border-bee-black rounded-2xl p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] cursor-pointer hover:-translate-y-1 transition-transform"
+          className="w-full bg-[#e0a800] text-bee-black border-2 border-bee-black rounded-2xl p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] cursor-pointer hover:-translate-y-1 transition-transform"
         >
           <div className="flex justify-between items-start border-b-2 border-bee-black pb-3 mb-3 gap-3">
             <div className="flex gap-3 sm:gap-4 items-center min-w-0">

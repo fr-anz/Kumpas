@@ -4,6 +4,7 @@ import Link from "next/link";
 import { AlertTriangle, RotateCcw } from "lucide-react";
 import { useTheme } from "@/components/ThemeProvider";
 import { useFontSize } from "@/components/FontSizeProvider";
+import { useBatterySaver } from "@/components/BatterySaverProvider";
 import { useLanguage } from "@/i18n/LanguageProvider";
 import { InstallButton } from "@/components/InstallButton";
 import { resetAndOnboard } from "@/services/storageService";
@@ -16,6 +17,7 @@ const APP_VERSION = "0.1.0 (demo)";
 export default function SettingsPage() {
   const { theme, setTheme } = useTheme();
   const { fontSize, setFontSize } = useFontSize();
+  const { batterySaver, setBatterySaver } = useBatterySaver();
   const { language, setLanguage, t, speechLocale } = useLanguage();
 
   const handleClear = () => {
@@ -53,6 +55,40 @@ export default function SettingsPage() {
         <h2 className="text-xl font-extrabold">{t("install.section")}</h2>
         <p className="text-sm text-text-muted">{t("install.description")}</p>
         <InstallButton />
+      </section>
+
+      {/* Battery optimization */}
+      <section className="flex flex-col gap-3">
+        <h2 className="text-xl font-extrabold">{t("settings.battery")}</h2>
+        <p className="text-sm text-text-muted">{t("settings.batteryDesc")}</p>
+        <button
+          type="button"
+          role="switch"
+          aria-checked={batterySaver}
+          onClick={() => setBatterySaver(!batterySaver)}
+          className={`flex min-h-12 items-center justify-between rounded-button border-2 px-5 text-lg font-bold transition-colors ${
+            batterySaver
+              ? "border-bee-yellow bg-bee-yellow/10"
+              : "border-border bg-surface hover:bg-surface-alt"
+          }`}
+        >
+          <span>
+            {batterySaver ? t("settings.batteryOn") : t("settings.batteryOff")}
+          </span>
+          {/* Toggle track */}
+          <span
+            aria-hidden="true"
+            className={`relative h-7 w-12 shrink-0 rounded-pill transition-colors ${
+              batterySaver ? "bg-bee-yellow" : "bg-border"
+            }`}
+          >
+            <span
+              className={`absolute top-1 h-5 w-5 rounded-full bg-bee-black transition-all ${
+                batterySaver ? "left-6" : "left-1"
+              }`}
+            />
+          </span>
+        </button>
       </section>
 
       {/* Language toggle: EN ↔ FL */}

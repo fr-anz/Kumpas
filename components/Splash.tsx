@@ -19,7 +19,7 @@ export function Splash({ leaving }: { leaving: boolean }) {
       <div className="bee-fly-in relative">
         <BeeLogo className="h-28 w-28 drop-shadow-lg" />
       </div>
-      <p className="splash-title relative text-3xl font-black tracking-tight">
+      <p className="splash-title relative font-display text-4xl font-semibold tracking-tight">
         Kumpas
       </p>
     </div>

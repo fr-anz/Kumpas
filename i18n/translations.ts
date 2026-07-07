@@ -145,6 +145,7 @@ const en: Dict = {
   "camera.detectedSign": "Detected sign",
   "camera.confidence": "Confidence",
   "camera.outputPhrase": "Output phrase",
+  "camera.didYouMean": "Did you mean:",
   "camera.speakOutput": "Speak output",
   "camera.cameraOff": "Camera is off. Press Start to begin the demo.",
   "camera.notAvailable": "Camera is not available on this device.",
@@ -182,6 +183,11 @@ const en: Dict = {
   "settings.dataCleared": "Local data cleared.",
   "settings.confirmClear":
     "Clear all local data? This removes your emergency profile and settings, and returns to the setup screen.",
+  "settings.battery": "Battery optimization",
+  "settings.batteryDesc":
+    "Freeze the animated background to save battery. Recommended on mobile.",
+  "settings.batteryOn": "On",
+  "settings.batteryOff": "Off",
   "settings.restartSetup": "Restart setup",
   "settings.confirmRestart":
     "Restart setup? This clears your data and takes you back to the welcome screens.",
@@ -330,6 +336,7 @@ const fil: Dict = {
   "camera.detectedSign": "Natukoy na Senyas",
   "camera.confidence": "Katiyakan ng Senyas",
   "camera.outputPhrase": "Resultang Parirala",
+  "camera.didYouMean": "Ang ibig mo bang sabihin:",
   "camera.speakOutput": "Patunugin ang Resulta",
   "camera.cameraOff": "Naka-off ang kamera. Pindutin ang \"Buksan ang Kamera\" para magsimula.",
   "camera.notAvailable": "Hindi available o walang kamera ang device na ito.",
@@ -367,6 +374,11 @@ const fil: Dict = {
   "settings.dataCleared": "Nabura na ang lahat ng lokal na datos.",
   "settings.confirmClear":
     "Sigurado ka bang buburahin mo ang lahat ng lokal na datos? Mawawala ang iyong emergency profile pati mga setting at babalik ka sa panimulang screen.",
+  "settings.battery": "Pag-optimize ng baterya",
+  "settings.batteryDesc":
+    "I-freeze ang animated na background para makatipid sa baterya. Inirerekomenda sa mobile.",
+  "settings.batteryOn": "Naka-on",
+  "settings.batteryOff": "Naka-off",
   "settings.restartSetup": "Ulitin ang setup ng app",
   "settings.confirmRestart":
     "Ulitin ang setup? Buburahin nito ang iyong kasalukuyang datos para magsimula ka ulit sa welcome screen.",
