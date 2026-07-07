@@ -46,7 +46,7 @@ export default function HearingPage() {
     
     for (const label of labels) {
       const paddedLabel = ` ${label} `;
-      let idx = remainingText.indexOf(paddedLabel);
+      const idx = remainingText.indexOf(paddedLabel);
       if (idx !== -1) {
         const id = labelToIdMap[label];
         const folderName = label.toLowerCase().replace(/ /g, '_');
