@@ -25,7 +25,7 @@ export function CategoryCard({ category }: { category: Category }) {
   return (
     <Link
       href={`/library?category=${category.id}`}
-      className="flex min-h-28 flex-col justify-start rounded-3xl bg-surface p-4 border-2 border-bee-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+      className="flex min-h-28 flex-col justify-start rounded-3xl bg-surface p-4 border-2 border-border-lining shadow-[4px_4px_0px_0px_var(--shadow-color)] transition-all hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_var(--shadow-color)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_var(--shadow-color)]"
     >
       <Icon aria-hidden="true" className="h-7 w-7 mb-2 text-bee-amber" />
       <div className="flex flex-col">

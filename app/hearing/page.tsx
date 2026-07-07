@@ -8,6 +8,8 @@ import {
   isGeminiConfigured,
 } from "@/services/geminiService";
 import { findExactPhrase } from "@/data/phrases";
+import { clipMap } from "@/data/clipMap";
+import { labelToIdMap } from "@/data/labelToId";
 import { SpeakButton } from "@/components/SpeakButton";
 import { SignVisual } from "@/components/SignVisual";
 import { PhraseCard } from "@/components/PhraseCard";
@@ -32,6 +34,35 @@ export default function HearingPage() {
   // Set when the typed message exactly matches a library preset, so we can
   // show that preset's pre-saved FSL visual.
   const [matched, setMatched] = useState<Phrase | null>(null);
+  const [matchedClips, setMatchedClips] = useState<string[]>([]);
+
+  const resolveClips = (text: string): string[] => {
+    const normalizedText = text.toUpperCase().replace(/[^A-Z0-9 ]/g, '').trim();
+    if (!normalizedText) return [];
+    
+    const labels = Object.keys(labelToIdMap).sort((a, b) => b.length - a.length);
+    const matches: { index: number, clip: string }[] = [];
+    let remainingText = ` ${normalizedText} `; 
+    
+    for (const label of labels) {
+      const paddedLabel = ` ${label} `;
+      const idx = remainingText.indexOf(paddedLabel);
+      if (idx !== -1) {
+        const id = labelToIdMap[label];
+        const folderName = label.toLowerCase().replace(/ /g, '_');
+        const clipPath = id ? (clipMap[id] || clipMap[folderName]) : null;
+        
+        if (clipPath) {
+          matches.push({ index: idx, clip: clipPath });
+        }
+        // Replace with spaces to preserve indices for subsequent matches
+        remainingText = remainingText.replace(paddedLabel, ' '.repeat(paddedLabel.length));
+      }
+    }
+    
+    matches.sort((a, b) => a.index - b.index);
+    return matches.map(m => m.clip);
+  };
 
   const handleSimplify = async () => {
     const trimmed = input.trim();
@@ -49,6 +80,7 @@ export default function HearingPage() {
         setSimplified(result);
         setSource("gemini");
         setSuggestions(suggestPhrases(trimmed, language));
+        setMatchedClips(resolveClips(result));
         setLoading(false);
         return;
       } catch {
@@ -57,9 +89,11 @@ export default function HearingPage() {
     }
 
     // Offline / unconfigured / Gemini error → local rule-based.
-    setSimplified(simplify(trimmed, language));
+    const localResult = simplify(trimmed, language);
+    setSimplified(localResult);
     setSource("local");
     setSuggestions(suggestPhrases(trimmed, language));
+    setMatchedClips(resolveClips(localResult));
     setLoading(false);
   };
 
@@ -80,7 +114,7 @@ export default function HearingPage() {
           rows={4}
           maxLength={500}
           placeholder={t("hearing.placeholder")}
-          className="rounded-card border border-border bg-surface p-4 text-lg shadow-[var(--shadow)]"
+          className="rounded-card border-2 border-border-lining bg-surface p-4 text-lg shadow-[var(--shadow)]"
         />
       </label>
 
@@ -92,7 +126,7 @@ export default function HearingPage() {
       >
         {loading ? (
           <>
-            <span className="h-4 w-4 animate-spin rounded-full border-2 border-bee-black border-t-transparent" />
+            <span className="h-4 w-4 animate-spin rounded-full border-2 border-border-lining border-t-transparent" />
             Simplifying…
           </>
         ) : (
@@ -124,11 +158,31 @@ export default function HearingPage() {
             <p className="text-2xl font-bold leading-snug">{simplified}</p>
           </div>
 
+          {/* 
+            Interactive DVC Video Clips (from training/clips/clips)
+          */}
+          {matchedClips.length > 0 && (
+            <div className="flex flex-col gap-3">
+              {matchedClips.map((clip, index) => (
+                <div key={`${clip}-${index}`} className="overflow-hidden rounded-[1.25rem] border-2 border-border-lining shadow-[4px_4px_0px_0px_var(--shadow-color)]">
+                  <video
+                    src={clip}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="w-full h-auto object-cover"
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+
           {/*
             FSL visual: only shown when the typed message exactly matches a
-            library preset — then we use that preset's pre-saved sign image.
+            library preset AND no DVC clips were found.
           */}
-          {matched && (
+          {matchedClips.length === 0 && matched && (
             <SignVisual
               phraseId={matched.id}
               alt={`${t("comm.signAlt")}${matched.text}`}

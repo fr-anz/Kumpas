@@ -123,7 +123,7 @@ function PrimaryButton({
     <button
       type={type}
       onClick={onClick}
-      className="flex min-h-14 w-full items-center justify-center gap-2 rounded-button bg-bee-yellow px-6 text-lg font-black text-bee-black transition-all border-2 border-bee-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-bee-yellow-bright active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+      className="flex min-h-14 w-full items-center justify-center gap-2 rounded-button bg-bee-yellow px-6 text-lg font-black text-bee-black transition-all border-2 border-border-lining shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:bg-bee-yellow-bright active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_var(--shadow-color)]"
     >
       {children}
     </button>
@@ -184,7 +184,7 @@ function Preferences({
       <div className="flex flex-col gap-3">
         <span className="font-bold">{t("onb.language")}</span>
         <div
-          className="grid grid-cols-2 gap-1 rounded-pill border-2 border-bee-black bg-surface p-1 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+          className="grid grid-cols-2 gap-1 rounded-pill border-2 border-border-lining bg-surface p-1 shadow-[4px_4px_0px_0px_var(--shadow-color)]"
           role="group"
           aria-label={t("onb.language")}
         >
@@ -196,7 +196,7 @@ function Preferences({
               aria-pressed={language === lng}
               className={`min-h-12 rounded-pill px-4 text-base font-bold transition-all ${
                 language === lng
-                  ? "bg-bee-yellow text-bee-black border-2 border-bee-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                  ? "bg-bee-yellow text-bee-black border-2 border-border-lining shadow-[2px_2px_0px_0px_var(--shadow-color)]"
                   : "text-text hover:bg-surface-alt border-2 border-transparent"
               }`}
             >
@@ -216,10 +216,10 @@ function Preferences({
               type="button"
               onClick={() => setFontSize(s.value)}
               aria-pressed={fontSize === s.value}
-              className={`flex min-h-20 flex-col items-center justify-center gap-1 rounded-card border-2 p-2 transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ${
+              className={`flex min-h-20 flex-col items-center justify-center gap-1 rounded-card border-2 p-2 transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_var(--shadow-color)] ${
                 fontSize === s.value
-                  ? "border-bee-black bg-bee-yellow shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
-                  : "border-bee-black bg-surface shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                  ? "border-border-lining bg-bee-yellow shadow-[4px_4px_0px_0px_var(--shadow-color)]"
+                  : "border-border-lining bg-surface shadow-[4px_4px_0px_0px_var(--shadow-color)]"
               }`}
             >
               <span
@@ -305,19 +305,19 @@ function ProfileStep({
             value={name}
             onChange={(e) => setName(e.target.value)}
             autoComplete="name"
-            className="min-h-12 rounded-button border-2 border-bee-black bg-surface px-4 text-lg shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:outline-none transition-all"
+            className="min-h-12 rounded-button border-2 border-border-lining bg-surface px-4 text-lg shadow-[4px_4px_0px_0px_var(--shadow-color)] focus:outline-none transition-all"
           />
         </label>
 
         <label className="flex flex-col gap-1.5">
           <span className="font-bold">{t("onb.contactNumber")}</span>
           <div
-            className={`flex min-h-12 items-center gap-2 rounded-button border-2 bg-surface pl-3 pr-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus-within:outline-none transition-all ${
+            className={`flex min-h-12 items-center gap-2 rounded-button border-2 bg-surface pl-3 pr-4 shadow-[4px_4px_0px_0px_var(--shadow-color)] focus-within:outline-none transition-all ${
               showError
                 ? "border-danger"
                 : validNumber
                   ? "border-success"
-                  : "border-bee-black"
+                  : "border-border-lining"
             }`}
           >
             {/* +63 prefix with flag */}
@@ -356,14 +356,14 @@ function ProfileStep({
           <button
             type="submit"
             disabled={!canFinish}
-            className="flex min-h-14 w-full items-center justify-center gap-2 rounded-button bg-bee-yellow px-6 text-lg font-black text-bee-black transition-all border-2 border-bee-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-bee-yellow-bright active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] disabled:cursor-not-allowed disabled:opacity-50"
+            className="flex min-h-14 w-full items-center justify-center gap-2 rounded-button bg-bee-yellow px-6 text-lg font-black text-bee-black transition-all border-2 border-bee-black shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:bg-bee-yellow-bright active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_var(--shadow-color)] disabled:cursor-not-allowed disabled:opacity-50"
           >
             {t("onb.finish")}
           </button>
           <button
             type="button"
             onClick={() => onFinish(false)}
-            className="flex min-h-12 w-full items-center justify-center rounded-button border-2 border-bee-black bg-surface px-6 text-base font-bold transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-surface-alt active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+            className="flex min-h-12 w-full items-center justify-center rounded-button border-2 border-bee-black bg-surface px-6 text-base font-bold transition-all shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:bg-surface-alt active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_var(--shadow-color)]"
           >
             {t("onb.setupLater")}
           </button>

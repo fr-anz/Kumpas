@@ -19,7 +19,7 @@ export function EmergencyProfileCard({ profile }: { profile: UserProfile }) {
   const { t } = useLanguage();
 
   return (
-    <div className="overflow-hidden rounded-[2rem] border-2 border-bee-black bg-surface shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+    <div className="overflow-hidden rounded-[2rem] border-2 border-border-lining bg-surface shadow-[4px_4px_0px_0px_var(--shadow-color)]">
 
       {/* Red header — "I AM DEAF" in both languages */}
       <div
@@ -45,7 +45,7 @@ export function EmergencyProfileCard({ profile }: { profile: UserProfile }) {
       </div>
 
       {/* Profile details */}
-      <dl className="divide-y-2 divide-bee-black bg-surface">
+      <dl className="divide-y-2 divide-border-lining bg-surface">
         <Row label={t("emergency.name")} value={profile.name} />
         {(profile.emergencyContactName || profile.emergencyContactNumber) && (
           <div className="px-5 py-4">
