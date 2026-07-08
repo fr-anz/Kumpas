@@ -38,7 +38,7 @@ export function BottomNav() {
     <div className="fixed inset-x-0 bottom-[max(1rem,env(safe-area-inset-bottom))] z-20 flex justify-center px-4 pointer-events-none">
       <nav
         aria-label="Primary navigation"
-        className="pointer-events-auto w-full max-w-[26rem] rounded-[2rem] border-2 border-bee-black bg-surface shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+        className="pointer-events-auto w-full max-w-[26rem] rounded-[2rem] border-2 border-border-lining bg-surface shadow-[4px_4px_0px_0px_var(--shadow-color)]"
       >
         <ul className="grid grid-cols-5 gap-1 px-2 py-2">
           {items.map((item) => {
@@ -64,10 +64,10 @@ export function BottomNav() {
                   aria-current={isActive ? "page" : undefined}
                   className={`flex w-full min-h-[3.5rem] flex-col items-center justify-center gap-1 rounded-[1.25rem] px-0.5 py-1.5 text-center font-bold leading-[1.05] transition-all border-2 border-transparent ${
                     isActive
-                      ? "bg-bee-yellow text-bee-black border-bee-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] translate-y-[-2px]"
+                      ? "bg-bee-yellow text-bee-black border-border-lining shadow-[2px_2px_0px_0px_var(--shadow-color)] translate-y-[-2px]"
                       : item.emphasized
                         ? "text-danger hover:border-danger hover:shadow-[2px_2px_0px_0px_rgba(215,38,61,1)]"
-                        : "text-text-muted hover:text-bee-black hover:bg-bee-yellow hover:border-bee-black hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                        : "text-text-muted hover:text-bee-black hover:bg-bee-yellow hover:border-border-lining hover:shadow-[2px_2px_0px_0px_var(--shadow-color)]"
                   } active:translate-x-[1px] active:translate-y-[1px] active:shadow-none`}
                 >
                   <Icon
