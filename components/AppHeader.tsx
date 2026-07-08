@@ -45,6 +45,7 @@ export function AppHeader() {
           </button>
           {isSettings ? (
             <button
+              id="settings-btn"
               onClick={() => router.back()}
               aria-label="Close settings"
               className="flex h-10 w-10 items-center justify-center rounded-pill bg-white border border-bee-black text-bee-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all hover:-translate-y-0.5 active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"
@@ -53,6 +54,7 @@ export function AppHeader() {
             </button>
           ) : (
             <Link
+              id="settings-btn"
               href="/settings"
               aria-label={t("header.settings")}
               className="flex h-10 w-10 items-center justify-center rounded-pill bg-white border border-bee-black text-bee-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all hover:-translate-y-0.5 active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"

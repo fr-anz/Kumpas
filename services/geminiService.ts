@@ -25,7 +25,7 @@ export const isGeminiConfigured: boolean = API_KEY.length > 0;
 export async function simplifyWithGemini(
   input: string,
   language: "en" | "fil" = "en",
-): Promise<string> {
+): Promise<{ simplified: string; responses: string[] }> {
   if (!isGeminiConfigured) {
     throw new Error("Gemini API key is not configured.");
   }
@@ -36,20 +36,24 @@ export async function simplifyWithGemini(
   const langLabel = language === "fil" ? "Filipino (Tagalog)" : "English";
 
   const prompt = `You are helping a Deaf Filipino person communicate in a public service situation.
-A staff member has typed this message. Rewrite it in short, plain ${langLabel} that is easy to understand.
+A staff member has typed this message: "${input.trim()}"
 
-Rules:
-- Use simple words. No jargon, passive voice, or long sentences.
-- Maximum 2 sentences.
-- Output only the simplified text — no explanation, no labels, no quotes.
+Do two things:
+1. Rewrite it in short, plain ${langLabel} that is easy to understand.
+2. Provide 3 short, natural ${langLabel} responses that the Deaf person could tap to reply to this message.
 
-Staff message: "${input.trim()}"`;
+Output ONLY valid JSON in this format:
+{
+  "simplified": "string",
+  "responses": ["string", "string", "string"]
+}`;
 
   const body = {
     contents: [{ parts: [{ text: prompt }] }],
     generationConfig: {
       temperature: 0.2,
-      maxOutputTokens: 120,
+      maxOutputTokens: 200,
+      responseMimeType: "application/json",
     },
   };
 
@@ -72,5 +76,13 @@ Staff message: "${input.trim()}"`;
     throw new Error("Gemini returned an empty response.");
   }
 
-  return text;
+  try {
+    const parsed = JSON.parse(text);
+    return {
+      simplified: parsed.simplified || "",
+      responses: Array.isArray(parsed.responses) ? parsed.responses : [],
+    };
+  } catch (e) {
+    throw new Error("Failed to parse Gemini JSON output.");
+  }
 }

@@ -26,7 +26,7 @@ const withPWA = withPWAInit({
   aggressiveFrontEndNavCaching: true,
   reloadOnOnline: true,
   // Disable the service worker in development to avoid stale caches.
-  disable: process.env.NODE_ENV === "development" || process.env.DISABLE_PWA === "1",
+  disable: true,
   workboxOptions: {
     disableDevLogs: true,
     // Next's static export emits one HTML document and one RSC payload per

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { AlertTriangle, RotateCcw, ShieldCheck } from "lucide-react";
 import { useTheme } from "@/components/ThemeProvider";
 import { useFontSize } from "@/components/FontSizeProvider";
@@ -20,6 +21,7 @@ import type { Language } from "@/i18n/translations";
 const APP_VERSION = "0.1.0 (demo)";
 
 export default function SettingsPage() {
+  const router = useRouter();
   const { theme, setTheme } = useTheme();
   const { fontSize, setFontSize } = useFontSize();
   const { batterySaver, setBatterySaver } = useBatterySaver();
@@ -65,6 +67,18 @@ export default function SettingsPage() {
       <h1 className="text-3xl font-black tracking-tight">
         {t("settings.title")}
       </h1>
+
+      {/* REPLAY GUIDED TOUR BUTTON */}
+      <button 
+        onClick={() => {
+          localStorage.removeItem('kumpas_tour_completed');
+          router.push('/');
+        }}
+        className="w-full flex items-center justify-center gap-3 bg-white text-bee-black py-3 rounded-xl shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] border-2 border-black hover:bg-gray-50 active:translate-y-[2px] active:translate-x-[2px] active:shadow-none transition-all"
+      >
+        <img src="/icon-192x192.png" alt="Bea" className="w-8 h-8 object-contain drop-shadow-md" />
+        <span className="font-display !font-black !text-xl tracking-widest uppercase" style={{ fontWeight: 900 }}>Meet Bea</span>
+      </button>
 
       {/* Install app (PWA) */}
       <section className="flex flex-col gap-3">

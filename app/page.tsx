@@ -7,6 +7,7 @@ import { Siren, MessageSquare, Camera, Clock, User, Volume2 } from "lucide-react
 import { categories } from "@/data/categories";
 import { CategoryCard } from "@/components/CategoryCard";
 import { InstallBanner } from "@/components/InstallBanner";
+import MascotGuidedTour from "@/components/MascotGuidedTour";
 import { useLanguage } from "@/i18n/LanguageProvider";
 import { loadRecents } from "@/utils/recentPhrases";
 import { getPhraseById } from "@/data/phrases";
@@ -23,6 +24,7 @@ export default function HomePage() {
   const [recents, setRecents] = useState<Phrase[]>([]);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loaded, setLoaded] = useState(false);
+  const [showTour, setShowTour] = useState(false);
 
   useEffect(() => {
     setProfile(loadProfile());
@@ -34,7 +36,21 @@ export default function HomePage() {
     setRecents(resolved);
     
     setLoaded(true);
+
+    if (typeof window !== "undefined") {
+      if (!localStorage.getItem('kumpas_tour_completed')) {
+        // Slight delay so the page can animate in first
+        setTimeout(() => setShowTour(true), 500);
+      }
+    }
   }, []);
+
+  const completeTour = () => {
+    setShowTour(false);
+    if (typeof window !== "undefined") {
+      localStorage.setItem('kumpas_tour_completed', 'true');
+    }
+  };
 
   const emergencyMessage = profile 
     ? (language === "fil" 
@@ -44,6 +60,10 @@ export default function HomePage() {
 
   return (
     <div className="flex flex-col gap-6 page-enter pt-4">
+      {showTour && (
+        <MascotGuidedTour onComplete={completeTour} />
+      )}
+
       {/* Dismissible PWA install prompt (only when installable) */}
       <InstallBanner />
 
