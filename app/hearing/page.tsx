@@ -114,7 +114,7 @@ export default function HearingPage() {
           rows={4}
           maxLength={500}
           placeholder={t("hearing.placeholder")}
-          className="rounded-card border-2 border-border-lining bg-surface p-4 text-lg shadow-[var(--shadow)]"
+          className="rounded-card border border-border-lining bg-surface p-4 text-lg shadow-[var(--shadow)]"
         />
       </label>
 
@@ -126,7 +126,7 @@ export default function HearingPage() {
       >
         {loading ? (
           <>
-            <span className="h-4 w-4 animate-spin rounded-full border-2 border-border-lining border-t-transparent" />
+            <span className="h-4 w-4 animate-spin rounded-full border border-border-lining border-t-transparent" />
             Simplifying…
           </>
         ) : (
@@ -136,7 +136,7 @@ export default function HearingPage() {
 
       {simplified && (
         <div className="flex flex-col gap-4">
-          <div className="rounded-card border-2 border-bee-yellow bg-surface p-4 shadow-[var(--shadow)]">
+          <div className="rounded-card border border-bee-yellow bg-surface p-4 shadow-[var(--shadow)]">
             {/* Source badge */}
             <div className="mb-3 flex items-center gap-2">
               <p className="text-xs font-bold uppercase tracking-wider text-text-muted">
@@ -164,7 +164,7 @@ export default function HearingPage() {
           {matchedClips.length > 0 && (
             <div className="flex flex-col gap-3">
               {matchedClips.map((clip, index) => (
-                <div key={`${clip}-${index}`} className="overflow-hidden rounded-[1.25rem] border-2 border-border-lining shadow-[4px_4px_0px_0px_var(--shadow-color)]">
+                <div key={`${clip}-${index}`} className="overflow-hidden rounded-[1.25rem] border border-border-lining shadow-[2px_2px_0px_0px_var(--shadow-color)]">
                   <video
                     src={clip}
                     autoPlay

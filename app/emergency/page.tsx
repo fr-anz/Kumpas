@@ -53,7 +53,7 @@ export default function EmergencyPage() {
       </h1>
 
       {/* Always-available emergency speech, even before a profile exists. */}
-      <div className="rounded-card border-2 border-danger bg-surface p-5 shadow-[4px_4px_0px_0px_rgba(215,38,61,1)]">
+      <div className="rounded-card border border-danger bg-surface p-5 shadow-[2px_2px_0px_0px_rgba(215,38,61,1)]">
         <p className="text-lg font-bold">{emergencyMessage}</p>
         <SpeakButton
           text={emergencyMessage}
@@ -92,7 +92,7 @@ export default function EmergencyPage() {
                 await navigator.clipboard?.writeText(shareText).catch(() => {});
               }
             }}
-            className="flex min-h-12 items-center justify-center gap-2 rounded-button border-2 border-border-lining bg-surface px-6 text-base font-bold transition-all shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:bg-surface-alt active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_var(--shadow-color)]"
+            className="flex min-h-12 items-center justify-center gap-2 rounded-button border border-border-lining bg-surface px-6 text-base font-bold transition-all shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:bg-surface-alt active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_var(--shadow-color)]"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -120,7 +120,7 @@ export default function EmergencyPage() {
               setDraft(profile);
               setEditing(true);
             }}
-            className="flex min-h-12 items-center justify-center rounded-button border-2 border-border-lining bg-surface px-6 text-lg font-bold transition-all shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:bg-surface-alt active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_var(--shadow-color)]"
+            className="flex min-h-12 items-center justify-center rounded-button border border-border-lining bg-surface px-6 text-lg font-bold transition-all shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:bg-surface-alt active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_var(--shadow-color)]"
           >
             {t("emergency.editProfile")}
           </button>
@@ -147,10 +147,10 @@ export default function EmergencyPage() {
                   setDraft({ ...draft, photoBase64: undefined });
                 }
               }}
-              className="rounded-button border-2 border-border-lining bg-surface p-2.5 text-sm shadow-[4px_4px_0px_0px_var(--shadow-color)] transition-all"
+              className="rounded-button border border-border-lining bg-surface p-2.5 text-sm shadow-[2px_2px_0px_0px_var(--shadow-color)] transition-all"
             />
             {draft.photoBase64 && (
-              <img src={draft.photoBase64} alt="Preview" className="mt-2 h-24 w-24 rounded-full border-2 border-border-lining object-cover" />
+              <img src={draft.photoBase64} alt="Preview" className="mt-2 h-24 w-24 rounded-full border border-border-lining object-cover" />
             )}
           </label>
           <Field
@@ -186,7 +186,7 @@ export default function EmergencyPage() {
           <div className="flex gap-3">
             <button
               type="submit"
-              className="flex min-h-12 flex-1 items-center justify-center rounded-button bg-bee-yellow px-6 text-lg font-black text-bee-black transition-all border-2 border-border-lining shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:bg-bee-yellow-bright active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_var(--shadow-color)]"
+              className="flex min-h-12 flex-1 items-center justify-center rounded-button bg-bee-yellow px-6 text-lg font-black text-bee-black transition-all border border-border-lining shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:bg-bee-yellow-bright active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_var(--shadow-color)]"
             >
               {t("emergency.saveProfile")}
             </button>
@@ -194,7 +194,7 @@ export default function EmergencyPage() {
               <button
                 type="button"
                 onClick={() => setEditing(false)}
-                className="flex min-h-12 items-center justify-center rounded-button border-2 border-border-lining bg-surface px-6 text-lg font-bold transition-all shadow-[4px_4px_0px_0px_var(--shadow-color)] hover:bg-surface-alt active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_var(--shadow-color)]"
+                className="flex min-h-12 items-center justify-center rounded-button border border-border-lining bg-surface px-6 text-lg font-bold transition-all shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:bg-surface-alt active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_var(--shadow-color)]"
               >
                 {t("common.cancel")}
               </button>
@@ -225,7 +225,7 @@ function Field({
         type={type}
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="min-h-12 rounded-button border-2 border-border-lining bg-surface px-4 text-lg shadow-[4px_4px_0px_0px_var(--shadow-color)] focus:outline-none transition-all"
+        className="min-h-12 rounded-button border border-border-lining bg-surface px-4 text-lg shadow-[2px_2px_0px_0px_var(--shadow-color)] focus:outline-none transition-all"
       />
     </label>
   );
@@ -257,7 +257,7 @@ function ContactField({
     <label className="flex flex-col gap-1.5">
       <span className="font-bold">{label}</span>
       <div
-        className={`flex min-h-12 items-center gap-2 rounded-button border-2 bg-surface pl-3 pr-4 shadow-[4px_4px_0px_0px_var(--shadow-color)] focus-within:outline-none transition-all ${
+        className={`flex min-h-12 items-center gap-2 rounded-button border bg-surface pl-3 pr-4 shadow-[2px_2px_0px_0px_var(--shadow-color)] focus-within:outline-none transition-all ${
           showError
             ? "border-danger"
             : validNumber

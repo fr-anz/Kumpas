@@ -51,13 +51,13 @@ export default function HomePage() {
       {loaded && profile ? (
         <section 
           onClick={() => router.push('/emergency')}
-          className="w-full bg-bee-yellow text-bee-black border-2 border-bee-black rounded-2xl p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] cursor-pointer hover:-translate-y-1 transition-transform"
+          className="w-full bg-bee-yellow text-bee-black border border-bee-black rounded-2xl p-5 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] cursor-pointer hover:-translate-y-1 transition-transform"
         >
-          <div className="flex justify-between items-start border-b-2 border-bee-black pb-3 mb-3 gap-3">
+          <div className="flex justify-between items-start border-b border-bee-black pb-3 mb-3 gap-3">
             <div className="flex gap-3 sm:gap-4 items-center min-w-0">
               {/* Picture Section */}
               <label 
-                className="relative h-16 w-16 sm:h-20 sm:w-20 shrink-0 overflow-hidden rounded-full border-2 border-bee-black bg-surface flex items-center justify-center cursor-pointer group"
+                className="relative h-16 w-16 sm:h-20 sm:w-20 shrink-0 overflow-hidden rounded-full border border-bee-black bg-surface flex items-center justify-center cursor-pointer group"
                 onClick={(e) => e.stopPropagation()}
                 title="Change Profile Picture"
               >
@@ -116,7 +116,7 @@ export default function HomePage() {
           </div>
         </section>
       ) : loaded && !profile ? (
-         <section className="w-full bg-surface-alt border-2 border-border-lining shadow-[4px_4px_0px_0px_var(--shadow-color)] rounded-2xl p-5 text-center flex flex-col items-center justify-center gap-3">
+         <section className="w-full bg-surface-alt border border-border-lining shadow-[2px_2px_0px_0px_var(--shadow-color)] rounded-2xl p-5 text-center flex flex-col items-center justify-center gap-3">
             {/* Setup Prompt if no profile exists yet */}
             <p className="font-bold text-lg">{t("emergency.setupTitle")}</p>
             <Link href="/emergency" className="inline-flex min-h-12 items-center justify-center rounded-button bg-bee-yellow px-6 font-black text-bee-black hover:bg-bee-yellow-bright shadow-sm">
@@ -140,7 +140,7 @@ export default function HomePage() {
               <Link
                 key={phrase.id}
                 href={`/communication/${phrase.id}`}
-                className="flex min-h-[4rem] w-full items-center justify-center text-center rounded-xl bg-surface px-2 py-2 border-2 border-border-lining shadow-[4px_4px_0px_0px_var(--shadow-color)] transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_var(--shadow-color)]"
+                className="flex min-h-[4rem] w-full items-center justify-center text-center rounded-xl bg-surface px-2 py-2 border border-border-lining shadow-[2px_2px_0px_0px_var(--shadow-color)] transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_var(--shadow-color)] hover:-translate-y-1 hover:shadow-[3px_3px_0px_0px_var(--shadow-color)]"
                 title={language === "fil" ? phrase.titleFil : phrase.title}
               >
                 <span className="line-clamp-3 text-[10px] sm:text-xs font-bold leading-[1.15] text-balance">

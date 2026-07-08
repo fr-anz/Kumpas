@@ -41,7 +41,7 @@
   --accent-strong: var(--bee-amber);
   --on-accent: var(--bee-black);
   --shadow-color: rgba(0, 0, 0, 1);
-  --shadow: 4px 4px 0px 0px var(--shadow-color);
+  --shadow: 2px 2px 0px 0px var(--shadow-color);
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -90,7 +90,7 @@
   --accent-strong: var(--bee-yellow-bright);
   --on-accent: var(--bee-black);
   --shadow-color: var(--bee-yellow);
-  --shadow: 4px 4px 0px 0px var(--shadow-color);
+  --shadow: 2px 2px 0px 0px var(--shadow-color);
   --border-lining: var(--bee-yellow);
 }
 
@@ -105,7 +105,7 @@
     --border: rgba(255, 255, 255, 0.14);
     --accent-strong: var(--bee-yellow-bright);
     --shadow-color: var(--bee-yellow);
-    --shadow: 4px 4px 0px 0px var(--shadow-color);
+    --shadow: 2px 2px 0px 0px var(--shadow-color);
     --border-lining: var(--bee-yellow);
   }
 }

@@ -21,7 +21,7 @@ export function AppHeader() {
   };
 
   return (
-    <header className="sticky top-0 z-20 border-b-2 border-bee-black bg-bee-yellow text-bee-black">
+    <header className="sticky top-0 z-20 border-b border-bee-black bg-bee-yellow text-bee-black">
       <div className="mx-auto flex w-full max-w-3xl items-center justify-between px-5 py-4 sm:px-8 lg:max-w-5xl">
         <Link
           href="/"
@@ -35,7 +35,7 @@ export function AppHeader() {
           <button
             onClick={toggleTheme}
             aria-label="Toggle theme"
-            className="flex h-10 w-10 items-center justify-center rounded-pill bg-white border-2 border-bee-black text-bee-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all hover:-translate-y-0.5 active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"
+            className="flex h-10 w-10 items-center justify-center rounded-pill bg-white border border-bee-black text-bee-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all hover:-translate-y-0.5 active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"
           >
             {theme === "dark" ? (
               <Sun aria-hidden="true" className="h-5 w-5" />
@@ -47,7 +47,7 @@ export function AppHeader() {
             <button
               onClick={() => router.back()}
               aria-label="Close settings"
-              className="flex h-10 w-10 items-center justify-center rounded-pill bg-white border-2 border-bee-black text-bee-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all hover:-translate-y-0.5 active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"
+              className="flex h-10 w-10 items-center justify-center rounded-pill bg-white border border-bee-black text-bee-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all hover:-translate-y-0.5 active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"
             >
               <Settings aria-hidden="true" className="h-5 w-5" />
             </button>
@@ -55,7 +55,7 @@ export function AppHeader() {
             <Link
               href="/settings"
               aria-label={t("header.settings")}
-              className="flex h-10 w-10 items-center justify-center rounded-pill bg-white border-2 border-bee-black text-bee-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all hover:-translate-y-0.5 active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"
+              className="flex h-10 w-10 items-center justify-center rounded-pill bg-white border border-bee-black text-bee-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all hover:-translate-y-0.5 active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"
             >
               <Settings aria-hidden="true" className="h-5 w-5" />
             </Link>

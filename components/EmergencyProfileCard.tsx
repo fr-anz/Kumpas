@@ -19,18 +19,18 @@ export function EmergencyProfileCard({ profile }: { profile: UserProfile }) {
   const { t } = useLanguage();
 
   return (
-    <div className="overflow-hidden rounded-[2rem] border-2 border-border-lining bg-surface shadow-[4px_4px_0px_0px_var(--shadow-color)]">
+    <div className="overflow-hidden rounded-[2rem] border border-border-lining bg-surface shadow-[2px_2px_0px_0px_var(--shadow-color)]">
 
       {/* Red header — "I AM DEAF" in both languages */}
       <div
-        className="flex flex-col items-center justify-center gap-1 px-6 py-8 border-b-2 border-bee-black"
+        className="flex flex-col items-center justify-center gap-1 px-6 py-8 border-b border-bee-black"
         style={{ background: "var(--danger)" }}
       >
         {profile.photoBase64 && (
           <img 
             src={profile.photoBase64} 
             alt={profile.name} 
-            className="mb-3 h-24 w-24 rounded-full border-2 border-white object-cover shadow-lg"
+            className="mb-3 h-24 w-24 rounded-full border border-white object-cover shadow-lg"
           />
         )}
         <p className="text-center text-5xl font-black uppercase leading-none tracking-tight text-white sm:text-6xl">

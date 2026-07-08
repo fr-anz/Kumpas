@@ -137,7 +137,7 @@ export function CommunicationCard({ phrase }: { phrase: Phrase }) {
         <button
           type="button"
           onClick={handleShare}
-          className="flex min-h-12 flex-1 items-center justify-center gap-2 rounded-button border-2 border-bee-black bg-surface px-6 text-lg font-bold transition-colors hover:bg-surface-alt"
+          className="flex min-h-12 flex-1 items-center justify-center gap-2 rounded-button border border-bee-black bg-surface px-6 text-lg font-bold transition-colors hover:bg-surface-alt"
           aria-label="Share or copy this phrase"
         >
           {copied ? (

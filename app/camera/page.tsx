@@ -134,7 +134,7 @@ export default function CameraPage() {
           <button
             type="button"
             onClick={stopCamera}
-            className="flex min-h-12 flex-1 items-center justify-center rounded-button border-2 border-border-lining bg-surface px-6 text-lg font-bold transition-colors hover:bg-surface-alt"
+            className="flex min-h-12 flex-1 items-center justify-center rounded-button border border-border-lining bg-surface px-6 text-lg font-bold transition-colors hover:bg-surface-alt"
           >
             {t("camera.stop")}
           </button>
