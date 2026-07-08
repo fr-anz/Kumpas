@@ -153,11 +153,11 @@ export default function MascotGuidedTour({
           key="overlay"
           className="absolute inset-0 bg-black/70 backdrop-blur-sm pointer-events-none"
           initial={{ opacity: 0 }}
-          animate={{
+          animate={({
             opacity: 1,
             WebkitMaskImage: `radial-gradient(circle at ${cx}px ${cy}px, transparent ${r}px, black ${r + 2}px)`,
             maskImage: `radial-gradient(circle at ${cx}px ${cy}px, transparent ${r}px, black ${r + 2}px)`
-          }}
+          }) as any}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5 }}
         />
