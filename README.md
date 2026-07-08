@@ -13,22 +13,30 @@ Kumpas
 ## Project Brief
 
 ### The Problem
-Access to public services and emergency response in the Philippines is heavily restricted for Deaf citizens. The Philippine Statistics Authority reports over 1.1 million Deaf Filipinos, yet there are only roughly 180 professional Filipino Sign Language (FSL) interpreters nationwide. During critical transactions (e.g., medical crises, emergency evacuations, obtaining a Cedula, or filing a blotter report), Deaf individuals face structural communication barriers. Traditional translation tools fail to bridge this gap because they depend on cloud connectivity, which is often slow or unavailable in remote municipal halls or emergency shelters.
+Access to public services and emergency assistance remains difficult for many Deaf Filipinos because of limited communication support at frontline institutions. During critical situations—such as medical emergencies, evacuation procedures, barangay transactions, obtaining a community tax certificate, or filing a police blotter—Deaf individuals may encounter personnel who are unable to communicate in Filipino Sign Language and may not have immediate access to a qualified interpreter. This can lead to delays, misunderstandings, reduced privacy, and dependence on relatives or untrained intermediaries. Existing digital communication tools may also be unreliable in rural municipal offices, evacuation centers, and temporary service locations because many depend on continuous cloud connectivity. These conditions highlight the need for an accessible, offline-capable communication tool that can support basic interactions while preserving the role of professional FSL interpreters in complex, legal, and medical situations.
 
 ### The Proposed Solution
-Kumpas is an offline-first, shared-device FSL communication assistant PWA. Grounded in Republic Act No. 11106 (The FSL Act), it runs lightweight ML models and translation utilities entirely in the browser. 
+Kumpas is an offline-first Filipino Sign Language communication assistant designed for public-service and emergency situations. Based on Republic Act No. 11106, or the Filipino Sign Language Act, it helps Deaf Filipinos communicate with hearing frontline workers when an interpreter is not immediately available.
 
-The application is structured into three primary workflows:
-1. **Instant Outbound (Phrase Library & Emergency ID):** A high-contrast, 3-tap action interface that lets Deaf users speak essential needs aloud via text-to-speech.
-2. **Intelligent Inbound (Hearing Person Mode):** A simplified input box for hearing desk staff that simplifies complex administrative jargon into plain text.
-3. **Edge Sign Recognition:** A camera interface that translates live FSL signs to text in real-time with zero data dependency.
+The application has three main functions:
+
+1. **Offline Phrase Library**
+Deaf users can quickly select common phrases for emergencies, healthcare, barangay services, transportation, education, and basic communication. Selected messages can be displayed as text or spoken aloud using text-to-speech.
+2. **Hearing Person Mode**
+Hearing users can type responses for Deaf users to read. Complex messages can be simplified using the Gemini API when internet access is available or through a built-in rule-based simplifier when offline.
+3. **Real-Time FSL Recognition**
+The application uses a device camera to recognize selected Filipino Sign Language signs and convert them into text. Recognition runs directly in the browser using MediaPipe and TensorFlow.js.
+
+Kumpas is an assistive communication tool and does not replace professional FSL interpreters, especially during complex medical, legal, or emergency situations.
 
 ### Intended Users
-* **Deaf Filipinos** who need to navigate public transactional spaces or report crises.
-* **Hearing Frontline Workers** (barangay staff, police officers, clinic receptionists, and disaster responders) who need to receive and respond to their requests.
+* **Deaf Filipinos** who need communication support when accessing public services or requesting emergency assistance.
+* **Hearing frontline workers**, including barangay personnel, police officers, clinic staff, transportation workers, school personnel, and emergency responders.
 
 ### Project Impact
-Kumpas eliminates the dependency on high-speed internet, allowing immediate, face-to-face communication in the most remote areas of the Philippines. By running local models with sub-50ms latency, it provides a secure, private, and cost-free solution that can scale instantly across all 42,000 barangays.
+Kumpas provides an accessible communication option in locations where qualified FSL interpreters or reliable internet connections may not be immediately available. Its offline-first design allows essential features, such as phrase access and sign recognition, to continue working without continuous internet connectivity.
+
+By supporting direct communication between Deaf users and frontline personnel, Kumpas may help reduce misunderstandings, delays, and dependence on untrained intermediaries. It can also support more inclusive public-service environments while reinforcing the importance of professional interpreters for complex interactions.
 
 ---
 
@@ -36,21 +44,21 @@ Kumpas eliminates the dependency on high-speed internet, allowing immediate, fac
 
 | Name | Role |
 | --- | --- |
-| **Baes, Franz Emmanuel** | Project Lead & Fullstack Developer |
-| **Delos Santos, Christian Joseph** | UI/UX & Fullstack Developer |
-| **Javier, Salvador Vincent** | Systems Architect & Fullstack Developer |
-| **A Jose, Justin Gabriel** | ML Trainer & Fullstack Developer  |
+| **Baes, Franz Emmanuel** | Project Lead |
+| **Delos Santos, Christian Joseph** | UI/UX & Front-end Developer|
+| **Javier, Salvador Vincent** | Systems & Integration |
+| **A Jose, Justin Gabriel** | Data Lead |
 
 ---
 
 ## Google Technologies Used
 
 * **Gemini API (via `gemini-2.0-flash`)**
-  Used in *Hearing Person Mode* to simplify complex, bureaucratic sentences typed by hearing staff into short, plain-text instructions. It includes a fallback mechanism that shifts to a local rule-based simplification script if the device loses connection.
+  Used in *Hearing Person Mode* to simplify complex administrative or service-related messages into shorter and clearer text. When the device is offline or the API is unavailable, Kumpas uses a built-in rule-based simplifier.
 * **TensorFlow.js**
-  Loads and executes our custom-trained 1D Temporal Convolutional neural network model directly in the browser using WebGL acceleration, enabling local classification of sign language.
+  Runs the custom FSL recognition model directly in the browser. This allows selected signs to be classified locally without requiring continuous communication with a cloud server.
 * **MediaPipe Tasks Vision (Web)**
-  Extracts 21 3D hand landmarks per hand from the webcam feed, mapping raw camera frames into normalized, wrist-relative, and palm-scaled 128-D feature vectors at the edge.
+  Detects and tracks hand landmarks from the device camera. These landmarks are processed and used by the recognition model to identify supported FSL signs in real time.
 
 ---
 
@@ -65,3 +73,9 @@ This project was developed as part of **SparkFest 2026**, the flagship hackathon
 * **Live Demo:** [kumpas-opal.vercel.app](https://kumpas-opal.vercel.app)
 * **Presentation Deck:** [Google Drive Link](https://drive.google.com/drive/folders/16E8Z9l4o12Q8x9vN98N3t15_82y9Z1kC) *(Anyone with the link can view)*
 * **Project Document:** [Kumpas Project Brief (PDF)](https://drive.google.com/drive/folders/16E8Z9l4o12Q8x9vN98N3t15_82y9Z1kC)
+
+## Credits
+
+* **FSL Dataset**: https://data.mendeley.com/datasets/48y2y99mb9/2
+* **Next.js PWA**: @ducanh2912/next-pwa
+
