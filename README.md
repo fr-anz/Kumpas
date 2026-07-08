@@ -1,107 +1,67 @@
-# Kumpas — Filipino Sign Language Communicator
+# Kumpas
 
-> **Built for SparkFest 2026**
+## Team Information
 
-Kumpas is an offline-first Filipino Sign Language (FSL) communication
-assistant for Deaf Filipinos in public-service and emergency situations.
-It does not replace interpreters — it helps when one is unavailable.
+**Team Name:**
+F4
+
+**Project Name:**
+Kumpas
 
 ---
 
 ## Project Brief
 
-Deaf Filipinos often face communication barriers in everyday civic contexts:
-barangay halls, clinics, transport, schools, and emergencies. Kumpas bridges
-that gap with a mobile-first PWA that works **without internet**, speaks
-phrases aloud in Filipino and English, and demonstrates real-time sign
-language recognition using a custom-trained Filipino Sign Language model.
+### The Problem
+Access to public services and emergency response in the Philippines is heavily restricted for Deaf citizens. The Philippine Statistics Authority reports over 1.1 million Deaf Filipinos, yet there are only roughly 180 professional Filipino Sign Language (FSL) interpreters nationwide. During critical transactions (e.g., medical crises, emergency evacuations, obtaining a Cedula, or filing a blotter report), Deaf individuals face structural communication barriers. Traditional translation tools fail to bridge this gap because they depend on cloud connectivity, which is often slow or unavailable in remote municipal halls or emergency shelters.
 
-The app is designed for two people sharing one screen:
+### The Proposed Solution
+Kumpas is an offline-first, shared-device FSL communication assistant PWA. Grounded in Republic Act No. 11106 (The FSL Act), it runs lightweight ML models and translation utilities entirely in the browser. 
 
-- **Deaf Filipinos** — quickly surface and speak a phrase that communicates
-  their need.
-- **Hearing staff** — receive a simplified, spoken message they can understand.
+The application is structured into three primary workflows:
+1. **Instant Outbound (Phrase Library & Emergency ID):** A high-contrast, 3-tap action interface that lets Deaf users speak essential needs aloud via text-to-speech.
+2. **Intelligent Inbound (Hearing Person Mode):** A simplified input box for hearing desk staff that simplifies complex administrative jargon into plain text.
+3. **Edge Sign Recognition:** A camera interface that translates live FSL signs to text in real-time with zero data dependency.
 
-Core features work fully offline after first load. No account, no backend,
-no internet required for essential communication.
+### Intended Users
+* **Deaf Filipinos** who need to navigate public transactional spaces or report crises.
+* **Hearing Frontline Workers** (barangay staff, police officers, clinic receptionists, and disaster responders) who need to receive and respond to their requests.
+
+### Project Impact
+Kumpas eliminates the dependency on high-speed internet, allowing immediate, face-to-face communication in the most remote areas of the Philippines. By running local models with sub-50ms latency, it provides a secure, private, and cost-free solution that can scale instantly across all 42,000 barangays.
 
 ---
 
-## Team
+## Team Members
 
-- A Jose, Justin Gabriel
-- Baes, Franz Emmanuel
-- Delos Santos, Christian Joseph
-- Javier, Salvador Vincent
+| Name | Role |
+| --- | --- |
+| **Baes, Franz Emmanuel** | Machine Learning Engineer |
+| **Delos Santos, Christian Joseph** | UI/UX & Frontend Designer |
+| **Javier, Salvador Vincent** | Systems Architect & Fullstack Developer |
+| **A Jose, Justin Gabriel** | Frontend Developer & Data Coordinator |
 
 ---
 
 ## Google Technologies Used
 
-| Technology | How it's used in Kumpas |
-|---|---|
-| **Gemini API** | Powers online message simplification in Hearing Person Mode — converts complex staff language into plain, accessible text. Falls back to the offline rule-based simplifier when unavailable. |
-| **TensorFlow.js** | Runs the custom-trained FSL Conv1D classifier directly in the browser — no server required, works offline after the model is cached |
-| **MediaPipe Tasks Vision (Web)** | Real-time hand landmark extraction from the device camera, feeding the TFjs model with normalized 128-D feature vectors |
+* **Gemini API (via `gemini-2.0-flash`)**
+  Used in *Hearing Person Mode* to simplify complex, bureaucratic sentences typed by hearing staff into short, plain-text instructions. It includes a fallback mechanism that shifts to a local rule-based simplification script if the device loses connection.
+* **TensorFlow.js**
+  Loads and executes our custom-trained 1D Temporal Convolutional neural network model directly in the browser using WebGL acceleration, enabling local classification of sign language.
+* **MediaPipe Tasks Vision (Web)**
+  Extracts 21 3D hand landmarks per hand from the webcam feed, mapping raw camera frames into normalized, wrist-relative, and palm-scaled 128-D feature vectors at the edge.
 
 ---
 
-## Features
+## SparkFest 2026
 
-- **Phrase library** — 26 bilingual phrases (EN / Filipino) across Emergency,
-  Health, Barangay, Transport, School, and Basic categories
-- **Communication card** — full-screen large text + text-to-speech (ElevenLabs
-  for natural Filipino; browser speech fallback when offline)
-- **Emergency card** — persistent "I AM DEAF" card with name, emergency contact,
-  and medical info; one-tap speak
-- **Hearing Person Mode** — staff types a message; Gemini (online) or local
-  rule-based simplifier makes it accessible; suggested phrase cards
-- **FSL Camera** — real-time FSL recognition via MediaPipe →
-  custom TensorFlow.js model
-- **Bilingual UI** — English and Filipino toggle in Settings
-- **Dark / light / system themes** — yellow-black bee palette, WCAG AA contrast
-- **Offline-first PWA** — installable on Android and iOS, works without internet
+This project was developed as part of **SparkFest 2026**, the flagship hackathon organized by the **Google Developer Groups on Campus – Polytechnic University of the Philippines (GDG on Campus PUP)**.
 
 ---
 
-## ML Model
+## Repository Information
 
-| Detail | Value |
-|---|---|
-| Architecture | Fixed frame-delta expansion + temporal classifier (2× Conv1D + BN + MaxPool + GAP + Dense) |
-| Input shape | `[1, 40, 128]` — 40 frames × 128 landmark features |
-| Parameters | 173,676 total (107,820 trainable) |
-| Feature extraction | MediaPipe Hand Landmarker, wrist-relative + palm-scaled normalization |
-| Training pipeline | DVC-versioned: validate → split → extract → train → evaluate |
-| Current classes | YES, NO, DEAF, THANK YOU, SLOW, DON'T UNDERSTAND, BARANGAY CLEARANCE, BLOTTER REPORT, CEDULA, DRIVERS LICENSE, LAND DEED, NO_SIGN |
-| Baseline-v13 result | 91.7% held-out accuracy, 91.4% macro F1 (36 clips); grouped 5-fold accuracy 95.6% ± 3.0% — provisional |
-
----
-
-## Running Locally
-
-```powershell
-npm install
-npm run dev      # → http://localhost:3000
-npm run build    # static export → out/
-```
-
-The ML training pipeline lives in `training/`. It uses Python 3.12,
-TensorFlow 2.21, MediaPipe 0.10.35, and DVC.
-
-```powershell
-# First-time setup
-python -m venv training/.venv
-.\training\.venv\Scripts\python.exe -m pip install -r training/requirements.txt
-python -m dvc repro
-```
-
-
-## Stack
-- Next.js 15 — App Router, static export PWA
-- TypeScript + Tailwind CSS v4
-- TensorFlow.js + MediaPipe Tasks Vision Web
-- Gemini API — online text simplification
-- ElevenLabs — natural Filipino text-to-speech
-- @ducanh2912/next-pwa — Workbox service worker, offline caching
-- Python training pipeline — TF/Keras, MediaPipe, DVC, scikit-learn
+* **Live Demo:** [kumpas-opal.vercel.app](https://kumpas-opal.vercel.app)
+* **Presentation Deck:** [Google Drive Link](https://drive.google.com/drive/folders/16E8Z9l4o12Q8x9vN98N3t15_82y9Z1kC) *(Anyone with the link can view)*
+* **Project Document:** [Kumpas Project Brief (PDF)](https://drive.google.com/drive/folders/16E8Z9l4o12Q8x9vN98N3t15_82y9Z1kC)
