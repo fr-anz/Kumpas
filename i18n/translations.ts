@@ -194,6 +194,26 @@ const en: Dict = {
   "settings.tagline": "Kumpas — offline-first FSL communicator",
   "settings.version": "Version",
 
+  // Online AI consent (Settings)
+  "settings.onlineAi": "Online AI features",
+  "settings.onlineAiDesc":
+    "Allow typed messages to be sent to Google Gemini for smarter simplification. Off by default — Hearing Mode works fully offline without it.",
+  "settings.privacyLink": "Privacy & Terms",
+
+  // Privacy & Terms page
+  "privacy.title": "Privacy & Terms",
+  "privacy.intro":
+    "Kumpas is built to protect your privacy. It works offline and needs no account. In plain terms:",
+  "privacy.p1": "Camera frames are processed on your device and are not uploaded or stored.",
+  "privacy.p2": "Sign recognition data stays in memory only and is deleted when the session ends.",
+  "privacy.p3": "Your typed messages are not sent to Google Gemini unless you turn on Online AI features and give consent.",
+  "privacy.p4": "Online AI features are optional and clearly labeled when they are active.",
+  "privacy.p5": "Filipino speech uses an online voice service only while you are online; otherwise your device's built-in voice is used.",
+  "privacy.p6": "Your emergency profile and settings are stored only on this device.",
+  "privacy.p7": "You can clear all local data at any time — useful on shared or public devices.",
+  "privacy.p8": "No account or sign-in is required for offline use.",
+  "privacy.back": "Back to Settings",
+
   // Not found
   "notFound.title": "Page not found",
   "notFound.body": "That page does not exist. Let's get you back.",
@@ -384,6 +404,26 @@ const fil: Dict = {
     "Ulitin ang setup? Buburahin nito ang iyong kasalukuyang datos para magsimula ka ulit sa welcome screen.",
   "settings.tagline": "Kumpas — offline-first na FSL communicator",
   "settings.version": "Bersyon ng App",
+
+  // Online AI consent (Settings)
+  "settings.onlineAi": "Mga online AI feature",
+  "settings.onlineAiDesc":
+    "Payagan na maipadala ang mga na-type na mensahe sa Google Gemini para sa mas mahusay na pagpapasimple. Naka-off bilang default — gumagana nang buong offline ang Hearing Mode kahit wala ito.",
+  "settings.privacyLink": "Privacy at mga Tuntunin",
+
+  // Privacy & Terms page
+  "privacy.title": "Privacy at mga Tuntunin",
+  "privacy.intro":
+    "Ginawa ang Kumpas para protektahan ang iyong privacy. Gumagana ito offline at hindi nangangailangan ng account. Sa simpleng salita:",
+  "privacy.p1": "Ang mga frame ng kamera ay pinoproseso sa iyong device at hindi ini-upload o iniimbak.",
+  "privacy.p2": "Ang datos ng pagkilala ng senyas ay nasa memory lamang at binubura kapag natapos ang session.",
+  "privacy.p3": "Ang iyong mga na-type na mensahe ay hindi ipinapadala sa Google Gemini maliban kung i-on mo ang Online AI features at magbigay ng pahintulot.",
+  "privacy.p4": "Opsyonal ang mga online AI feature at malinaw na nakalabel kapag aktibo ang mga ito.",
+  "privacy.p5": "Gumagamit ang Filipino na boses ng online na serbisyo kapag online ka lamang; kung hindi, ginagamit ang boses ng iyong device.",
+  "privacy.p6": "Ang iyong emergency profile at mga setting ay iniimbak lamang sa device na ito.",
+  "privacy.p7": "Maaari mong burahin ang lahat ng lokal na datos anumang oras — kapaki-pakinabang sa mga hiniram o pampublikong device.",
+  "privacy.p8": "Walang account o pag-sign-in na kailangan para sa paggamit offline.",
+  "privacy.back": "Bumalik sa Settings",
 
   // Not found
   "notFound.title": "Hindi nahanap ang pahina",

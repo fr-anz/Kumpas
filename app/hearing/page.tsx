@@ -8,6 +8,7 @@ import {
   isGeminiConfigured,
 } from "@/services/geminiService";
 import { findExactPhrase } from "@/data/phrases";
+import { loadOnlineAiConsent } from "@/services/storageService";
 import { clipMap } from "@/data/clipMap";
 import { labelToIdMap } from "@/data/labelToId";
 import { SpeakButton } from "@/components/SpeakButton";
@@ -73,8 +74,9 @@ export default function HearingPage() {
     setMatched(findExactPhrase(trimmed) ?? null);
     setLoading(true);
 
-    // Try Gemini first when online and configured.
-    if (isGeminiConfigured && navigator.onLine) {
+    // Try Gemini only when online, configured, AND the user has consented to
+    // online AI. Without consent the message never leaves the device.
+    if (isGeminiConfigured && navigator.onLine && loadOnlineAiConsent()) {
       try {
         const result = await simplifyWithGemini(trimmed, language);
         setSimplified(result);

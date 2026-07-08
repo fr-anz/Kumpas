@@ -10,6 +10,7 @@ const THEME_KEY = "kumpas.theme";
 const LANG_KEY = "kumpas.lang";
 const FONT_SIZE_KEY = "kumpas.fontSize";
 const ONBOARDED_KEY = "kumpas.onboarded";
+const ONLINE_AI_KEY = "kumpas.onlineAiConsent";
 
 export type ThemePreference = "light" | "dark" | "system";
 export type LanguagePreference = "en" | "fil";
@@ -50,6 +51,7 @@ export function clearAllData(): void {
     window.localStorage.removeItem(LANG_KEY);
     window.localStorage.removeItem(FONT_SIZE_KEY);
     window.localStorage.removeItem(ONBOARDED_KEY);
+    window.localStorage.removeItem(ONLINE_AI_KEY);
   } catch {
     // ignore
   }
@@ -134,6 +136,29 @@ export function saveOnboarded(done: boolean): void {
   if (!hasStorage()) return;
   try {
     window.localStorage.setItem(ONBOARDED_KEY, done ? "true" : "false");
+  } catch {
+    // ignore
+  }
+}
+
+/**
+ * Whether the user has consented to online AI features (Gemini message
+ * simplification). Defaults to false — messages are never sent to Gemini
+ * unless the user explicitly opts in.
+ */
+export function loadOnlineAiConsent(): boolean {
+  if (!hasStorage()) return false;
+  try {
+    return window.localStorage.getItem(ONLINE_AI_KEY) === "true";
+  } catch {
+    return false;
+  }
+}
+
+export function saveOnlineAiConsent(allowed: boolean): void {
+  if (!hasStorage()) return;
+  try {
+    window.localStorage.setItem(ONLINE_AI_KEY, allowed ? "true" : "false");
   } catch {
     // ignore
   }

@@ -1,13 +1,18 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { AlertTriangle, RotateCcw } from "lucide-react";
+import { AlertTriangle, RotateCcw, ShieldCheck } from "lucide-react";
 import { useTheme } from "@/components/ThemeProvider";
 import { useFontSize } from "@/components/FontSizeProvider";
 import { useBatterySaver } from "@/components/BatterySaverProvider";
 import { useLanguage } from "@/i18n/LanguageProvider";
 import { InstallButton } from "@/components/InstallButton";
-import { resetAndOnboard } from "@/services/storageService";
+import {
+  resetAndOnboard,
+  loadOnlineAiConsent,
+  saveOnlineAiConsent,
+} from "@/services/storageService";
 import { isSpeechSupported, speak } from "@/services/speechService";
 import type { ThemePreference } from "@/services/storageService";
 import type { Language } from "@/i18n/translations";
@@ -19,6 +24,17 @@ export default function SettingsPage() {
   const { fontSize, setFontSize } = useFontSize();
   const { batterySaver, setBatterySaver } = useBatterySaver();
   const { language, setLanguage, t, speechLocale } = useLanguage();
+
+  // Online AI consent (client-only, defaults off).
+  const [onlineAi, setOnlineAi] = useState(false);
+  useEffect(() => {
+    setOnlineAi(loadOnlineAiConsent());
+  }, []);
+  const toggleOnlineAi = () => {
+    const next = !onlineAi;
+    setOnlineAi(next);
+    saveOnlineAiConsent(next);
+  };
 
   const handleClear = () => {
     if (window.confirm(t("settings.confirmClear"))) {
@@ -85,6 +101,37 @@ export default function SettingsPage() {
             <span
               className={`absolute top-1 h-5 w-5 rounded-full bg-bee-black transition-all ${
                 batterySaver ? "left-6" : "left-1"
+              }`}
+            />
+          </span>
+        </button>
+      </section>
+
+      {/* Online AI consent (privacy) */}
+      <section className="flex flex-col gap-3">
+        <h2 className="text-xl font-extrabold">{t("settings.onlineAi")}</h2>
+        <p className="text-sm text-text-muted">{t("settings.onlineAiDesc")}</p>
+        <button
+          type="button"
+          role="switch"
+          aria-checked={onlineAi}
+          onClick={toggleOnlineAi}
+          className={`flex min-h-12 items-center justify-between rounded-button border px-5 text-lg font-bold transition-colors ${
+            onlineAi
+              ? "border-bee-yellow bg-bee-yellow/10"
+              : "border-border bg-surface hover:bg-surface-alt"
+          }`}
+        >
+          <span>{onlineAi ? t("settings.batteryOn") : t("settings.batteryOff")}</span>
+          <span
+            aria-hidden="true"
+            className={`relative h-7 w-12 shrink-0 rounded-pill transition-colors ${
+              onlineAi ? "bg-bee-yellow" : "bg-border"
+            }`}
+          >
+            <span
+              className={`absolute top-1 h-5 w-5 rounded-full bg-bee-black transition-all ${
+                onlineAi ? "left-6" : "left-1"
               }`}
             />
           </span>
@@ -216,11 +263,20 @@ export default function SettingsPage() {
         </button>
       </section>
 
-      <section className="flex flex-col gap-1 border-t border-border pt-4 text-sm text-text-muted">
-        <p>{t("settings.tagline")}</p>
-        <p>
-          {t("settings.version")} {APP_VERSION}
-        </p>
+      <section className="flex flex-col gap-3 border-t border-border pt-4">
+        <Link
+          href="/privacy"
+          className="flex min-h-11 w-fit items-center gap-2 font-bold text-text underline-offset-4 hover:underline"
+        >
+          <ShieldCheck aria-hidden="true" className="h-5 w-5 text-success" />
+          {t("settings.privacyLink")}
+        </Link>
+        <div className="text-sm text-text-muted">
+          <p>{t("settings.tagline")}</p>
+          <p>
+            {t("settings.version")} {APP_VERSION}
+          </p>
+        </div>
       </section>
     </div>
   );
