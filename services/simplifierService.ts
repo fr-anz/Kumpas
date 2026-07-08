@@ -239,3 +239,10 @@ export function suggestPhrases(
     .slice(0, limit)
     .map((entry) => entry.phrase);
 }
+
+export function generateLocalResponses(language: Language = "en"): string[] {
+  if (language === "fil") {
+    return ["Oo", "Hindi", "Salamat", "Pakiulit po"];
+  }
+  return ["Yes", "No", "Thank you", "Please repeat"];
+}

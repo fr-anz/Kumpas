@@ -22,7 +22,7 @@ const fredoka = Fredoka({
 });
 
 
-// import { DevServiceWorkerCleanup } from "@/components/DevServiceWorkerCleanup";
+import { DevServiceWorkerCleanup } from "@/components/DevServiceWorkerCleanup";
 
 export const metadata: Metadata = {
   title: "Kumpas — FSL Communicator",
@@ -63,6 +63,7 @@ export default function RootLayout({
       className={cn("font-sans", inter.variable, fredoka.variable)}
     >
       <body className="bg-bg">
+        <DevServiceWorkerCleanup />
         <BatterySaverProvider>
           {/* Animated honeycomb (ShapeGrid) background — frozen when battery
               optimization is on. */}

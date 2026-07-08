@@ -118,7 +118,7 @@ const en: Dict = {
   "hearing.original": "Original",
   "hearing.simplified": "Simplified",
   "hearing.speakSimplified": "Speak simplified",
-  "hearing.suggested": "Suggested phrases",
+  "hearing.suggested": "Suggested responses",
 
   // Emergency
   "emergency.title": "Emergency",
@@ -329,7 +329,7 @@ const fil: Dict = {
   "hearing.original": "Orihinal na Mensahe",
   "hearing.simplified": "Pinasimpleng Mensahe",
   "hearing.speakSimplified": "Ipabasa nang malakas ang pinasimple",
-  "hearing.suggested": "Mga iminumungkahing parirala",
+  "hearing.suggested": "Mga mungkahing tugon",
 
   // Emergency
   "emergency.title": "Emergency / Saklolo",

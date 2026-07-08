@@ -17,12 +17,13 @@ const items: Array<{
   href: string;
   icon: LucideIcon;
   emphasized?: boolean;
+  tourId?: string;
 }> = [
-  { labelKey: "nav.home", href: "/", icon: Home },
-  { labelKey: "nav.library", href: "/library", icon: BookOpen },
-  { labelKey: "nav.emergency", href: "/emergency", icon: Siren, emphasized: true },
-  { labelKey: "nav.hearing", href: "/hearing", icon: MessageSquare },
-  { labelKey: "nav.camera", href: "/camera", icon: Camera },
+  { labelKey: "nav.home", href: "/", icon: Home, tourId: "nav-home" },
+  { labelKey: "nav.library", href: "/library", icon: BookOpen, tourId: "nav-phrase" },
+  { labelKey: "nav.emergency", href: "/emergency", icon: Siren, emphasized: true, tourId: "nav-emergency" },
+  { labelKey: "nav.hearing", href: "/hearing", icon: MessageSquare, tourId: "nav-text" },
+  { labelKey: "nav.camera", href: "/camera", icon: Camera, tourId: "nav-fsl" },
 ];
 
 /**
@@ -60,6 +61,7 @@ export function BottomNav() {
                 )}
 
                 <Link
+                  id={item.tourId}
                   href={item.href}
                   aria-current={isActive ? "page" : undefined}
                   className={`flex w-full min-h-[3.5rem] flex-col items-center justify-center gap-1 rounded-[1.25rem] px-0.5 py-1.5 text-center font-bold leading-[1.05] transition-all border border-transparent ${

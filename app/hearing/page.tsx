@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Sparkles, Wifi, WifiOff } from "lucide-react";
-import { simplify, suggestPhrases, correctSpelling } from "@/services/simplifierService";
+import { simplify, generateLocalResponses, correctSpelling } from "@/services/simplifierService";
 import {
   simplifyWithGemini,
   isGeminiConfigured,
@@ -13,9 +13,10 @@ import { clipMap } from "@/data/clipMap";
 import { labelToIdMap } from "@/data/labelToId";
 import { SpeakButton } from "@/components/SpeakButton";
 import { SignVisual } from "@/components/SignVisual";
-import { PhraseCard } from "@/components/PhraseCard";
 import type { Phrase } from "@/types/phrase";
 import { useLanguage } from "@/i18n/LanguageProvider";
+import { speak } from "@/services/speechService";
+import { speechLang } from "@/i18n/translations";
 
 type SimplifySource = "gemini" | "local" | null;
 
@@ -31,7 +32,7 @@ export default function HearingPage() {
   const [simplified, setSimplified] = useState("");
   const [source, setSource] = useState<SimplifySource>(null);
   const [loading, setLoading] = useState(false);
-  const [suggestions, setSuggestions] = useState<Phrase[]>([]);
+  const [responses, setResponses] = useState<string[]>([]);
   // Set when the typed message exactly matches a library preset, so we can
   // show that preset's pre-saved FSL visual.
   const [matched, setMatched] = useState<Phrase | null>(null);
@@ -83,10 +84,10 @@ export default function HearingPage() {
     if (isGeminiConfigured && navigator.onLine && loadOnlineAiConsent()) {
       try {
         const result = await simplifyWithGemini(trimmed, language);
-        setSimplified(result);
+        setSimplified(result.simplified);
         setSource("gemini");
-        setSuggestions(suggestPhrases(trimmed, language));
-        setMatchedClips(resolveClips(result));
+        setResponses(result.responses);
+        setMatchedClips(resolveClips(result.simplified));
         setLoading(false);
         return;
       } catch {
@@ -98,7 +99,7 @@ export default function HearingPage() {
     const localResult = simplify(trimmed, language);
     setSimplified(localResult);
     setSource("local");
-    setSuggestions(suggestPhrases(trimmed, language));
+    setResponses(generateLocalResponses(language));
     setMatchedClips(resolveClips(localResult));
     setLoading(false);
   };
@@ -202,18 +203,22 @@ export default function HearingPage() {
 
           <SpeakButton text={simplified} label={t("hearing.speakSimplified")} />
 
-          {suggestions.length > 0 && (
+          {responses.length > 0 && (
             <section aria-labelledby="suggested">
               <h2 id="suggested" className="mb-2 font-extrabold">
                 {t("hearing.suggested")}
               </h2>
-              <ul className="flex flex-col gap-3">
-                {suggestions.map((phrase) => (
-                  <li key={phrase.id}>
-                    <PhraseCard phrase={phrase} />
-                  </li>
+              <div className="flex flex-wrap gap-2">
+                {responses.map((res, i) => (
+                  <button
+                    key={i}
+                    onClick={() => speak(res, speechLang[language])}
+                    className="flex-1 min-w-[140px] rounded-xl border-2 border-bee-yellow bg-surface px-4 py-3 text-sm sm:text-base font-bold shadow-[2px_2px_0px_0px_var(--bee-yellow)] hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_var(--bee-yellow)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none text-center leading-snug transition-all"
+                  >
+                    {res}
+                  </button>
                 ))}
-              </ul>
+              </div>
             </section>
           )}
         </div>
