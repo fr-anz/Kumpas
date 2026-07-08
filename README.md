@@ -70,7 +70,7 @@ This project was developed as part of **SparkFest 2026**, the flagship hackathon
 
 ## Repository Information
 
-* **Live Demo:** [kumpas-opal.vercel.app](https://kumpas-opal.vercel.app)
+* **Live Demo:** [Deployment Link](https://kumpas.theavenir.dev/)
 * **Presentation Deck:** [Google Drive Link](https://drive.google.com/drive/folders/16E8Z9l4o12Q8x9vN98N3t15_82y9Z1kC) *(Anyone with the link can view)*
 * **Project Document:** [Kumpas Project Brief (PDF)](https://drive.google.com/drive/folders/16E8Z9l4o12Q8x9vN98N3t15_82y9Z1kC)
 
