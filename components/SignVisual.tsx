@@ -20,7 +20,12 @@ import { useEffect, useState } from "react";
  * All images are local files, so this stays fully offline.
  */
 
-const EXTENSIONS = ["webp", "png", "jpg", "gif"] as const;
+// Video formats are tried first (real sign clips), then still images.
+const EXTENSIONS = ["mp4", "webm", "webp", "png", "jpg", "gif"] as const;
+
+function isVideo(src: string): boolean {
+  return /\.(mp4|webm)$/i.test(src);
+}
 
 type Variant = "FSL" | "ASL";
 
@@ -81,22 +86,39 @@ export function SignVisual({
 
   const current = candidates[index];
 
+  const advance = () => {
+    if (index < candidates.length - 1) {
+      setIndex(index + 1);
+    } else {
+      setExhausted(true);
+    }
+  };
+
   return (
     <figure className="relative aspect-[4/3] w-full overflow-hidden rounded-card border border-border bg-surface shadow-[var(--shadow)]">
-      {/* eslint-disable-next-line @next/next/no-img-element -- static export, local images, need onError fallback chain */}
-      <img
-        key={current.src}
-        src={current.src}
-        alt={alt}
-        className="h-full w-full object-cover"
-        onError={() => {
-          if (index < candidates.length - 1) {
-            setIndex(index + 1);
-          } else {
-            setExhausted(true);
-          }
-        }}
-      />
+      {isVideo(current.src) ? (
+        <video
+          key={current.src}
+          src={current.src}
+          className="h-full w-full object-cover"
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="metadata"
+          aria-label={alt}
+          onError={advance}
+        />
+      ) : (
+        /* eslint-disable-next-line @next/next/no-img-element -- static export, local images, need onError fallback chain */
+        <img
+          key={current.src}
+          src={current.src}
+          alt={alt}
+          className="h-full w-full object-cover"
+          onError={advance}
+        />
+      )}
       <figcaption className="absolute left-2 top-2 rounded-pill bg-bee-black/80 px-2.5 py-1 text-xs font-bold text-bee-yellow">
         {current.variant === "FSL" ? fslLabel : aslLabel}
       </figcaption>

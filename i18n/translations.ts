@@ -391,7 +391,6 @@ const fil: Dict = {
   "notFound.goHome": "Bumalik sa Home",
 
   // Speak button
-  "speak.notAvailable": "Paumanhin, hindi suportado ang voice synthesis sa device na ito.",
-};
+  "speak.notAvailable": "Paumanhin, hindi suportado ang voice synthesis sa device na ito.",};
 
 export const translations: Record<Language, Dict> = { en, fil };
