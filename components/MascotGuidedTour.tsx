@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -157,6 +157,7 @@ export default function MascotGuidedTour({
             opacity: 1,
             WebkitMaskImage: `radial-gradient(circle at ${cx}px ${cy}px, transparent ${r}px, black ${r + 2}px)`,
             maskImage: `radial-gradient(circle at ${cx}px ${cy}px, transparent ${r}px, black ${r + 2}px)`
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
           }) as any}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5 }}
