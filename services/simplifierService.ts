@@ -31,8 +31,111 @@ const FIL_REPLACEMENTS: Array<[RegExp, string]> = [
   [/\bmga kinakailangan\b/gi, "mga papeles"],
 ];
 
+/* ── Offline spell correction ─────────────────────────────────────────────
+ * Builds a vocabulary from the phrase library (both languages) plus key
+ * domain terms, then fuzzy-corrects misspelled input words via edit distance.
+ * e.g. "marriage licnse" → "marriage license", "barangy" → "barangay".
+ */
+
+// High-value domain terms that must be spelled correctly, beyond phrase text.
+const DOMAIN_TERMS = [
+  "marriage", "license", "barangay", "clearance", "certificate", "indigency",
+  "residency", "cedula", "blotter", "report", "ayuda", "emergency", "medical",
+  "hospital", "clinic", "ambulance", "medicine", "assistance", "document",
+  "requirements", "captain", "deaf", "interpreter", "pharmacy", "terminal",
+  "jeepney", "classroom", "assignment", "deadline", "signature",
+];
+
+let vocabCache: { en: Set<string>; fil: Set<string> } | null = null;
+
+function buildVocab() {
+  if (vocabCache) return vocabCache;
+  const en = new Set<string>();
+  const fil = new Set<string>();
+  const add = (set: Set<string>, text: string) => {
+    for (const w of text.toLowerCase().replace(/[^a-z\s]/g, " ").split(/\s+/)) {
+      if (w.length >= 3) set.add(w);
+    }
+  };
+  for (const p of phrases) {
+    add(en, p.text);
+    add(en, p.title);
+    add(fil, p.textFil);
+    add(fil, p.titleFil);
+  }
+  for (const term of DOMAIN_TERMS) en.add(term);
+  vocabCache = { en, fil };
+  return vocabCache;
+}
+
+/** Levenshtein edit distance with early exit when it exceeds `max`. */
+function editDistance(a: string, b: string, max: number): number {
+  const al = a.length;
+  const bl = b.length;
+  if (Math.abs(al - bl) > max) return max + 1;
+  let prev = Array.from({ length: bl + 1 }, (_, i) => i);
+  for (let i = 1; i <= al; i++) {
+    const cur = [i];
+    let rowMin = i;
+    for (let j = 1; j <= bl; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      const val = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + cost);
+      cur[j] = val;
+      if (val < rowMin) rowMin = val;
+    }
+    if (rowMin > max) return max + 1; // whole row exceeds budget
+    prev = cur;
+  }
+  return prev[bl];
+}
+
+/** Reapply the original word's capitalization to the corrected word. */
+function matchCase(original: string, corrected: string): string {
+  if (original === original.toUpperCase() && original.length > 1) {
+    return corrected.toUpperCase();
+  }
+  if (original[0] === original[0]?.toUpperCase()) {
+    return corrected.charAt(0).toUpperCase() + corrected.slice(1);
+  }
+  return corrected;
+}
+
+/**
+ * Correct likely-misspelled words against the domain vocabulary. Conservative:
+ * only replaces a word when a close vocab match exists (same first letter,
+ * small edit distance relative to length) so normal text is left untouched.
+ */
+export function correctSpelling(input: string, language: Language = "en"): string {
+  const { en, fil } = buildVocab();
+  const vocab = language === "fil" ? fil : en;
+
+  return input.replace(/[A-Za-z]+/g, (word) => {
+    const lower = word.toLowerCase();
+    if (lower.length < 4 || vocab.has(lower)) return word; // already valid/short
+
+    const maxDist = lower.length >= 8 ? 2 : 1;
+    let best: string | null = null;
+    let bestDist = maxDist + 1;
+
+    for (const candidate of vocab) {
+      // Cheap pre-filters: first letter + similar length.
+      if (candidate[0] !== lower[0]) continue;
+      if (Math.abs(candidate.length - lower.length) > maxDist) continue;
+      const d = editDistance(lower, candidate, maxDist);
+      if (d < bestDist) {
+        bestDist = d;
+        best = candidate;
+        if (d === 1) break; // good enough
+      }
+    }
+
+    return best && bestDist <= maxDist ? matchCase(word, best) : word;
+  });
+}
+
 export function simplify(input: string, language: Language = "en"): string {
-  let text = input.trim();
+  // Auto-correct spelling first, then simplify.
+  let text = correctSpelling(input.trim(), language);
   if (!text) return "";
 
   const replacements = language === "fil" ? FIL_REPLACEMENTS : EN_REPLACEMENTS;

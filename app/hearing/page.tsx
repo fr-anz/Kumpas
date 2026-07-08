@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Sparkles, Wifi, WifiOff } from "lucide-react";
-import { simplify, suggestPhrases } from "@/services/simplifierService";
+import { simplify, suggestPhrases, correctSpelling } from "@/services/simplifierService";
 import {
   simplifyWithGemini,
   isGeminiConfigured,
@@ -66,8 +66,12 @@ export default function HearingPage() {
   };
 
   const handleSimplify = async () => {
-    const trimmed = input.trim();
-    if (!trimmed) return;
+    const raw = input.trim();
+    if (!raw) return;
+
+    // Auto-correct spelling first, so matching, suggestions and simplification
+    // all work on the corrected text (e.g. "marriage licnse" → "marriage license").
+    const trimmed = correctSpelling(raw, language);
 
     setSimplified("");
     setSource(null);
