@@ -36,10 +36,10 @@ Kumpas eliminates the dependency on high-speed internet, allowing immediate, fac
 
 | Name | Role |
 | --- | --- |
-| **Baes, Franz Emmanuel** | Machine Learning Engineer |
-| **Delos Santos, Christian Joseph** | UI/UX & Frontend Designer |
+| **Baes, Franz Emmanuel** | Project Lead & Fullstack Developer |
+| **Delos Santos, Christian Joseph** | UI/UX & Fullstack Developer |
 | **Javier, Salvador Vincent** | Systems Architect & Fullstack Developer |
-| **A Jose, Justin Gabriel** | Frontend Developer & Data Coordinator |
+| **A Jose, Justin Gabriel** | ML Trainer & Fullstack Developer  |
 
 ---
 
